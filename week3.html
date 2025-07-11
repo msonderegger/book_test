@@ -1,0 +1,1880 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>2&nbsp; Bayesian basics 2 – Advanced Quantitative Methods for Linguistic Data</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./week4.html" rel="next">
+<link href="./week2.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./week3.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Bayesian basics 2</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Advanced Quantitative Methods for Linguistic Data</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Bayesian basics 1</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week3.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Bayesian basics 2</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Bayesian Regression Models 1</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Bayesian Regression Models 2</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week9.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Bayesian Hierarchical Models 1</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Bayesian Hierarchical Models 2</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week11.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Bayesian Hierarchical Models 3</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week12.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Models for discrete data: counts, scales, and frequencies</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week13.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Multivariate models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week6.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Generalized Additive Models (GAMs)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week7.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Generalized additive mixed-effects models (GAMMs)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bayesian_gamms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Bayesian GAMs</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./FDA_edited.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Functional principal components analysis</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#sec-bb2-prelim" id="toc-sec-bb2-prelim" class="nav-link active" data-scroll-target="#sec-bb2-prelim"><span class="header-section-number">2.1</span> Preliminaries</a></li>
+  <li><a href="#tidybayes-and-bayesplot" id="toc-tidybayes-and-bayesplot" class="nav-link" data-scroll-target="#tidybayes-and-bayesplot"><span class="header-section-number">2.2</span> tidybayes and bayesplot</a></li>
+  <li><a href="#summarizing-posterior-distributions" id="toc-summarizing-posterior-distributions" class="nav-link" data-scroll-target="#summarizing-posterior-distributions"><span class="header-section-number">2.3</span> Summarizing posterior distributions</a>
+  <ul class="collapse">
+  <li><a href="#example-posterior-1" id="toc-example-posterior-1" class="nav-link" data-scroll-target="#example-posterior-1"><span class="header-section-number">2.3.1</span> Example posterior 1</a></li>
+  <li><a href="#example-posterior-2" id="toc-example-posterior-2" class="nav-link" data-scroll-target="#example-posterior-2"><span class="header-section-number">2.3.2</span> Example posterior 2</a></li>
+  <li><a href="#intervals" id="toc-intervals" class="nav-link" data-scroll-target="#intervals"><span class="header-section-number">2.3.3</span> Intervals</a></li>
+  <li><a href="#point-estimates" id="toc-point-estimates" class="nav-link" data-scroll-target="#point-estimates"><span class="header-section-number">2.3.4</span> Point estimates</a></li>
+  <li><a href="#sec-bb2-visualizing" id="toc-sec-bb2-visualizing" class="nav-link" data-scroll-target="#sec-bb2-visualizing"><span class="header-section-number">2.3.5</span> Visualizing distributions</a></li>
+  </ul></li>
+  <li><a href="#posterior-predictive-distribution" id="toc-posterior-predictive-distribution" class="nav-link" data-scroll-target="#posterior-predictive-distribution"><span class="header-section-number">2.4</span> Posterior predictive distribution</a>
+  <ul class="collapse">
+  <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example"><span class="header-section-number">2.4.1</span> Example</a></li>
+  </ul></li>
+  <li><a href="#more-model-types" id="toc-more-model-types" class="nav-link" data-scroll-target="#more-model-types"><span class="header-section-number">2.5</span> More model types</a>
+  <ul class="collapse">
+  <li><a href="#binomial-with-logit-link" id="toc-binomial-with-logit-link" class="nav-link" data-scroll-target="#binomial-with-logit-link"><span class="header-section-number">2.5.1</span> Binomial with logit link</a></li>
+  <li><a href="#sec-bb2-poisson" id="toc-sec-bb2-poisson" class="nav-link" data-scroll-target="#sec-bb2-poisson"><span class="header-section-number">2.5.2</span> Poisson regression</a></li>
+  <li><a href="#sec-bb2-normal" id="toc-sec-bb2-normal" class="nav-link" data-scroll-target="#sec-bb2-normal"><span class="header-section-number">2.5.3</span> Normal distribution: linear regression</a></li>
+  <li><a href="#sec-bb2-nb" id="toc-sec-bb2-nb" class="nav-link" data-scroll-target="#sec-bb2-nb"><span class="header-section-number">2.5.4</span> Negative binomial distribution</a></li>
+  </ul></li>
+  <li><a href="#sec-bb2-extra" id="toc-sec-bb2-extra" class="nav-link" data-scroll-target="#sec-bb2-extra"><span class="header-section-number">2.6</span> Appendix: Extra material</a>
+  <ul class="collapse">
+  <li><a href="#frequentist-logistic-regression-model" id="toc-frequentist-logistic-regression-model" class="nav-link" data-scroll-target="#frequentist-logistic-regression-model"><span class="header-section-number">2.6.1</span> Frequentist logistic regression model</a></li>
+  <li><a href="#frequentist-linear-regression-model" id="toc-frequentist-linear-regression-model" class="nav-link" data-scroll-target="#frequentist-linear-regression-model"><span class="header-section-number">2.6.2</span> Frequentist linear regression model</a></li>
+  <li><a href="#sec-bb2-extra-poisson" id="toc-sec-bb2-extra-poisson" class="nav-link" data-scroll-target="#sec-bb2-extra-poisson"><span class="header-section-number">2.6.3</span> Poisson regression model with predictors</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="sec-bb2" class="quarto-section-identifier"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Bayesian basics 2</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>These lecture notes cover topics from:</p>
+<ul>
+<li><span class="citation" data-cites="mcelreath2020statistical">McElreath (<a href="references.html#ref-mcelreath2020statistical" role="doc-biblioref">2020</a>)</span> Chap. 3 (except 3.1), 4.1.4-4.3.2</li>
+<li><span class="citation" data-cites="kurz2021statistical">Kurz (<a href="references.html#ref-kurz2021statistical" role="doc-biblioref">2023</a>)</span> 3.4, 4.3.6</li>
+<li>A Poisson regression introduction <span class="citation" data-cites="winter2021poisson">(e.g.&nbsp;the first part of <a href="references.html#ref-winter2021poisson" role="doc-biblioref">Winter and Bürkner 2021</a>)</span>.</li>
+<li>The tidybayes package’s <a href="https://mjskay.github.io/tidybayes/articles/tidy-brms.html#point-summaries-and-intervals-1">vignette</a>: on “Point summaries and intervals”.</li>
+</ul>
+<p>Topics:</p>
+<ul>
+<li>Posterior distribution: Summarizing</li>
+<li>Posterior predictive distribution</li>
+<li>More model types
+<ul>
+<li>Single parameter: binomial, <strong>poisson</strong></li>
+<li>Two parameters: normal, <strong>negative binomial</strong></li>
+</ul></li>
+</ul>
+<!-- ::: {.callout-note} -->
+<!-- Code for making plots on this page is hidden by default to make reading -->
+<!-- this document easier. Just click "Code" to see the code. -->
+<!-- ::: -->
+<section id="sec-bb2-prelim" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="sec-bb2-prelim"><span class="header-section-number">2.1</span> Preliminaries</h2>
+<p>Load libraries we will need:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(arm) <span class="co"># for the invlogit function</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(brms)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom) <span class="co"># for tidy model summaries</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidybayes)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(languageR) <span class="co"># for the english dataset</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork) <span class="co"># for plotting</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Practical note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If you have loaded <code>rethinking</code>, you need to detach it before using brms. See <span class="citation" data-cites="kurz2021statistical">Kurz (<a href="references.html#ref-kurz2021statistical" role="doc-biblioref">2023</a>)</span> Sec. 4.3.1.</p>
+</div>
+</div>
+<p>Load the <code>diatones</code> dataset from <a href="https://osf.io/pnumg/"><em>Regression Modeling for Linguistic Data</em></a>, like last week:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>diatones <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"https://osf.io/tqjm8/download"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Also load the <code>dyads</code> dataset discussed in <span class="citation" data-cites="winter2021poisson">Winter and Bürkner (<a href="references.html#ref-winter2021poisson" role="doc-biblioref">2021</a>)</span>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>dyads <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"https://osf.io/6j8kc/download"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Their description:</p>
+<blockquote class="blockquote">
+<p>“…[dataset of] co-speech gestures by Catalan and Korean speakers. The data comes from a dyadic task performed by Brown et al.&nbsp;(under review) in which participants first watched a cartoon and subsequently told a partner about what they had seen. The research question was whether the social context modulates people’s politeness strategies, including nonverbal politeness strategies, such as changing the frequency of one’s co-speech gestures. The key experimental manipulation was whether the partner was a friend or a confederate, who was an elderly professor.”</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>“There are two data points per participant, one from the friend condition, and one from the professor condition. The <code>ID</code> column lists participant identifiers for all 27 participants (14 Catalan speakers and 13 Korean speakers). The <code>gestures</code> column contains the primary response variable that we are trying to model, the number of gestures observed on each trial. The <code>context</code> predictor specifies the social context that was experimentally manipulated.”</p>
+</blockquote>
+</section>
+<section id="tidybayes-and-bayesplot" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="tidybayes-and-bayesplot"><span class="header-section-number">2.2</span> tidybayes and bayesplot</h2>
+<p>Above we loaded tidybayes <span class="citation" data-cites="tidybayes">(<a href="references.html#ref-tidybayes" role="doc-biblioref">Kay 2023</a>)</span>, a package for integrating Bayesian modeling methods into a tidyverse + ggplot workflow, which works well with <a href="https://mjskay.github.io/tidybayes/articles/tidy-brms.html">brms</a>. We will often use this package for working with the posterior distributions of fitted brms models (meaning, samples from the posterior), in addition to the posterior package <span class="citation" data-cites="posterior">(<a href="references.html#ref-posterior" role="doc-biblioref">Bürkner et al. 2024</a>)</span>, which is “intended to provide useful tools for both users and developers of packages for fitting Bayesian models or working with output from Bayesian models” (<code>?posterior</code>).<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>We’ll also start using the useful <a href="https://mc-stan.org/bayesplot/">bayesplot</a> package <span class="citation" data-cites="bayesplot gabry2019visualization">(<a href="references.html#ref-bayesplot" role="doc-biblioref">Gabry and Mahr 2024</a>; <a href="references.html#ref-gabry2019visualization" role="doc-biblioref">Gabry et al. 2019</a>)</span>, an “extensive library of plotting functions for use after fitting Bayesian models (typically with MCMC)”, such as posterior predictive checks, introduced below.</p>
+</section>
+<section id="summarizing-posterior-distributions" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="summarizing-posterior-distributions"><span class="header-section-number">2.3</span> Summarizing posterior distributions</h2>
+<p>Once you’ve fitted a Bayesian model, you’re able to sample from the posterior over model parameter(s). Now we want to summarize and interpret the posterior using these samples:</p>
+<ul>
+<li><em>Interval</em> estimates: “most likely” values of <span class="math inline">\(p_{\text{shift}}\)</span></li>
+<li><em>Point</em> estimates: central tendency (mean/median/mode)</li>
+</ul>
+<p>We will use a couple example posteriors, for our example from last week:</p>
+<span class="math display">\[\begin{align}
+p_{\text{shift}} &amp; \sim \text{Uniform}(0,1) \\
+k &amp; \sim \text{Binomial}(n, p_{\text{shift}})
+\end{align}\]</span>
+<p>(I have written the probability of stress shift as <span class="math inline">\(p_{\text{shift}}\)</span> to avoid confusion with “probability” in general.)</p>
+<section id="example-posterior-1" class="level3" data-number="2.3.1">
+<h3 data-number="2.3.1" class="anchored" data-anchor-id="example-posterior-1"><span class="header-section-number">2.3.1</span> Example posterior 1</h3>
+<p>To see why different interval/point methods matter, it is useful to use a highly skewed posterior. McElreath’s example in 3.2 is equivalent to taking <span class="math inline">\(n=3\)</span> and observing <span class="math inline">\(k=3\)</span>, e.g.&nbsp;3 words with <code>stress_shifted</code>=1 for a binomial distribution. The posterior over <span class="math inline">\(p_{\text{shift}}\)</span> is then a <span class="math inline">\(\text{Beta}(1,4)\)</span> distribution, which looks like this:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#set up a vector of p=0...1</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>p_vec <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fl">0.0001</span>,<span class="fl">0.9999</span>, <span class="at">by=</span><span class="fl">0.01</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">p=</span>p_vec, <span class="at">post=</span><span class="fu">dbeta</span>(p_vec, <span class="dv">4</span>, <span class="dv">1</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>p_vec, <span class="at">y=</span>post)) <span class="sc">+</span> </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span> </span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"p_shift"</span>) <span class="sc">+</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Posterior probability (PDF)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="week3_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>It would be possible to just calculate a median, mode, etc. for this curve, but in practice we almost always work with samples from the posterior (usually from a fitted model):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="do">## take 1000 samples</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>samples_1 <span class="ot">&lt;-</span> <span class="fu">rbeta</span>(<span class="at">n=</span><span class="dv">10000</span>, <span class="dv">4</span>, <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>It is useful to start doing so now.</p>
+</section>
+<section id="example-posterior-2" class="level3" data-number="2.3.2">
+<h3 data-number="2.3.2" class="anchored" data-anchor-id="example-posterior-2"><span class="header-section-number">2.3.2</span> Example posterior 2</h3>
+<p>The posterior for a model fitted as Exercise 10 last week, after seeing the first 20 observations from <code>diatones</code> (i.e., <span class="math inline">\(k=20\)</span>):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="do">## week 3, model 1</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>diatones_m31<span class="ot">&lt;-</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">brm</span>(<span class="at">data =</span> diatones[<span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>,],</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"identity"</span>),</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>      stress_shifted <span class="sc">|</span> <span class="fu">trials</span>(<span class="dv">1</span>) <span class="sc">~</span> <span class="dv">0</span> <span class="sc">+</span> Intercept,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">prior</span>(<span class="fu">beta</span>(<span class="dv">1</span>, <span class="dv">1</span>), <span class="at">class =</span> b, <span class="at">lb =</span> <span class="dv">0</span>, <span class="at">ub =</span> <span class="dv">1</span>),</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">file=</span><span class="st">'models/diatones_m31.brm'</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>diatones_m31</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>(I will suppress output/messages/warnings from brms fits from now on, unless they’re relevant for us.)</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Practical note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The <code>file</code> argument here saves the fitted model to a file. If the file exists already, <code>brm()</code> just loads the model instead of refitting. This makes it easier for me to write/compile this document, and it’s good practice to use the <code>file</code> argument once you are fitting “real” models (to make sure you don’t lose them once fitted). If you want to refit the model, you then need to delete the corresponding <code>.brm</code> file first. You (reader) can either remove this argument or create a <code>models/</code> directory.</p>
+</div>
+</div>
+<p>Extract posterior samples using <code>spread_draws()</code> from tidybayes:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>diatones_m31_draws <span class="ot">&lt;-</span> diatones_m31 <span class="sc">%&gt;%</span> <span class="fu">spread_draws</span>(b_Intercept)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>spread_draws(a)</code> puts the samples (“draws” from the posterior) for parameter(s) <code>a</code> in a tibble in tidy format for subsequent processing or plotting, with many pre-coded routines available (see <a href="https://mjskay.github.io/tidybayes/articles/tidy-brms.html">vignette</a>). <code>diatones_m31_draws</code> has one row for each post-warmup draw (= 4000 rows):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>diatones_m31_draws</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 4,000 × 4</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="do">##    .chain .iteration .draw b_Intercept</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="do">##     &lt;int&gt;      &lt;int&gt; &lt;int&gt;       &lt;dbl&gt;</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="do">##  1      1          1     1       0.225</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="do">##  2      1          2     2       0.348</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="do">##  3      1          3     3       0.366</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="do">##  4      1          4     4       0.154</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="do">##  5      1          5     5       0.426</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="do">##  6      1          6     6       0.248</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="do">##  7      1          7     7       0.349</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="do">##  8      1          8     8       0.298</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="do">##  9      1          9     9       0.373</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="do">## 10      1         10    10       0.373</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="do">## # ℹ 3,990 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Plot the posterior from these samples, using the <code>stat_slab()</code> function from tidybayes:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>diatones_m31_draws <span class="sc">%&gt;%</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> b_Intercept)) <span class="sc">+</span> </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_slab</span>()<span class="sc">+</span> <span class="do">## one way to visualize posterior; could also e.g. use a histogram</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"p_shift"</span>)<span class="sc">+</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Posterior probability"</span>) <span class="sc">+</span> </span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="dv">0</span>,<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="week3_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Save the samples of <span class="math inline">\(p_{\text{shift}}\)</span> as a separate vector for convenience:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>samples_2 <span class="ot">&lt;-</span> diatones_m31_draws<span class="sc">$</span>b_Intercept</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="intervals" class="level3" data-number="2.3.3">
+<h3 data-number="2.3.3" class="anchored" data-anchor-id="intervals"><span class="header-section-number">2.3.3</span> Intervals</h3>
+<p>Posterior distributions are often summarized with a <em>credible interval</em> describing where X% of probability lies. Typically X = 95%, by convention. McElreath uses 89% to remind us that there is nothing sacred about 95%, and to avoid triggering NHST thinking using <span class="math inline">\(p&lt;0.05\)</span>.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> Credible intervals are analogous to frequentist “confidence intervals”, but with a more straightforward interpretation.</p>
+<p>Two common options for CredI’s (as they’re often abbreviated) are:</p>
+<ul>
+<li><em>quantile interval</em> (a.k.a <em>percentile</em>): values of <span class="math inline">\(p\)</span> between 2.5% and 97.5% quantile</li>
+<li><em>highest posterior density interval</em> (a.k.a <em>highest-density interval</em>): narrowest range of <span class="math inline">\(p\)</span> containing 95% posterior probability.</li>
+</ul>
+<!-- It is useful to first consider 50% intervals: -->
+<!-- ```{r} -->
+<!-- qi(samples_1, .width = 0.5) -->
+<!-- hdi(samples_1, .width=0.5) -->
+<!-- qi(samples_2, .width=0.5) -->
+<!-- hdi(samples_2, .width=0.5) -->
+<!-- ``` -->
+<p>Let’s calculate 89% intervals for our two example posteriors:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qi</span>(samples_1, <span class="at">.width =</span> <span class="fl">0.89</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="do">##           [,1]      [,2]</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="do">## [1,] 0.4844551 0.9862567</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="fu">hdi</span>(samples_1, <span class="at">.width=</span><span class="fl">0.89</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="do">##           [,1]      [,2]</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="do">## [1,] 0.5765895 0.9999929</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="fu">qi</span>(samples_2, <span class="at">.width=</span><span class="fl">0.89</span>)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="do">##           [,1]      [,2]</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="do">## [1,] 0.1719941 0.4842852</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="fu">hdi</span>(samples_2, <span class="at">.width=</span><span class="fl">0.89</span>)</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="do">##           [,1]     [,2]</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="do">## [1,] 0.1602519 0.468913</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Note how the QI and HDI for Example 1 are different, while those for a more symmetric distribution (Example 2) are practically the same.</p>
+<p>In general, HPDs are better at conveying the shape of the distribution, including where the mode is, and are conceptually preferable to PIs. But HPDs have several drawbacks relative to PIs:</p>
+<ul>
+<li>More computationally intensive to compute.</li>
+<li>More sensitive to how many samples are drawn from the posterior.</li>
+<li>For multimodal posteriors, HPD-based CredI’s can be discontinuous.</li>
+<li>Harder to convey to a reader.</li>
+</ul>
+<p>None of this matters for our simple examples, but going forward we will usually use PI-based intervals, as brms (and Stan) do by default. “CI” or “CredI” will mean “quantile-based credible interval”, unless otherwise noted.</p>
+<p>In cases where the choice between an HPD and PI-based CredI matters, you arguably should not be describing the posterior just using a point+interval estimate anyway.</p>
+</section>
+<section id="point-estimates" class="level3" data-number="2.3.4">
+<h3 data-number="2.3.4" class="anchored" data-anchor-id="point-estimates"><span class="header-section-number">2.3.4</span> Point estimates</h3>
+<p>Bayesians don’t like reporting a single number to summarize the whole posterior distribution, but humans often find such a number useful. Choices:</p>
+<ul>
+<li>Posterior mode: <em>MAP</em> estimate (maximum a-posteriori)</li>
+<li>Posterior <em>median</em></li>
+<li>Posterior <em>mean</em></li>
+</ul>
+<p>The mode makes intuitive sense. The median or mean can be justified as minimizing different kinds of loss function <span class="citation" data-cites="mcelreath2020statistical">(<a href="references.html#ref-mcelreath2020statistical" role="doc-biblioref">McElreath 2020, 3.2</a>)</span> when trying to guess <span class="math inline">\(p\)</span>.</p>
+<p>For our examples:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">example=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>),</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">MAP =</span> <span class="fu">c</span>(<span class="fu">Mode</span>(samples_1), <span class="fu">Mode</span>(samples_2)),</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">median =</span> <span class="fu">c</span>(<span class="fu">median</span>(samples_1), <span class="fu">median</span>(samples_2)),</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">mean =</span> <span class="fu">c</span>(<span class="fu">mean</span>(samples_1), <span class="fu">mean</span>(samples_2)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span> <span class="fu">round</span>(<span class="dv">3</span>)</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="do">##   example  MAP median  mean</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 1       1 1.00  0.842 0.800</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 2       2 0.31  0.312 0.318</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Again, these different methods differ a lot for a non-symmetric distribution (Example 1) and less for a symmetric distribution (Example 2). Make sure you understand why mean <span class="math inline">\(&lt;\)</span> median <span class="math inline">\(&lt;\)</span> MAP for Example 1, given the shape of the distribution (plotted above).</p>
+<!-- Note how the MAP, median, and mean for  -->
+<!-- Note how MAP computed for example 1 is not actually at $p=1$ (the real -->
+<!-- MAP of the posterior). This illustrates how any point estimate (of a -->
+<!-- sample from the posterior) is an **estimate**, which will be better for -->
+<!-- larger samples. -->
+<p>All three point estimates are reported in practice. MAP is common, but <!-- (I think)  --> has the same disadvantages as HPD-based CredI’s. brms uses the posterior mean by default.</p>
+<p>The tidybayes package will calculate these and many other quantities for you via helper functions. For example, to get the median and 95% quantile-based CIs for Example 1:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">median_qi</span>(samples_1)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="do">##           y      ymin      ymax .width .point .interval</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 0.8416485 0.3995363 0.9936803   0.95 median        qi</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Here, <code>y</code>, <code>ymin</code>, <code>ymax</code> are median and 95% CI boundaries.</p>
+</section>
+<section id="sec-bb2-visualizing" class="level3" data-number="2.3.5">
+<h3 data-number="2.3.5" class="anchored" data-anchor-id="sec-bb2-visualizing"><span class="header-section-number">2.3.5</span> Visualizing distributions</h3>
+<p>In practice it is best to visualize posteriors together with point/interval summaries showing multiple probability values (not just 0.025 and 0.975). tidybayes provides many options,<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> such as a “half-eye” plot, which shows the 66% and 95% (quantile-based) CIs by default:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>diatones_m31_draws <span class="sc">%&gt;%</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> b_Intercept)) <span class="sc">+</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_halfeye</span>()<span class="sc">+</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"p_shift"</span>)<span class="sc">+</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Posterior probability"</span>) <span class="sc">+</span> </span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="dv">0</span>,<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="week3_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="exr-bb2-1" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 2.1</strong></span> Examine the output of model <code>diatones_m31</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>diatones_m31</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="do">##  Family: binomial </span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="do">##   Links: mu = identity </span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Formula: stress_shifted | trials(1) ~ 0 + Intercept </span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="do">##    Data: diatones[1:20, ] (Number of observations: 20) </span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   Draws: 4 chains, each with iter = 2000; warmup = 1000; thin = 1;</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="do">##          total post-warmup draws = 4000</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="do">## Regression Coefficients:</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="do">##           Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Intercept     0.32      0.10     0.15     0.52 1.00     1323     1898</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="do">## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="do">## and Tail_ESS are effective sample size measures, and Rhat is the potential</span></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="do">## scale reduction factor on split chains (at convergence, Rhat = 1).</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol type="a">
+<li>What do <code>Estimate</code>, <code>l-95% CI</code>, and <code>u-95% CI</code> mean? (Hint: look at calculations above.)</li>
+<li>What do you think <code>Est.Error</code> means?</li>
+<li><em>Extra</em>: Verify your guess by computing this number using our sample from the posterior distribution of the model’s intercept (<code>samples_2</code>).</li>
+</ol>
+</div>
+<div id="exr-bb2-2" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 2.2</strong></span> Make a visualization of the posterior for <a href="#exr-bb2-1" class="quarto-xref">Exercise&nbsp;<span>2.1</span></a> using <code>samples_1</code> (the samples from the posterior). which shows both the density and point/interval summaries.</p>
+<p>Note that to use a tidybayes function for this, you’ll first need to make a dataframe with <code>samples_1</code> as one column.</p>
+</div>
+</section>
+</section>
+<section id="posterior-predictive-distribution" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="posterior-predictive-distribution"><span class="header-section-number">2.4</span> Posterior predictive distribution</h2>
+<p>Above we considered sampling from the posterior to summarize the posterior: what the model says about likely parameter values. This is analogous to frequentist models, where we get parameter estimates, confidence intervals, etc. Another use for the posterior is to understand what the model says about likely <em>data</em>: what McElreath calls its “implied predictions”.</p>
+<p>Informally: because Bayesian models are generative, once we know how likely different parameter values are (the posterior), we can simulate new data (observations), by just running the model forward. This is called <em>dummy</em> or <em>fake data</em>.</p>
+<p>Let <span class="math inline">\(\vec{y}\)</span> be the observed data, and <span class="math inline">\(\vec{\theta}\)</span> be the parameter values. Fitting a model gives the posterior distribution:</p>
+<p><span class="math display">\[
+\underbrace{P(\vec{\theta} | \vec{y})}_{\text{posterior}} \propto \underbrace{\vec{P(\vec{y} | \vec{\theta})}}_{\text{likelihood}} \underbrace{\vec{P(\vec{\theta})}}_{\text{prior}}
+\]</span></p>
+<p>The probability distribution for <em>new</em> data, <span class="math inline">\(\vec{y}_{new}\)</span>, is the <em>posterior predictive distribution</em>, <span class="math inline">\(P(\vec{y}_{new} | \vec{y})\)</span>. How likely different values of new data are (<span class="math inline">\(\vec{y}_{new}\)</span>) is obtained by:<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
+<!-- How likely different -->
+<!-- In words:  -->
+<ol type="1">
+<li>For every possible value of the parameters <span class="math inline">\(\vec{\theta}\)</span>:</li>
+<li>Compute how likely <span class="math inline">\(\vec{y}_{new}\)</span> is under <span class="math inline">\(\vec{\theta}\)</span> (the likelihood).</li>
+<li>Weight by how likely these parameter value are (the posterior).</li>
+<li>Sum over all parameter values.</li>
+</ol>
+<p>We can think of the posterior distribution as a machine for calculating new (fake) datasets. Each simulated observation captures two sources of uncertainty:</p>
+<ol type="1">
+<li>In parameters (the posterior)</li>
+<li>In observations, given the parameter values</li>
+</ol>
+<p>Both sources of uncertainty are propagated by the posterior predictive distribution. <span class="citation" data-cites="mcelreath2020statistical">McElreath (<a href="references.html#ref-mcelreath2020statistical" role="doc-biblioref">2020</a>)</span>, Sec. 3.3.2.2, gives a very nice visualization (Fig. 3.6).</p>
+<section id="example" class="level3" data-number="2.4.1">
+<h3 data-number="2.4.1" class="anchored" data-anchor-id="example"><span class="header-section-number">2.4.1</span> Example</h3>
+<p>For the <code>diatones_m31</code> model, where <span class="math inline">\(\vec{y}\)</span> is a sequence of 20 zeros and 1s, we can use <code>posterior_predict()</code> to simulate 4000 new draws of the data:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>pp_ex <span class="ot">&lt;-</span> <span class="fu">posterior_predict</span>(diatones_m31) </span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(pp_ex)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="do">##      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12] [,13] [,14]</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="do">## [1,]    1    0    0    1    1    0    0    0    0     0     0     0     1     0</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="do">## [2,]    0    0    0    1    0    1    0    0    0     1     1     0     0     1</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="do">## [3,]    1    0    0    0    1    0    0    0    0     0     0     0     0     1</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="do">## [4,]    0    0    0    0    1    0    1    0    0     0     0     0     0     0</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="do">## [5,]    1    0    0    0    0    0    0    1    0     0     0     0     1     0</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="do">## [6,]    0    0    0    0    1    1    0    0    0     0     0     0     0     1</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="do">##      [,15] [,16] [,17] [,18] [,19] [,20]</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="do">## [1,]     0     0     1     0     0     0</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="do">## [2,]     1     1     1     1     0     0</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="do">## [3,]     0     1     0     1     1     1</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="do">## [4,]     1     0     1     0     0     0</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="do">## [5,]     1     0     1     0     0     0</span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="do">## [6,]     1     1     1     0     0     0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Each row is one draw, each column is one of the 20 data points. We can plot these simulated datasets by plotting the distribution of <span class="math inline">\(k\)</span>: the number of shifted stress words (out of 20). This distribution is:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">num_shifted=</span><span class="fu">apply</span>(<span class="fu">posterior_predict</span>(diatones_m31), <span class="dv">1</span>, sum)) <span class="sc">%&gt;%</span> </span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>num_shifted)) <span class="sc">+</span> </span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">20</span>) <span class="sc">+</span> </span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="fu">aes</span>(<span class="at">xintercept=</span><span class="dv">6</span>), <span class="at">lty=</span><span class="dv">2</span>) <span class="sc">+</span> </span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="do">## dotted line: the *observed* number of shifted words.</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"k: number of shifted words out of 20"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="week3_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The distribution of <em>predicted</em> <span class="math inline">\(k\)</span> is quite wide, because it incorporates both sources of variance:</p>
+<ul>
+<li>The 95% CI for <span class="math inline">\(p_{shift}\)</span> is [0.14, 0.52], corresponding to <span class="math inline">\(k \in [2.8, 10.4]\)</span> (multiply <span class="math inline">\(p_{shift}\)</span> by 20)</li>
+<li>The variability in <span class="math inline">\(k\)</span> expected from <em>observation-level</em> variance, for the MAP estimate of <span class="math inline">\(p_{shift}\)</span> (0.32), is:</li>
+</ul>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>k_vec <span class="ot">&lt;-</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">20</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">k =</span> k_vec) <span class="sc">%&gt;%</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>k, <span class="at">y=</span><span class="fu">dbinom</span>(k, <span class="dv">20</span>, <span class="at">p=</span><span class="fl">0.32</span>))) <span class="sc">+</span> </span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span> </span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Probability (PDF)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="week3_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+<p>More generally, the posterior predictive distribution allows us to examine <em>any</em> quantity that can be computed from the model. This strength is not apparent for our simple first model; we will return to it below. <!-- (Sec. \@ref{#ppcs}). --> <!-- for some other models. --> <!-- (for the poisson model, we'll examine the distribution of the mean and variance of $y$we will return to this once we've examined some other models. --></p>
+<p>Working with (fake data from the) posterior predictive distribution is a powerful method for <span class="citation" data-cites="mcelreath2020statistical">(<a href="references.html#ref-mcelreath2020statistical" role="doc-biblioref">McElreath 2020, 3.3</a>)</span>:</p>
+<ul>
+<li>model checking (do predictions roughly match observations?)</li>
+<li>model design (will this model do what we expect, given all its moving parts?)</li>
+<li>software validation (if we simulate from a known distribution, then fit a model, do we get back the right parameters?)</li>
+<li>forecasting / model understanding (what does this model predict for cases relevant for our RQs? For new cases?)</li>
+</ul>
+<p>We’ll see these uses as we go along.</p>
+<!-- compute the posterior of whatever quantity makes sense for evaluating the model and answering your research questions, using the *posterior predictive distribution*.  Intuitively, the PPD is the distribution of the **data** under the fitted model. -->
+</section>
+</section>
+<section id="more-model-types" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="more-model-types"><span class="header-section-number">2.5</span> More model types</h2>
+<p>So far we have fit one simple model: an intercept-only <em>binomial</em> model, with an identity link (the single parameter <span class="math inline">\(p_{\text{shift}}\)</span> was modeled directly).</p>
+<p>Let’s learn how to fit more types of models in brms. For now we will stick to models with one fitted parameter, with “uninformative” (flat or very shallow) priors for model parameters. We’ll then move to models with two parameters (below), models with actual predictors (next week), and better priors.</p>
+<!-- This will also let us: -->
+<!-- * Practice notation for writing down probability models, using simple cases. -->
+<!-- * Practice `tidybayes` for working with posteriors -->
+<!-- * Start using Poisson distributions -->
+<section id="binomial-with-logit-link" class="level3" data-number="2.5.1">
+<h3 data-number="2.5.1" class="anchored" data-anchor-id="binomial-with-logit-link"><span class="header-section-number">2.5.1</span> Binomial with logit link</h3>
+<p>Typically we fit <em>logistic regression</em> to data where <span class="math inline">\(y=0\)</span> or 1: a binomial model with a logit link. Consider the (frequentist) model fit using <code>glm()</code> to the <code>diatones</code> data, first 20 observations. For observation <span class="math inline">\(i\)</span>:</p>
+<p><span class="math display">\[
+\text{logit}(P(y_i = 1)) = \alpha , \quad i=1, \ldots n
+\]</span></p>
+<p><span class="math inline">\(\alpha\)</span> is the the probability that <code>stress_shift</code> = 1 in log-odds—the model’s intercept. (In terms of notation we’ve used for our first model, <span class="math inline">\(\alpha = \text{logit}(p_{shift})\)</span>.) To write this as a Bayesian model, we need a prior on <span class="math inline">\(\alpha\)</span>.</p>
+<p><span class="math inline">\(\alpha\)</span> could be any number in <span class="math inline">\([-\infty, \infty]\)</span>, so it cannot have a uniform prior. Instead we can give it an “uninformative” prior centered around 0:</p>
+<p><span class="math display">\[
+\alpha \sim N(0, 25)
+\]</span> (read: normal distribution with mean 0, SD 25.) This is effectively the same as <span class="math inline">\(p \sim \text{Beta}(1,1)\)</span> (uniform prior), in the sense that both of them are near-flat over values of <span class="math inline">\(\alpha\)</span> (i.e., log-odds of <span class="math inline">\(p_{\text{shift}}\)</span>) which are at all reasonable. Here’s what this prior looks like in terms of <span class="math inline">\(\alpha\)</span>:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">alpha =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">10</span>, <span class="dv">10</span>, <span class="at">by=</span><span class="fl">0.01</span>) , <span class="at">p=</span><span class="fu">dnorm</span>(<span class="at">x=</span><span class="fu">seq</span>(<span class="sc">-</span><span class="dv">10</span>, <span class="dv">10</span>, <span class="at">by=</span><span class="fl">0.01</span>) , <span class="at">sd =</span> <span class="dv">25</span>))</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="do">## log-odds of -5 to 5</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>df <span class="sc">%&gt;%</span>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>alpha, <span class="at">y=</span>p)) <span class="sc">+</span> </span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span> </span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="fu">expression</span>(alpha)) <span class="sc">+</span> </span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Probability (density)"</span>) <span class="sc">+</span> </span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="sc">-</span><span class="dv">5</span>,<span class="dv">5</span>) <span class="sc">+</span> </span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="fu">max</span>(df<span class="sc">$</span>p)<span class="sc">*</span><span class="fl">1.05</span>) <span class="sc">+</span> </span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">15</span>))  </span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Warning: Removed 1000 rows containing missing values or values outside the scale range</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="do">## (`geom_line()`).</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="week3_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>And in terms of <span class="math inline">\(p_{\text{shift}}\)</span>:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="do">## corresponds to p_shift = 0.007 to 0.9933 after inverse-logit transform</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="do">## plogis(5)</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="do">## plogis(-5)</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>df <span class="sc">%&gt;%</span>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span><span class="fu">invlogit</span>(alpha), <span class="at">y=</span>p<span class="sc">/</span><span class="fu">sum</span>(p))) <span class="sc">+</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="fu">expression</span>(p[shift]<span class="sc">~</span><span class="st">"(=inverse logit("</span><span class="sc">*</span>alpha<span class="sc">*</span><span class="st">"))"</span>), <span class="at">y =</span> <span class="st">"Probability (density)"</span>) <span class="sc">+</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="fl">0.007</span>, <span class="fl">0.9933</span>) <span class="sc">+</span> </span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="fu">max</span>(df<span class="sc">$</span>p<span class="sc">/</span><span class="fu">sum</span>(df<span class="sc">$</span>p))<span class="sc">*</span><span class="fl">1.05</span>)</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="do">## Warning: Removed 1006 rows containing missing values or values outside the scale range</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="do">## (`geom_line()`).</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="week3_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The probability model, written in terms of single observations of <span class="math inline">\(y\)</span> (<code>stress_shifted</code>):</p>
+<span class="math display">\[\begin{align}
+\text{logit}(p_{\text{shift}}) &amp; \sim N(0, 25) \\
+y &amp; \sim \text{Binomial}(p_{\text{shift}}, 1)
+\end{align}\]</span>
+<p>The second row is also called a <em>Bernoulli distribution</em>: a binomial with <span class="math inline">\(n=1\)</span>.</p>
+<p>To fit this model in brms using default settings:<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>diatones_m32 <span class="ot">&lt;-</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">brm</span>(<span class="at">data =</span> diatones[<span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>,],</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">family =</span> binomial,</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>      stress_shifted <span class="sc">|</span> <span class="fu">trials</span>(<span class="dv">1</span>) <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="dv">10</span>), <span class="at">class =</span> Intercept),</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">file=</span><span class="st">'models/diatones_m32.brm'</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Model results:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>diatones_m32</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="do">##  Family: binomial </span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="do">##   Links: mu = logit </span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Formula: stress_shifted | trials(1) ~ 1 </span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="do">##    Data: diatones[1:20, ] (Number of observations: 20) </span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   Draws: 4 chains, each with iter = 2000; warmup = 1000; thin = 1;</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="do">##          total post-warmup draws = 4000</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="do">## Regression Coefficients:</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="do">##           Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS</span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Intercept    -0.87      0.48    -1.83     0.01 1.00     1441     1927</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a><span class="do">## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS</span></span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a><span class="do">## and Tail_ESS are effective sample size measures, and Rhat is the potential</span></span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a><span class="do">## scale reduction factor on split chains (at convergence, Rhat = 1).</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The estimate for <span class="math inline">\(\text{logit}(p_{\text{shift}})\)</span> and its <code>Est. Error</code> are similar to a <code>glm()</code> (frequentist) model, shown in <a href="#sec-bb2-extra" class="quarto-xref"><span>Section 2.6</span></a>.</p>
+<p>We will typically fit logistic regression models using the <code>bernoulli</code> family. This simplifies the model formula slightly, and the model fits slightly faster. The code for this would be (not run):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>diatones_m32 <span class="ot">&lt;-</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">brm</span>(<span class="at">data =</span> diatones[<span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>,],</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">family =</span> bernoulli,</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>      stress_shifted <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="dv">10</span>), <span class="at">class =</span> Intercept),</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">file=</span><span class="st">'models/diatones_m32.brm'</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="exr-bb2-3" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 2.3</strong></span> &nbsp;</p>
+<ol type="a">
+<li><p>Visualize the posterior of model <code>diatones_m32</code>. This is the posterior of the single model parameter <span class="math inline">\(\alpha\)</span>, the log-odds of `stress_shifted = 1.</p></li>
+<li><p><em>Extra</em>: visualize the posterior of <span class="math inline">\(\text{invlogit}(\alpha)\)</span>, i.e.&nbsp;<span class="math inline">\(p_{\text{shift}}\)</span>. Does it look any different from the posterior for model <code>diatones_m31</code>?</p></li>
+</ol>
+</div>
+<!-- * Why is this prior effectively the same as flat? (What do -10 and 10 in log-odds mean in probability?) -->
+<!-- * Try refitting model `diatones_m31`, but just changing `binomial(link = "identity")` to `binomial` (i.e., logit link = logistic regression).  The model should not fit properly.  Why? (Hint: think about what your "uniform" prior means now.)   -->
+</section>
+<section id="sec-bb2-poisson" class="level3" data-number="2.5.2">
+<h3 data-number="2.5.2" class="anchored" data-anchor-id="sec-bb2-poisson"><span class="header-section-number">2.5.2</span> Poisson regression</h3>
+<p>Another useful single-parameter model is <em>Poisson regression</em>. This can be thought of as logistic regression, in the case where <span class="math inline">\(p\)</span> is very small relative to <span class="math inline">\(N\)</span>: we are counting how many times <span class="math inline">\(y\)</span> something happens, and there is no natural upper bound for <span class="math inline">\(y\)</span>.</p>
+<p><span class="math inline">\(y\)</span> could be the number of times each word appears in a corpus, the number of words in a lexicon with particular phonotactics, the number of languages spoken in a country, and so on. Poisson regression is not currently widely used for language data, but probably should be <span class="citation" data-cites="winter2021poisson">(<a href="references.html#ref-winter2021poisson" role="doc-biblioref">Winter and Bürkner 2021</a>)</span>.</p>
+<p>In Poisson regression, the <em>log</em> of counts <!-- ($log(y)$)  --> are modeled as a linear function of one or more predictors:</p>
+<p><span class="math display">\[
+\log(y) = \alpha + \beta_1 x_1 + \cdots
+\]</span> Because of the logarithm, the interpretation of <span class="math inline">\(\exp(\alpha)\)</span> is “average value of <span class="math inline">\(y\)</span>, the interpretation of <span class="math inline">\(\exp(\beta_1)\)</span> is”how much <span class="math inline">\(y\)</span> is multiplied by when <span class="math inline">\(x_1\)</span> is increased by 1”, and so on.</p>
+<p>Note the similarities with logistic regression: <span class="math inline">\(\log\)</span> (instead of logit) on the LHS, and no error term on the RHS. Just as logistic regression can be usefully thought of as modeling the probabilities <span class="math inline">\(p_i\)</span> of events occurring, Poisson regression can be thought of as modeling the <em>rates</em> <span class="math inline">\(\lambda_i\)</span> of events occurring:</p>
+<span class="math display">\[\begin{eqnarray}
+y_i &amp; \sim \text{Poisson}(\lambda_i) \\
+\log(\lambda_i) &amp; \sim \alpha + \beta_1 x_1 + \cdots
+\end{eqnarray}\]</span>
+<p>Here <span class="math inline">\(y_i\)</span> follows the <a href="https://en.wikipedia.org/wiki/Poisson_distribution">Poisson distribution</a>, <!-- whose --> <!-- exact form won't matter for us (like we don't usually need to work with --> <!-- the actual binomial distribution), but --> which has an important property: <strong>its mean and variance are equal</strong>. This means that a Poisson regression model assumes that <span class="math inline">\(E(y) = \text{var}(y)\)</span>: the amount of “dispersion” in the data is fixed.</p>
+<p>We will use as an example the <code>dyads</code> data, with <span class="math inline">\(y\)</span> the <code>gestures</code> count. The empirical distribution of <code>gestures</code> looks like:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>dyads <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>gestures)) <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="at">bins=</span><span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="week3_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>For now we will assume there are no predictors: the only coefficient is the intercept. A Poisson model is a kind of generalized linear model (<a href="https://en.wikipedia.org/wiki/Generalized_linear_model">GLM</a>), like logistic regression, so to fit a frequentist model we would use <code>glm()</code><a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>dyads_freq_mod <span class="ot">&lt;-</span> <span class="fu">glm</span>(gestures <span class="sc">~</span> <span class="dv">1</span>, <span class="at">family=</span> poisson, <span class="at">data=</span>dyads)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(dyads_freq_mod)</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 1 × 5</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="do">##   term        estimate std.error statistic p.value</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 (Intercept)     3.90    0.0194      202.       0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The predicted mean of <code>gestures</code> is <span class="math inline">\(e^{3.9}\)</span>=<code>exp(3.9)</code>, which is very close to the observed mean (<code>mean(dyads$gestures)</code>).</p>
+<p>To make a Bayesian model, we just need to add a prior for the intercept term; we use an uninformative prior. The probability model is:</p>
+<span class="math display">\[\begin{align}
+y &amp; \sim \text{Poisson}(\lambda) \\
+\log(\lambda) &amp; \sim N(0,10)
+\end{align}\]</span>
+<p>(Here we have defined <span class="math inline">\(\lambda = \exp(\alpha)\)</span>.) This prior is relatively flat over the range of reasonable mean counts (<span class="math inline">\(\lambda\)</span>).</p>
+<p>To fit this model in brms:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>dyads_m31 <span class="ot">&lt;-</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">brm</span>(<span class="at">data =</span> dyads,</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>      gestures <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">family =</span> poisson,</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">prior =</span> <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="dv">10</span>), <span class="at">class=</span><span class="st">'Intercept'</span>),</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">file=</span><span class="st">'models/dyads_m31.brm'</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let’s extract posterior samples using <code>spread_draws()</code> from tidybayes:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>dyads_m31 <span class="sc">%&gt;%</span> <span class="fu">spread_draws</span>(b_Intercept) <span class="ot">-&gt;</span> dyads_m31_draws</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>dyads_m31_draws</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 4,000 × 4</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="do">##    .chain .iteration .draw b_Intercept</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="do">##     &lt;int&gt;      &lt;int&gt; &lt;int&gt;       &lt;dbl&gt;</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="do">##  1      1          1     1        3.88</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="do">##  2      1          2     2        3.89</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="do">##  3      1          3     3        3.89</span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="do">##  4      1          4     4        3.92</span></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a><span class="do">##  5      1          5     5        3.93</span></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a><span class="do">##  6      1          6     6        3.88</span></span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a><span class="do">##  7      1          7     7        3.91</span></span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a><span class="do">##  8      1          8     8        3.87</span></span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a><span class="do">##  9      1          9     9        3.88</span></span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a><span class="do">## 10      1         10    10        3.89</span></span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a><span class="do">## # ℹ 3,990 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Plot the posterior of <span class="math inline">\(\lambda\)</span>:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>dyads_m31_draws <span class="sc">%&gt;%</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> b_Intercept)) <span class="sc">+</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_halfeye</span>() <span class="sc">+</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="fu">expression</span>(lambda<span class="sc">:</span><span class="er">~</span><span class="st">"log(mean gestures)"</span>)) <span class="sc">+</span> </span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Posterior probability"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="week3_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The estimate and 95% CI looks very similar to the <code>glm()</code> (frequentist) model above.</p>
+<!-- We can get a useful visualization combining with point/interval summaries of the posterior using `stat_halfeye`.^[See [this `ggdist` vignette](https://mjskay.github.io/ggdist/articles/slabinterval.html) for other possible visualizations.]  -->
+<!-- Here let's instead examine $\exp(\lambda)$, the mean gesture count, -->
+<!-- which is more interpretable. -->
+<!-- ```{r} -->
+<!-- dyads_m31_draws %>% -->
+<!--   ggplot(aes(x = exp(b_Intercept))) + -->
+<!--   stat_halfeye() + xlab("Mean gestures: exp(lambda)") -->
+<!-- ``` -->
+<section id="ppcs" class="level4" data-number="2.5.2.1">
+<h4 data-number="2.5.2.1" class="anchored" data-anchor-id="ppcs"><span class="header-section-number">2.5.2.1</span> Posterior predictive checks</h4>
+<p>This is a good example to introduce <em>posterior predictive checks</em>: checking the model graphically comparing simulated datasets to the observed data.<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> The most basic PPC is to simulate <span class="math inline">\(N\)</span> new datasets for <span class="math inline">\(y\)</span> and plot their distributions on top of the observed distribution of <span class="math inline">\(y\)</span>.</p>
+<p>We do this using <code>pp_check()</code> from brms, which is an interface to a wide range of PPCs from the useful <a href="https://cran.r-project.org/web/packages/bayesplot/vignettes/graphical-ppcs.html%5D">bayesplot package</a>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="do">##  N=25 new datasets</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pp_check</span>(dyads_m31, <span class="at">ndraws=</span><span class="dv">25</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="week3_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The extreme mismatch here suggests this is not a good model. It is visually clear what the problem is: The Poisson model matches the mean of <code>gestures</code> well, but not its variance.</p>
+<p>Another way to see this, which also introduces another useful posterior predictive check, is to plot different summaries of the distribution—such as its mean and variance:<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pp_check</span>(dyads_m31, <span class="at">type=</span><span class="st">'stat'</span>, <span class="at">stat=</span><span class="st">'mean'</span>) <span class="sc">/</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pp_check</span>(dyads_m31, <span class="at">type=</span><span class="st">'stat'</span>, <span class="at">stat=</span><span class="st">'var'</span>)</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Using all posterior draws for ppc type 'stat' by default.</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Using all posterior draws for ppc type 'stat' by default.</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="do">## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="do">## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="week3_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The underlying issue is that the mean and variance of <code>gestures</code> are not equal, as assumed by the Poisson distribution. We will return to this below to motivate a new model type.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Practical note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In current practice, the first PPC plot (simulated data distribution overplotted on empirical distribution) is common as part of the standard checks one performs on a fitted model. PPC plots of posterior summaries, such as mean and variance, are not common. It’s safe to say that we should be performing a lot more posterior predictive checks to evaluate our fitted model, but which PPCs are most appropriate will depend on your exact case. <span class="citation" data-cites="mcelreath2020statistical">McElreath (<a href="references.html#ref-mcelreath2020statistical" role="doc-biblioref">2020</a>)</span> 3.3.2.2 discusses this issue.</p>
+</div>
+</div>
+<div id="exr-bb2-4" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 2.4</strong></span> What is the ratio <span class="math inline">\(\text{var}(y)/ \text{mean}(y)\)</span> for the empirical data (<code>gestures</code>)?</p>
+</div>
+</section>
+</section>
+<section id="sec-bb2-normal" class="level3" data-number="2.5.3">
+<h3 data-number="2.5.3" class="anchored" data-anchor-id="sec-bb2-normal"><span class="header-section-number">2.5.3</span> Normal distribution: linear regression</h3>
+<p>Let’s move on to data distributed according to a normal distribution, which has two parameters:</p>
+<ul>
+<li><span class="math inline">\(\mu\)</span>: mean of <span class="math inline">\(y\)</span> (i.e.&nbsp;<em>expected value</em>: <span class="math inline">\(E(y)\)</span>)</li>
+<li><span class="math inline">\(\sigma\)</span>: standard deviation of <span class="math inline">\(y\)</span> (<span class="math inline">\(\text{var}(y) = \sigma^2\)</span>)</li>
+</ul>
+<p>Standard (frequentist) linear regression of <span class="math inline">\(y\)</span> as a function of 1+ predictors can be written:</p>
+<span class="math display">\[\begin{align}
+y &amp;\sim N(\mu, \sigma) \\
+\mu &amp; = \alpha + \beta_1 x_1 + \cdots
+\end{align}\]</span>
+<p>Let’s consider the simplest case, the intercept-only model. Two parameters are fitted:</p>
+<ul>
+<li><span class="math inline">\(\alpha\)</span>: “intercept”</li>
+<li><span class="math inline">\(\sigma\)</span>: “residual variance”</li>
+</ul>
+<p>Each observation <span class="math inline">\(y_i\)</span> is predicted to have the same value plus normally distributed noise.</p>
+<p>Example data: <code>english_250</code></p>
+<ul>
+<li><code>english</code> dataset from <code>languageR</code><a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a></li>
+<li><span class="math inline">\(y\)</span>: <code>RTlexdec</code> (lexical decision reaction time)</li>
+<li>Take a random subset of 250 observations, to make things more interesting.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="do">## set seed, so you'll get the same "random" sample</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">100</span>)</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>english_250 <span class="ot">&lt;-</span> english[<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(english), <span class="dv">250</span>),]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>To write down a probability model for this case, we need priors on <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\sigma\)</span>. As above, it makes sense to give <span class="math inline">\(\alpha\)</span> an “uninformative” prior, which requires knowing something about likely values of <span class="math inline">\(y\)</span>. Its empirical distribution is:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>RTlexdec), <span class="at">data=</span>english_250) <span class="sc">+</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">30</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="week3_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Note the <span class="math inline">\(x\)</span>-axis range. Certainly <span class="math inline">\(\alpha \sim N(0,100)\)</span> would be an uninformative prior. (It’s essentially flat over possible values of <span class="math inline">\(\alpha\)</span>, say -10 to 10, corresponding to reaction times of 0.00005 to 22026 seconds!)</p>
+<p>What should the prior for <span class="math inline">\(\sigma\)</span> be? It must satisfy two conditions:</p>
+<ul>
+<li>Only allow positive values of <span class="math inline">\(\sigma\)</span> (<span class="math inline">\(\sigma&gt;0\)</span>).<br>
+</li>
+<li>It can’t be flat; it must decrease as <span class="math inline">\(\sigma\)</span> increases.</li>
+</ul>
+<p>One choice, used by McElreath in Chap. 4, is <span class="math inline">\(\sigma \sim \text{Uniform}(0,10)\)</span>—replacing 10 by however large a number is needed given the scale of <span class="math inline">\(y\)</span>. This works for current purposes, but for more realistic models, neither uniform nor normal distributions turn out to be a good choice for variance parameters. Normal distributions are “light-tailed”—they decrease in probability too fast as <span class="math inline">\(\sigma\)</span> increase, making making MCMC sampling inefficient.</p>
+<p>It is better to instead use a “heavy-tailed” distribution, which decreases slowly as <span class="math inline">\(\sigma\)</span> is increased. Most commonly used are the <em>half-Cauchy</em> and <em>exponential</em> distributions with a large “scale” parameter <span class="citation" data-cites="mcelreath2020statistical">(see <a href="references.html#ref-mcelreath2020statistical" role="doc-biblioref">McElreath 2020, chap. 9</a>)</span>.<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a></p>
+<p>We will use the half-Cauchy distribution for now; this is the Cauchy distribution restricted to positive values. Here is what the PDF of <span class="math inline">\(\sigma\)</span> looks like when <span class="math inline">\(\sigma \sim \text{HalfCauchy}(0,5)\)</span> (scale = 0, shape = 5):</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">sig=</span><span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">20</span>, <span class="at">by=</span><span class="fl">0.1</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">prob=</span><span class="fu">dcauchy</span>(sig, <span class="at">scale =</span> <span class="dv">5</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>sig, <span class="at">y=</span>prob)) <span class="sc">+</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Prior probability (PDF)"</span>) <span class="sc">+</span> </span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"sigma"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="week3_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This distribution decreases gradually from 0, with a “long tail”: higher values of <span class="math inline">\(\sigma\)</span> are progressively less likely, but still have enough probability that they can be learned if the data strongly supports them. The scale here has been chosen so that the prior is effectively flat for possible values of <span class="math inline">\(\sigma\)</span>: values of <code>RTlexdec</code> are always 6–7 range, so <span class="math inline">\(\sigma\)</span> is certainly not larger than ~1–2. (But if our <span class="math inline">\(y\)</span> ranged from 0 to 100, we’d need to choose a much larger scale parameter for <span class="math inline">\(\sigma\)</span> to make the prior “uninformative”.) <!-- (TODO: where to read about why uniform, normal don't work) --></p>
+<p>The probability model for <span class="math inline">\(y\)</span> (<code>RTlexdec</code>) is then:</p>
+<span class="math display">\[\begin{align}
+y &amp; \sim N(\mu, \sigma) \\
+\mu &amp; \sim N(0, 100) \\
+\sigma &amp; \sim \text{HalfCauchy}(0,5)
+\end{align}\]</span>
+<p>To fit this model in <code>brms</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>english_m31 <span class="ot">&lt;-</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">brm</span>(<span class="at">data =</span> english_250,</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>      RTlexdec <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">family =</span> gaussian,</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">prior =</span> <span class="fu">c</span>(<span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="dv">100</span>), <span class="at">class=</span>Intercept),</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>                <span class="fu">prior</span>(<span class="fu">cauchy</span>(<span class="dv">0</span>, <span class="dv">5</span>), <span class="at">class =</span> sigma)</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">file=</span><span class="st">'models/english_m31.brm'</span></span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>(Note how <code>prior</code> is now a vector to set multiple priors.)</p>
+<p>This model results in posteriors for both the <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span> parameters:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>english_m31</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="do">##  Family: gaussian </span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="do">##   Links: mu = identity; sigma = identity </span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Formula: RTlexdec ~ 1 </span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="do">##    Data: english_250 (Number of observations: 250) </span></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   Draws: 4 chains, each with iter = 2000; warmup = 1000; thin = 1;</span></span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a><span class="do">##          total post-warmup draws = 4000</span></span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a><span class="do">## Regression Coefficients:</span></span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a><span class="do">##           Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS</span></span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Intercept     6.53      0.01     6.52     6.55 1.00     3931     2984</span></span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a><span class="do">## Further Distributional Parameters:</span></span>
+<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a><span class="do">##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS</span></span>
+<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a><span class="do">## sigma     0.16      0.01     0.15     0.18 1.00     3632     2243</span></span>
+<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a><span class="do">## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS</span></span>
+<span id="cb35-18"><a href="#cb35-18" aria-hidden="true" tabindex="-1"></a><span class="do">## and Tail_ESS are effective sample size measures, and Rhat is the potential</span></span>
+<span id="cb35-19"><a href="#cb35-19" aria-hidden="true" tabindex="-1"></a><span class="do">## scale reduction factor on split chains (at convergence, Rhat = 1).</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Compare to the equivalent frequentist model, shown in <a href="#sec-bb2-extra" class="quarto-xref"><span>Section 2.6</span></a>: it estimates <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span> (the “residual variance”), but only <span class="math inline">\(\mu\)</span> is a first-class model parameter (shown with a SE, <span class="math inline">\(p\)</span>, etc.).</p>
+<p>This means we could examine the posterior distribution for <span class="math inline">\(\sigma\)</span> (below), or for <span class="math inline">\(\sigma\)</span> and <span class="math inline">\(\mu\)</span> (see Exercise below)—though we have no particular reason to do so in this case.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="do">## compare to the prior, above</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>english_m31 <span class="sc">%&gt;%</span> </span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">spread_draws</span>(sigma) <span class="sc">%&gt;%</span></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> sigma)) <span class="sc">+</span></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">fill =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>   <span class="fu">ylab</span>(<span class="st">"Posterior PDF"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="week3_files/figure-html/unnamed-chunk-36-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="parameter-names" class="level4" data-number="2.5.3.1">
+<h4 data-number="2.5.3.1" class="anchored" data-anchor-id="parameter-names"><span class="header-section-number">2.5.3.1</span> Parameter names</h4>
+<p>Now that we are working with <span class="math inline">\(&gt;1\)</span> parameter, let’s familiarize ourselves with a couple more aspects of working with a <code>brms</code> model.</p>
+<p>To extract draws you need parameter names, which can be unclear from the <code>brms</code> output. You can always see all a model’s parameters using <code>get_variables()</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_variables</span>(english_m31)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="do">##  [1] "b_Intercept"   "sigma"         "Intercept"     "lprior"       </span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="do">##  [5] "lp__"          "accept_stat__" "stepsize__"    "treedepth__"  </span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="do">##  [9] "n_leapfrog__"  "divergent__"   "energy__"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Anything ending with <code>__</code> are internal parameters of the MCMC algorithm which we typically ignore.<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a></p>
+</section>
+<section id="sec-bb2-diagnostics" class="level4" data-number="2.5.3.2">
+<h4 data-number="2.5.3.2" class="anchored" data-anchor-id="sec-bb2-diagnostics"><span class="header-section-number">2.5.3.2</span> Diagnostics: first look</h4>
+<p>When fitting <code>brms</code>/Stan models it is important to inspect the posterior samples to make sure the chains “mixed” properly and you really are getting a good sample from the posterior. This is an important difference from frequentist models, whose fitting algorithm will typically give you something sensible with default settings, regardless of the data you feed it (within reason).</p>
+<p>We will spend more time on model diagnostics soon, but for now note that <code>plot()</code> shows basic diagnostics: posterior distributions and <em>trace plots</em> for each parameter:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(english_m31)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="week3_files/figure-html/unnamed-chunk-38-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The trace plots look good: a “hairy caterpillar” with no chain visibly different from the others. This visual diagnostic is an important basic sanity check for any model fitted with MCMC, even simple ones.</p>
+<div id="exr-bb2-5" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 2.5</strong></span> &nbsp;</p>
+<ol type="a">
+<li>Examine the trace plot for <code>dyads_m31</code>, to help convince yourself that the model issue we found (predicted variance doesn’t match the sample) isn’t due to a fit issue.</li>
+</ol>
+</div>
+<div id="exr-bb2-6" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 2.6</strong></span> &nbsp;</p>
+<ol type="a">
+<li><p>Extract posterior draws for <code>english_m31</code> of both <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\sigma\)</span> in one dataframe. (Hint: change the arguments of <code>spread_draws()</code>.</p></li>
+<li><p><em>Extra</em>: Make a heatmap showing the posterior over both variables (<span class="math inline">\(x\)</span>-axis = <span class="math inline">\(\alpha\)</span>, <span class="math inline">\(y\)</span>-axis = <span class="math inline">\(\sigma\)</span>, color=probability density). Hint: <code>geom_density_2d_filled()</code>, or see <span class="citation" data-cites="kurz2021statistical">(<a href="references.html#ref-kurz2021statistical" role="doc-biblioref">Kurz 2023, 4.3.6</a>)</span>.</p></li>
+</ol>
+</div>
+<!-- # ```{r} -->
+<!-- posterior_samples(english_m1) %>% -->
+<!--   ggplot(aes(x = b_Intercept, y=sigma)) + -->
+<!--   geom_density_2d_filled() -->
+<!-- ``` -->
+<!-- # Posterior predictive distribution -->
+<!-- ```{r} -->
+<!-- pp_check(dyads_m1) -->
+<!-- ``` -->
+<!-- More variability than assumed by the Poisson distribution: *overdispersion*.  What is going on here is that by fitting the mean of $y$ correctly, the model is forced to assume the variance of $y$ is also $\mu$---but in reality, the variance is  higher.   -->
+</section>
+</section>
+<section id="sec-bb2-nb" class="level3" data-number="2.5.4">
+<h3 data-number="2.5.4" class="anchored" data-anchor-id="sec-bb2-nb"><span class="header-section-number">2.5.4</span> Negative binomial distribution</h3>
+<p>We saw above that model <code>dyads_m1</code> under-predicts variance. By fitting the mean of <span class="math inline">\(y\)</span> correctly, the model is forced to assume the variance of <span class="math inline">\(y\)</span> is also <span class="math inline">\(\mu\)</span>—but in reality, the variance is much higher. This situation is called <em>overdispersion</em>, and is extremely common when fitting (frequentist or bayesian) Poisson models—the data is noisier than predicted by a Poisson distribution.<a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a></p>
+<p>The <a href="https://en.wikipedia.org/wiki/Negative_binomial_distribution"><em>negative binomial</em></a> (or <em>gamma-Poisson</em>) model is a generalization of the Poisson distribution which allows <span class="math inline">\(\sigma^2\)</span> (variance of <span class="math inline">\(y\)</span>) to be fitted, rather than assuming that it is the same as <span class="math inline">\(\lambda\)</span> (the mean of <span class="math inline">\(y\)</span>).<a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a> For for our purposes, all we need to know is that a negative-binomial distribution is analogous to a normal distribution (scale and shape parameters), but for count data.</p>
+<p>Let’s fit a negative-binomial (see <a href="https://bookdown.org/content/4857/monsters-and-mixtures.html#negative-binomial-or-gamma-poisson">Kurz 12.1.2</a> if interested)) for this case to see what happens. The scale parameter has the same interpretation as for the Poisson model (log-mean-counts), so we use the same prior as above. Let’s not worry about the interpretation of the shape parameter, and just use <code>brms</code>’s default prior.<a href="#fn14" class="footnote-ref" id="fnref14" role="doc-noteref"><sup>14</sup></a></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>dyads_m32 <span class="ot">&lt;-</span> <span class="fu">brm</span>(<span class="at">data =</span> dyads, <span class="at">family =</span> negbinomial,</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>    gestures <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">prior =</span> <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="dv">10</span>), <span class="at">class =</span> Intercept),</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">file=</span><span class="st">'models/dyads_m32.brm'</span></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>dyads_m32</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="do">##  Family: negbinomial </span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="do">##   Links: mu = log; shape = identity </span></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Formula: gestures ~ 1 </span></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="do">##    Data: dyads (Number of observations: 54) </span></span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   Draws: 4 chains, each with iter = 2000; warmup = 1000; thin = 1;</span></span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a><span class="do">##          total post-warmup draws = 4000</span></span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a><span class="do">## Regression Coefficients:</span></span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a><span class="do">##           Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS</span></span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Intercept     3.90      0.07     3.77     4.04 1.00     2955     2566</span></span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a><span class="do">## Further Distributional Parameters:</span></span>
+<span id="cb40-14"><a href="#cb40-14" aria-hidden="true" tabindex="-1"></a><span class="do">##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS</span></span>
+<span id="cb40-15"><a href="#cb40-15" aria-hidden="true" tabindex="-1"></a><span class="do">## shape     4.41      0.92     2.84     6.42 1.00     3142     2470</span></span>
+<span id="cb40-16"><a href="#cb40-16" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb40-17"><a href="#cb40-17" aria-hidden="true" tabindex="-1"></a><span class="do">## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS</span></span>
+<span id="cb40-18"><a href="#cb40-18" aria-hidden="true" tabindex="-1"></a><span class="do">## and Tail_ESS are effective sample size measures, and Rhat is the potential</span></span>
+<span id="cb40-19"><a href="#cb40-19" aria-hidden="true" tabindex="-1"></a><span class="do">## scale reduction factor on split chains (at convergence, Rhat = 1).</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Note the less certain estimate for the intercept, relative to model <code>dyads_31</code>: this is a good thing.</p>
+<p>We should always check trace plots (which here look good):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(dyads_m32)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="week3_files/figure-html/unnamed-chunk-41-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The posterior now looks much closer to the empirical data:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pp_check</span>(dyads_m32, <span class="at">ndraws =</span> <span class="dv">25</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="week3_files/figure-html/unnamed-chunk-42-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This is clearly not a good model (note the mismatch especially around 25-60), which makes sense as it contains no predictors, but at least it now has the same rough shape as the empirical data. Both the predicted mean and variance now look reasonable, in the sense that the observed values lie within the distributions of predicted values:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pp_check</span>(dyads_m32, <span class="at">type=</span><span class="st">'stat'</span>, <span class="at">stat=</span><span class="st">'mean'</span>) <span class="sc">/</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pp_check</span>(dyads_m32, <span class="at">type=</span><span class="st">'stat'</span>, <span class="at">stat=</span><span class="st">'var'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="week3_files/figure-html/unnamed-chunk-43-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We can examine in particular the posterior distribution of <span class="math inline">\(\text{var}(y)/\text{mean}(y)\)</span>, which we’ll call <span class="math inline">\(\phi\)</span>. We do this by defining a custom function <code>phi()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>phi <span class="ot">&lt;-</span> <span class="cf">function</span>(x){<span class="fu">var</span>(x)<span class="sc">/</span><span class="fu">mean</span>(x)}</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pp_check</span>(dyads_m32, <span class="at">type=</span><span class="st">'stat'</span>, <span class="at">stat=</span>phi)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="week3_files/figure-html/unnamed-chunk-44-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The model now better captures the amount of dispersion in the data (variance/mean ratio).</p>
+<div id="exr-bb2-7" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 2.7</strong></span> Make the same plot for model <code>dyads_m31</code>, to make sure the model really does show overdisperson. (Observed <span class="math inline">\(\phi\)</span> value outside the predicted distribution of <span class="math inline">\(\phi\)</span>.)</p>
+</div>
+</section>
+</section>
+<section id="sec-bb2-extra" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="sec-bb2-extra"><span class="header-section-number">2.6</span> Appendix: Extra material</h2>
+<section id="frequentist-logistic-regression-model" class="level3" data-number="2.6.1">
+<h3 data-number="2.6.1" class="anchored" data-anchor-id="frequentist-logistic-regression-model"><span class="header-section-number">2.6.1</span> Frequentist logistic regression model</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>m1_glm <span class="ot">&lt;-</span> <span class="fu">glm</span>(stress_shifted <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data=</span>diatones[<span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>,], <span class="at">family=</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>                <span class="st">'binomial'</span>)</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m1_glm, <span class="at">conf.int =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Call:</span></span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a><span class="do">## glm(formula = stress_shifted ~ 1, family = "binomial", data = diatones[1:20, </span></span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a><span class="do">##     ])</span></span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a><span class="do">## Coefficients:</span></span>
+<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a><span class="do">##             Estimate Std. Error z value Pr(&gt;|z|)  </span></span>
+<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a><span class="do">## (Intercept)  -0.8473     0.4879  -1.736   0.0825 .</span></span>
+<span id="cb45-12"><a href="#cb45-12" aria-hidden="true" tabindex="-1"></a><span class="do">## ---</span></span>
+<span id="cb45-13"><a href="#cb45-13" aria-hidden="true" tabindex="-1"></a><span class="do">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
+<span id="cb45-14"><a href="#cb45-14" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb45-15"><a href="#cb45-15" aria-hidden="true" tabindex="-1"></a><span class="do">## (Dispersion parameter for binomial family taken to be 1)</span></span>
+<span id="cb45-16"><a href="#cb45-16" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb45-17"><a href="#cb45-17" aria-hidden="true" tabindex="-1"></a><span class="do">##     Null deviance: 24.435  on 19  degrees of freedom</span></span>
+<span id="cb45-18"><a href="#cb45-18" aria-hidden="true" tabindex="-1"></a><span class="do">## Residual deviance: 24.435  on 19  degrees of freedom</span></span>
+<span id="cb45-19"><a href="#cb45-19" aria-hidden="true" tabindex="-1"></a><span class="do">## AIC: 26.435</span></span>
+<span id="cb45-20"><a href="#cb45-20" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb45-21"><a href="#cb45-21" aria-hidden="true" tabindex="-1"></a><span class="do">## Number of Fisher Scoring iterations: 4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="frequentist-linear-regression-model" class="level3" data-number="2.6.2">
+<h3 data-number="2.6.2" class="anchored" data-anchor-id="frequentist-linear-regression-model"><span class="header-section-number">2.6.2</span> Frequentist linear regression model</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>english_m1_lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(RTlexdec <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data=</span>english)</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(english_m1_lm)</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Call:</span></span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a><span class="do">## lm(formula = RTlexdec ~ 1, data = english)</span></span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Residuals:</span></span>
+<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a><span class="do">##      Min       1Q   Median       3Q      Max </span></span>
+<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a><span class="do">## -0.34477 -0.12457  0.00037  0.10311  0.63771 </span></span>
+<span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a><span class="do">## Coefficients:</span></span>
+<span id="cb46-13"><a href="#cb46-13" aria-hidden="true" tabindex="-1"></a><span class="do">##             Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
+<span id="cb46-14"><a href="#cb46-14" aria-hidden="true" tabindex="-1"></a><span class="do">## (Intercept) 6.550097   0.002322    2821   &lt;2e-16 ***</span></span>
+<span id="cb46-15"><a href="#cb46-15" aria-hidden="true" tabindex="-1"></a><span class="do">## ---</span></span>
+<span id="cb46-16"><a href="#cb46-16" aria-hidden="true" tabindex="-1"></a><span class="do">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
+<span id="cb46-17"><a href="#cb46-17" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb46-18"><a href="#cb46-18" aria-hidden="true" tabindex="-1"></a><span class="do">## Residual standard error: 0.1569 on 4567 degrees of freedom</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="sec-bb2-extra-poisson" class="level3" data-number="2.6.3">
+<h3 data-number="2.6.3" class="anchored" data-anchor-id="sec-bb2-extra-poisson"><span class="header-section-number">2.6.3</span> Poisson regression model with predictors</h3>
+<div id="exr-bb1-8" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 2.8</strong></span> Consider the empirical effects of of <code>context</code> and <code>language</code> on <code>gesture</code> count:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>context, <span class="at">y=</span>gestures), <span class="at">data=</span>dyads) <span class="sc">+</span> <span class="fu">geom_boxplot</span>() <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Context"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Gestures"</span>) <span class="sc">+</span> <span class="fu">scale_y_log10</span>()</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>language, <span class="at">y=</span>gestures), <span class="at">data=</span>dyads) <span class="sc">+</span> <span class="fu">geom_boxplot</span>() <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Context"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Gestures"</span>) <span class="sc">+</span> <span class="fu">scale_y_log10</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="week3_files/figure-html/unnamed-chunk-47-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="week3_files/figure-html/unnamed-chunk-47-2.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>(The <span class="math inline">\(y\)</span>-axis is on a log scale, as usually makes sense for count data.)</p>
+<p>Fit this Poisson regression model:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>dyads_freq_mod2 <span class="ot">&lt;-</span> <span class="fu">glm</span>(gestures <span class="sc">~</span> context <span class="sc">+</span> language , <span class="at">family=</span> poisson, <span class="at">data=</span>dyads)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>What are the interpretations of the <code>context</code> and <code>language</code> coefficients?</p>
+</div>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-baayen2008ald" class="csl-entry" role="listitem">
+Baayen, R. H. 2008. <em><span class="nocase">Analyzing linguistic data: A practical introduction to statistics using R</span></em>. Cambridge: Cambridge University Press.
+</div>
+<div id="ref-languageR" class="csl-entry" role="listitem">
+Baayen, R. H., and Elnaz Shafaei-Bajestan. 2019. <em>languageR: Analyzing Linguistic Data: A Practical Introduction to Statistics</em>. <a href="https://CRAN.R-project.org/package=languageR">https://CRAN.R-project.org/package=languageR</a>.
+</div>
+<div id="ref-posterior" class="csl-entry" role="listitem">
+Bürkner, Paul-Christian, Jonah Gabry, Matthew Kay, and Aki Vehtari. 2024. <span>“Posterior: Tools for Working with Posterior Distributions.”</span> <a href="https://mc-stan.org/posterior/">https://mc-stan.org/posterior/</a>.
+</div>
+<div id="ref-bayesplot" class="csl-entry" role="listitem">
+Gabry, Jonah, and Tristan Mahr. 2024. <span>“Bayesplot: Plotting for Bayesian Models.”</span> <a href="https://mc-stan.org/bayesplot/">https://mc-stan.org/bayesplot/</a>.
+</div>
+<div id="ref-gabry2019visualization" class="csl-entry" role="listitem">
+Gabry, Jonah, Daniel Simpson, Aki Vehtari, Michael Betancourt, and Andrew Gelman. 2019. <span>“Visualization in Bayesian Workflow.”</span> <em>Journal of the Royal Statistical Society: Series A (Statistics in Society)</em> 182 (2): 389–402.
+</div>
+<div id="ref-gelman2006prior" class="csl-entry" role="listitem">
+Gelman, Andrew. 2006. <span>“Prior Distributions for Variance Parameters in Hierarchical Models (Comment on Article by Browne and Draper).”</span> <em>Bayesian Analysis</em> 1 (3): 515–34.
+</div>
+<div id="ref-tidybayes" class="csl-entry" role="listitem">
+Kay, Matthew. 2023. <em><span class="nocase">tidybayes</span>: Tidy Data and Geoms for <span>Bayesian</span> Models</em>. <a href="https://doi.org/10.5281/zenodo.1308151">https://doi.org/10.5281/zenodo.1308151</a>.
+</div>
+<div id="ref-kurz2021statistical" class="csl-entry" role="listitem">
+Kurz, S. 2023. <em>Statistical Rethinking (Second Edition) with Brms, Ggplot2, and the Tidyverse</em>. <a href="https://bookdown.org/content/4857/" class="uri">https://bookdown.org/content/4857/</a>.
+</div>
+<div id="ref-mcelreath2020statistical" class="csl-entry" role="listitem">
+McElreath, Richard. 2020. <em>Statistical Rethinking: A <span>B</span>ayesian Course with Examples in <span>R</span> and <span>S</span>tan</em>. Second. Chapman; Hall/CRC.
+</div>
+<div id="ref-bdacs" class="csl-entry" role="listitem">
+Nicenboim, B., D. Schad, and S. Vaishth. 2024. <em>An Introduction to Bayesian Data Analysis for Cognitive Science</em>. <a href="https://vasishth.github.io/bayescogsci/book/" class="uri">https://vasishth.github.io/bayescogsci/book/</a>. 5/2024 version.
+</div>
+<div id="ref-rmld-book" class="csl-entry" role="listitem">
+Sonderegger, Morgan. 2023. <em>Regression Modeling for Linguistic Data</em>. MIT Press, <a href="https://osf.io/pnumg/" class="uri">https://osf.io/pnumg/</a>, preprint at <a href="https://github.com/msonderegger/rmld-v1.1/" class="uri">https://github.com/msonderegger/rmld-v1.1/</a>.
+</div>
+<div id="ref-winter2021poisson" class="csl-entry" role="listitem">
+Winter, Bodo, and Paul-Christian Bürkner. 2021. <span>“Poisson Regression for Linguists: A Tutorial Introduction to Modelling Count Data with Brms.”</span> <em>Language and Linguistics Compass</em> 15 (11): e12439.
+</div>
+</div>
+</section>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>Like all “tidy” packages to do <span class="math inline">\(x\)</span>: you don’t <em>have</em> to use this package to do <span class="math inline">\(x\)</span>, it just makes things much easier if you are working with tidyverse packages already.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>He also calls these <em>compatibility intervals</em>, to avoid the implications of “compatibility” or “confidence”, but this is non-standard.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>See <a href="https://mjskay.github.io/ggdist/articles/slabinterval.html">this <code>ggdist</code> vignette</a> for other possible visualizations.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>In an equation: <span class="math display">\[
+\underbrace{P(\vec{y}_{new} | \vec{y})}_{\text{posterior predictive distribution}} \propto \int P(\vec{y}_{new} | \vec{\theta}) P(\vec{\theta} | \vec{y}) d\vec{\theta}
+\]</span> Another description, from <a href="https://vasishth.github.io/bayescogsci/book/sec-ppd.html">Nicenboim et al.&nbsp;Sec. 3.5</a>: “After we have seen the data and obtained the posterior distributions of the parameters, we can now use the posterior distributions to generate future data from the model. In other words, given the posterior distributions of the parameters of the model, the posterior predictive distribution gives us some indication of what future data might look like.”<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>Technically: <code>family = binomial</code> means “GLM for binomial distribution with logit link”, often just called “logistic regression”.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>Specifically, <code>family=poisson</code> fits a Poisson model with a log link.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>For more detail, see <span class="citation" data-cites="gabry2019visualization">Gabry et al. (<a href="references.html#ref-gabry2019visualization" role="doc-biblioref">2019</a>)</span> Sec. 4-5.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>Note that mean/var from all 4000 draws are now plotted, not just the first <span class="math inline">\(N=25\)</span>.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p>This dataset is from the languageR package <span class="citation" data-cites="languageR">Baayen and Shafaei-Bajestan (<a href="references.html#ref-languageR" role="doc-biblioref">2019</a>)</span> and described in detail on its help page (<code>?english</code>) or in <span class="citation" data-cites="baayen2008ald">Baayen (<a href="references.html#ref-baayen2008ald" role="doc-biblioref">2008</a>)</span>. Our use of this dataset follows <span class="citation" data-cites="rmld-book">Sonderegger (<a href="references.html#ref-rmld-book" role="doc-biblioref">2023</a>)</span> (Sec. 4.1.2), where it is used extensively for linear regression.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn10"><p>More details: see <span class="citation" data-cites="gelman2006prior">Gelman (<a href="references.html#ref-gelman2006prior" role="doc-biblioref">2006</a>)</span>, and updated recommendations in the <a href="https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations">Stan Prior Choice Recommendations doc</a>.<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn11"><p>For example, <code>lp__</code> stands for “log posterior”. Stan defines the log-posterior up to a constant, which is treated as an unknown variable; <code>lp__</code> is this “log kernel” (see <a href="https://cran.r-project.org/package=rstan/vignettes/rstan.html#the-log-posterior-function-and-gradient">here</a> and <a href="https://discourse.mc-stan.org/t/basic-question-what-is-lp-in-posterior-samples-of-a-brms-regression/17567/2">here</a>).<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn12"><p>“Underdispersion” is theoretically possible, but much less common in practice. Overdispersion is so common that it is bad teaching to show you Poisson regression without discussing overdispersion, which is why we’ve taken this detour to a scary-sounding model.<a href="#fnref12" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn13"><p>See also <a href="https://www.johndcook.com/blog/2009/09/22/negative-binomial-distribution/">here</a> or Ch. 11-12 of McElreath.<a href="#fnref13" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn14"><p>If you are curious: the variance is <span class="math inline">\(\sigma^2 = \mu(1 + \frac{\mu}{\phi})\)</span> and the shape parameter is <span class="math inline">\(\phi\)</span>, following the <a href="https://mc-stan.org/docs/2_27/functions-reference/nbalt.html">alternative paramterization</a> in Stan. Thus, <span class="math inline">\(\phi &gt; 0\)</span>, and small/large <span class="math inline">\(\phi\)</span> = high/low overdispersion.)<a href="#fnref14" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./week2.html" class="pagination-link" aria-label="Bayesian basics 1">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Bayesian basics 1</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./week4.html" class="pagination-link" aria-label="Bayesian Regression Models 1">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Bayesian Regression Models 1</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

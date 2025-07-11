@@ -1,0 +1,1496 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>14&nbsp; Causal Inference and Causal Discovery – Advanced Quantitative Methods for Linguistic Data</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./references.html" rel="next">
+<link href="./FDA_edited.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<link href="site_libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
+<script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet">
+<script src="site_libs/datatables-binding-0.33/datatables.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<link href="site_libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
+<link href="site_libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet">
+<script src="site_libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
+<link href="site_libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet">
+<script src="site_libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./causal.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Causal Inference and Causal Discovery</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Advanced Quantitative Methods for Linguistic Data</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Bayesian basics 1</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Bayesian basics 2</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Bayesian Regression Models 1</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Bayesian Regression Models 2</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week9.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Bayesian Hierarchical Models 1</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Bayesian Hierarchical Models 2</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week11.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Bayesian Hierarchical Models 3</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week12.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Models for discrete data: counts, scales, and frequencies</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week13.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Multivariate models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week6.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Generalized Additive Models (GAMs)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week7.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Generalized additive mixed-effects models (GAMMs)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bayesian_gamms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Bayesian GAMs</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./FDA_edited.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Functional principal components analysis</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./causal.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Causal Inference and Causal Discovery</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">14.1</span> Introduction</a></li>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data"><span class="header-section-number">14.2</span> Data</a></li>
+  <li><a href="#causal-inference" id="toc-causal-inference" class="nav-link" data-scroll-target="#causal-inference"><span class="header-section-number">14.3</span> Causal Inference</a>
+  <ul class="collapse">
+  <li><a href="#what-is-a-causal-effect" id="toc-what-is-a-causal-effect" class="nav-link" data-scroll-target="#what-is-a-causal-effect"><span class="header-section-number">14.3.1</span> What is a causal effect?</a></li>
+  <li><a href="#what-variables-do-i-include-in-my-regression" id="toc-what-variables-do-i-include-in-my-regression" class="nav-link" data-scroll-target="#what-variables-do-i-include-in-my-regression"><span class="header-section-number">14.3.2</span> What variables do I include in my regression?</a></li>
+  <li><a href="#representing-causal-models-with-dags" id="toc-representing-causal-models-with-dags" class="nav-link" data-scroll-target="#representing-causal-models-with-dags"><span class="header-section-number">14.3.3</span> Representing causal models with DAGs</a></li>
+  <li><a href="#causal-inference-in-the-english-dataset" id="toc-causal-inference-in-the-english-dataset" class="nav-link" data-scroll-target="#causal-inference-in-the-english-dataset"><span class="header-section-number">14.3.4</span> Causal inference in the <code>english</code> dataset</a></li>
+  <li><a href="#direct-effects-and-mediation" id="toc-direct-effects-and-mediation" class="nav-link" data-scroll-target="#direct-effects-and-mediation"><span class="header-section-number">14.3.5</span> Direct effects and mediation</a></li>
+  </ul></li>
+  <li><a href="#causal-discovery" id="toc-causal-discovery" class="nav-link" data-scroll-target="#causal-discovery"><span class="header-section-number">14.4</span> Causal Discovery</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Causal Inference and Causal Discovery</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><strong>Author</strong>: <a href="https://www.amandadoucette.com/">Amanda Doucette</a></p>
+<p><strong>License</strong>: CC-BY-SA-4.0</p>
+<section id="introduction" class="level2" data-number="14.1">
+<h2 data-number="14.1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">14.1</span> Introduction</h2>
+<p>This tutorial is a brief introduction to causal inference with a focus on how to choose “control variables” in a regression analysis, and a very brief introduction to using causal discovery algorithms to identify causal structure in data.</p>
+<p>For more detailed coverage of causal inference, see <span class="citation" data-cites="rohrer2018thinking">Rohrer (<a href="references.html#ref-rohrer2018thinking" role="doc-biblioref">2018</a>)</span>, <span class="citation" data-cites="pearl2009">Pearl (<a href="references.html#ref-pearl2009" role="doc-biblioref">2009</a>)</span>, or <span class="citation" data-cites="hernan2024causal">Hernan and Robins (<a href="references.html#ref-hernan2024causal" role="doc-biblioref">2024</a>)</span>. <span class="citation" data-cites="malinsky2018causal">Malinsky and Danks (<a href="references.html#ref-malinsky2018causal" role="doc-biblioref">2018</a>)</span> provides a good introduction to causal discovery methods.</p>
+<p>We’ll be using the following R libraries:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lme4)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sjPlot)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(arm)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DT)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(languageR)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggdag)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dagitty)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pcalg)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(igraph)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="data" class="level2" data-number="14.2">
+<h2 data-number="14.2" class="anchored" data-anchor-id="data"><span class="header-section-number">14.2</span> Data</h2>
+<p>In this tutorial, we’ll be looking at the <code>english</code> dataset from <code>languageR</code>. To learn more about the dataset, run <code>?english</code> in R, or see <span class="citation" data-cites="baayen2008ald">Baayen (<a href="references.html#ref-baayen2008ald" role="doc-biblioref">2008</a>)</span>. To keep things simple, we’ll only use a subset of the variables included in this data:</p>
+<ul>
+<li><code>RTlexdec</code>: Reaction time in a lexical decision task</li>
+<li><code>WrittenFrequency</code>: Log frequency from the CELEX lexical database</li>
+<li><code>Familiarity</code>: Subjective familiarity ratings</li>
+<li><code>AgeSubject</code>: Factor with levels <code>young</code> and <code>old</code></li>
+<li><code>FrequencyInitialDiphoneWord</code>: Log frequency of the initial diphone</li>
+</ul>
+<p>Let’s load the dataset and center the predictors:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>eng <span class="ot">&lt;-</span> english <span class="sc">%&gt;%</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">WrittenFrequency_c =</span> <span class="fu">rescale</span>(WrittenFrequency),</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">Familiarity_c =</span> <span class="fu">rescale</span>(Familiarity),</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">FrequencyInitialDiphoneWord_c =</span> <span class="fu">rescale</span>(FrequencyInitialDiphoneWord),</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">AgeSubject_c =</span> <span class="fu">as.numeric</span>(AgeSubject) <span class="sc">-</span> <span class="fl">1.5</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="fu">all_of</span>(<span class="fu">c</span>(</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"RTlexdec"</span>, <span class="st">"AgeSubject_c"</span>, <span class="st">"AgeSubject"</span>,</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"WrittenFrequency_c"</span>, <span class="st">"Familiarity_c"</span>, <span class="st">"FrequencyInitialDiphoneWord_c"</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  )))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="causal-inference" class="level2" data-number="14.3">
+<h2 data-number="14.3" class="anchored" data-anchor-id="causal-inference"><span class="header-section-number">14.3</span> Causal Inference</h2>
+<p>As linguists, we often want to ask causal research questions: How does variable <span class="math inline">\(X\)</span> affect outcome <span class="math inline">\(Y\)</span>? In the <code>english</code> dataset, we may want to ask “How does word frequency affect reaction time in a lexical decision task?” We could fit a simple regression model to estimate the effect of <code>WrittenFrequency</code> on <code>RTlexdec</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>eng_m1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(RTlexdec <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> WrittenFrequency_c, <span class="at">data =</span> eng)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(eng_m1, <span class="at">conf.int =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 2 × 7</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   term               estimate std.error statistic   p.value conf.low conf.high</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;                 &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 (Intercept)           6.55    0.00209    3133.  0            6.55      6.55 </span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 WrittenFrequency_c   -0.136   0.00418     -32.6 4.46e-210   -0.145    -0.128</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This model tells us that there is a relationship between frequency and reaction time: Reaction times are shorter for more frequent words. But is this effect the same as the causal effect we’re interested in?</p>
+<section id="what-is-a-causal-effect" class="level3" data-number="14.3.1">
+<h3 data-number="14.3.1" class="anchored" data-anchor-id="what-is-a-causal-effect"><span class="header-section-number">14.3.1</span> What is a causal effect?</h3>
+<p>Imagine we’re running an experiment to determine how helpful listening to music in a second language is for learning it. We recruit a group of participants taking classes to learn a new language, and divide them into two groups. One, we tell to listen to music in their second language for an hour a day (<span class="math inline">\(M_i = 1\)</span>). The other, we tell to avoid music in their second language, and continue attending classes as normal (<span class="math inline">\(M_i = 0\)</span>). Before the experiment, we record each participants scores on a language test (<span class="math inline">\(X_i\)</span>).</p>
+<p>After some time, we administer another test, the outcome of the experiment <span class="math inline">\(y_i\)</span>. For the group who listened to music, we call this outcome <span class="math inline">\(y_i^1\)</span>, and for the group who did not listen to music, we call the outcome <span class="math inline">\(y_i^0\)</span>. For each participant, we can imagine a possible world where they were placed in the other experimental group: For participants in the music-listening group, we can imagine their <em>potential outcome</em> <span class="math inline">\(y_i^0\)</span> had they been placed in the other group. The <em>causal effect</em> for each participant is the difference between these potential outcomes: <span class="math inline">\(y_i^1 - y_i^0\)</span>.</p>
+<p>Of course, we can’t observe these potential outcomes. This is the problem we aim to solve with causal inference.</p>
+<p>Our data will look something like this:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 11%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 17%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Participant <span class="math inline">\(i\)</span></th>
+<th>Pre-test <span class="math inline">\(X_i\)</span></th>
+<th>Group <span class="math inline">\(M_i\)</span></th>
+<th><span class="math inline">\(y_i^0\)</span></th>
+<th><span class="math inline">\(y_i^1\)</span></th>
+<th>Causal effect <span class="math inline">\(y_i^1 - y_i^0\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>53</td>
+<td>1</td>
+<td>???</td>
+<td>72</td>
+<td>???</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>81</td>
+<td>0</td>
+<td>90</td>
+<td>???</td>
+<td>???</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>67</td>
+<td>1</td>
+<td>???</td>
+<td>58</td>
+<td>???</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>40</td>
+<td>0</td>
+<td>50</td>
+<td>???</td>
+<td>???</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>39</td>
+<td>1</td>
+<td>???</td>
+<td>85</td>
+<td>???</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>77</td>
+<td>0</td>
+<td>78</td>
+<td>???</td>
+<td>???</td>
+</tr>
+</tbody>
+</table>
+<p>There are several ways of getting around this problem. We’ll cover one here: regression.</p>
+<p>If we can accurately predict the missing potential outcome for each participant, then we can get a good estimate of the causal effect. In this case, we can be fairly certain that the outcome for each participant was influenced by their prior knowledge of the language. There are many other variables that might predict post-experiment test scores, but for simplicity we’ll assume that prior test scores are the only one that matters. Under this assumption, our outcome variables <span class="math inline">\(y_i\)</span> are directly caused by both prior test scores <span class="math inline">\(X_i\)</span> and experimental group <span class="math inline">\(M_i\)</span>. Therefore, we can estimate the causal effect through regression:</p>
+<p><span class="math display">\[
+y_i = \beta_0 + \beta_1 X_i + \beta_2 M_i
+\]</span></p>
+<p>The parameter <span class="math inline">\(\beta_2\)</span> represents the causal effect listening to music on second-language test scores.</p>
+</section>
+<section id="what-variables-do-i-include-in-my-regression" class="level3" data-number="14.3.2">
+<h3 data-number="14.3.2" class="anchored" data-anchor-id="what-variables-do-i-include-in-my-regression"><span class="header-section-number">14.3.2</span> What variables do I include in my regression?</h3>
+<p>“Controlling for” variables in a regression can allow us to estimate causal effects. But in real data, determining which variables need to be controlled for can be challenging.</p>
+<p>Consider the <code>english</code> dataset from <code>languageR</code>. For simplicity, we’ll only consider a subset of the variables included in this dataset: <code>RTlexdec</code>, <code>AgeSubject</code>, <code>Familiarity</code>, <code>WrittenFrequency</code> and <code>FrequencyInitialDiphoneWord</code>.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">datatable</span>(<span class="fu">sample_n</span>(eng, <span class="dv">10</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="datatables html-widget html-fill-item" id="htmlwidget-0272718c3a62d4eec252" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-0272718c3a62d4eec252">{"x":{"filter":"none","vertical":false,"data":[["922","2642","4341","598","865","1909","3875","473","1956","4122"],[6.51205731663294,6.62708854142426,6.71040129935422,6.32589899456076,6.25296305229866,6.52426690367734,6.51475713432935,6.4150969591716,6.55613894723427,6.67502845444087],[0.5,-0.5,-0.5,0.5,0.5,-0.5,-0.5,0.5,-0.5,-0.5],["young","old","old","young","young","old","old","young","old","old"],[-0.5933988167913226,0.05983050779831618,-0.5632328085786023,0.2658634692511116,0.2506770098747154,0.4311093737768294,0.3989823286847953,-0.4054072308527513,-0.1128183769194063,0.9026298689685197],[-0.5070721048212745,-0.1155382854204761,0.4065068071139221,0.4021564313428019,0.5979233410432012,0.667529353381121,0.2194406489557626,0.03237449079760343,-0.1851442977583957,0.9155007723349601],[-0.4698132459380139,0.535565446669488,-0.4200479551026674,-0.3679814990278594,-0.1249671696351074,0.03362719492240818,-0.8092430383820539,0.2238764347987583,0.5276018890949863,-0.1167908128937076]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>RTlexdec<\/th>\n      <th>AgeSubject_c<\/th>\n      <th>AgeSubject<\/th>\n      <th>WrittenFrequency_c<\/th>\n      <th>Familiarity_c<\/th>\n      <th>FrequencyInitialDiphoneWord_c<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,4,5,6]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"RTlexdec","targets":1},{"name":"AgeSubject_c","targets":2},{"name":"AgeSubject","targets":3},{"name":"WrittenFrequency_c","targets":4},{"name":"Familiarity_c","targets":5},{"name":"FrequencyInitialDiphoneWord_c","targets":6}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>We want to know the effect of <code>WrittenFrequency</code> on <code>RTlexdec</code>. There are several options for which variables to include in a regression:</p>
+<section id="only-include-the-variable-of-interest." class="level4" data-number="14.3.2.1">
+<h4 data-number="14.3.2.1" class="anchored" data-anchor-id="only-include-the-variable-of-interest."><span class="header-section-number">14.3.2.1</span> 1. Only include the variable of interest.</h4>
+<p>We only care about the effect of <code>WrittenFrequency</code>, so let’s exclude everything else from our regression:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>eng_m2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(RTlexdec <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> WrittenFrequency_c, <span class="at">data =</span> eng)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(eng_m2, <span class="at">conf.int =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 2 × 7</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   term               estimate std.error statistic   p.value conf.low conf.high</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;                 &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 (Intercept)           6.55    0.00209    3133.  0            6.55      6.55 </span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 WrittenFrequency_c   -0.136   0.00418     -32.6 4.46e-210   -0.145    -0.128</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can plot the partial effect of <code>WrittenFrequency</code> against the data. It looks reasonable.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_model</span>(eng_m2, <span class="at">type =</span> <span class="st">"pred"</span>, <span class="at">terms =</span> <span class="st">"WrittenFrequency_c"</span>) <span class="sc">+</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> WrittenFrequency_c, <span class="at">y =</span> RTlexdec), <span class="at">data =</span> eng, <span class="at">size =</span> <span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="causal_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="include-everything." class="level4" data-number="14.3.2.2">
+<h4 data-number="14.3.2.2" class="anchored" data-anchor-id="include-everything."><span class="header-section-number">14.3.2.2</span> 2. Include everything.</h4>
+<p>Only including <code>WrittenFrequency</code> in our regression might not be the best choice.</p>
+<p><code>RTlexdec</code> is correlated with <code>Familiarity</code>:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>eng <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Familiarity_c, <span class="at">y =</span> RTlexdec)) <span class="sc">+</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="causal_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>And with <code>FrequencyInitialDiphoneWord</code>:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>eng <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> FrequencyInitialDiphoneWord_c, <span class="at">y =</span> RTlexdec)) <span class="sc">+</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="causal_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>And also with <code>AgeSubject</code>:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>eng <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> AgeSubject, <span class="at">y =</span> RTlexdec)) <span class="sc">+</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>() <span class="sc">+</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="causal_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>All of these variables could reasonably predict <code>RTlexdec</code>, so we could include them in a regression:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>eng_m3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(RTlexdec <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> WrittenFrequency_c <span class="sc">+</span> Familiarity_c <span class="sc">+</span> FrequencyInitialDiphoneWord_c <span class="sc">+</span> AgeSubject_c, <span class="at">data =</span> eng)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(eng_m3, <span class="at">conf.int =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 5 × 7</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   term                  estimate std.error statistic  p.value conf.low conf.high</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;                    &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 (Intercept)            6.55      0.00124  5285.    0         6.55      6.55   </span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 WrittenFrequency_c    -0.0700    0.00406   -17.2   1.59e-64 -0.0780   -0.0620 </span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 Familiarity_c         -0.0843    0.00405   -20.8   9.77e-92 -0.0922   -0.0763 </span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 4 FrequencyInitialDiph…  0.00187   0.00249     0.750 4.54e- 1 -0.00302   0.00676</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="do">## 5 AgeSubject_c          -0.222     0.00248   -89.4   0        -0.227    -0.217</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>In this model, we see a <code>WrittenFrequency</code> effect of -0.07 (95% CI: [-0.08, -0.06]). Like the previous model <code>eng_m2</code>, this is still negative, but much smaller.</p>
+</section>
+<section id="incude-the-predictors-that-perform-best-under-some-model-comparison-procedure." class="level4" data-number="14.3.2.3">
+<h4 data-number="14.3.2.3" class="anchored" data-anchor-id="incude-the-predictors-that-perform-best-under-some-model-comparison-procedure."><span class="header-section-number">14.3.2.3</span> 3. Incude the predictors that perform best under some model comparison procedure.</h4>
+<p>We could also fit multiple models, compare them, and choose the “best” model in our comparison. Using AIC, we would choose <code>eng_m3</code>, the model with all variables included.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">AIC</span>(eng_m2, eng_m3)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="do">##        df       AIC</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="do">## eng_m2  3 -4908.994</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="do">## eng_m3  6 -9684.018</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="include-only-the-variables-needed-to-make-a-causal-inference." class="level4" data-number="14.3.2.4">
+<h4 data-number="14.3.2.4" class="anchored" data-anchor-id="include-only-the-variables-needed-to-make-a-causal-inference."><span class="header-section-number">14.3.2.4</span> 4. Include only the variables needed to make a causal inference.</h4>
+<p>None of these procedures for choosing a model make any guarantees that the model output will be an estimate of the causal effect. To do this, we need to consider a causal model of the data. If we know that age directly influences reaction times, perhaps it should be included in the model. Written frequency and familiarity essentially represent the same information, so maybe only one should be included. To make this decision, we need to introduce a formal representation of a causal model: the DAG.</p>
+</section>
+</section>
+<section id="representing-causal-models-with-dags" class="level3" data-number="14.3.3">
+<h3 data-number="14.3.3" class="anchored" data-anchor-id="representing-causal-models-with-dags"><span class="header-section-number">14.3.3</span> Representing causal models with DAGs</h3>
+<p>We can use a <em>Directed Acyclic Graph</em> (DAG) to represent a causal graph. Vertices in the graph represent random variables, and directed edges (arrows connecting the vertices) represent direct causal relationships. <em>Directed</em> means that edges are arrows in one direction, while <em>acyclic</em> means that there are no cycles in the graph: There is no path from a variable back to itself.</p>
+<p>A causal DAG <span class="math inline">\(X \rightarrow Y\)</span> implies that <span class="math inline">\(X\)</span> directly causes <span class="math inline">\(Y\)</span>. In other words, if we could experimentally intervene and change the value of <span class="math inline">\(X\)</span>, <span class="math inline">\(Y\)</span> would change as well. However, if we changed the value of <span class="math inline">\(Y\)</span>, <span class="math inline">\(X\)</span> would not change.</p>
+<p>As linguists, we have some background knowledge about the <code>english</code> dataset, and can represent our intuitions about its causal structure as edges in a DAG. These assumptions might be wrong, but we’ll go with them for now:</p>
+<ol type="1">
+<li><p><code>AgeSubject</code> is a direct cause of <code>RTlexdec</code>: We know that older subjects are generally slightly slower to respond. This adds an arrow <code>AgeSubjext</code> <span class="math inline">\(\rightarrow\)</span> <code>RTlexdex</code> to our DAG.</p></li>
+<li><p><code>WrittenFrequency</code> is a direct cause of <code>Familiarity</code>: A person’s subjective familiarity with a word must be strongly influenced by its frequency. This adds an arrow <code>WrittenFrequency</code> <span class="math inline">\(\rightarrow\)</span> <code>Familiarity</code>.</p></li>
+<li><p><code>WrittenFrequency</code> is <em>not</em> a direct cause of <code>RTlexdec</code>: Participants in the experiment don’t know the actual frequencies of words in the corpus these frequencies were estimated with, they only know their own <code>Familiarity</code> with the words. There is no arrow from <code>WrittenFrequency</code> to <code>RTlexdec</code>.</p></li>
+<li><p><code>WrittenFrequency</code> is a direct cause of <code>FrequencyInitialDiphoneWord</code>: The frequency of whole words is likely to have some influence on the frequency of their initial diphones. This adds an arrow <code>WrittenFrequency</code> <span class="math inline">\(\rightarrow\)</span> <code>FrequencyInitialDiphoneWord</code>.</p></li>
+<li><p><code>FrequencyInitialDiphoneWord</code> is not a direct cause of anything: <code>AgeSubject</code> certainly isn’t caused by initial diphone frequency. <code>Familiarity</code> depends on knowledge of the <em>whole</em> word, not on any diphone frequency – familiar words can have low-frequency initial diphones. <code>WrittenFrequency</code> can’t be caused by diphone frequency, because that would add a <em>cycle</em> to our DAG.</p></li>
+</ol>
+<p>This gives us the following causal DAG, which we can plot with <code>dagitty</code> and <code>ggdag</code>:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>dag1 <span class="ot">&lt;-</span> <span class="fu">dagitty</span>(<span class="st">'dag{</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="st">    "DiphoneFreq" [pos="4,2"]</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="st">    "WrittenFrequency" [pos="3,3"]</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="st">    "Familiarity" [pos="3,2"]</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="st">    "RTlexdec" [pos="3,1"]</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="st">    "AgeSubject" [pos="2,2"]</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="st">    "DiphoneFreq" &lt;- "WrittenFrequency"</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="st">    "WrittenFrequency" -&gt; "Familiarity"</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="st">    "Familiarity" -&gt; "RTlexdec"</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="st">    "RTlexdec" &lt;- "AgeSubject"</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="st">    }'</span>)</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="fu">ggdag</span>(dag1) <span class="sc">+</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_dag</span>() <span class="sc">+</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_dag_point</span>(<span class="at">col =</span> <span class="st">"gray"</span>) <span class="sc">+</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_dag_text</span>(<span class="at">col =</span> <span class="st">"black"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="causal_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Causal DAGs can get quite large and complex, but we can break them down into smaller pieces to understand how variables are related. Three common structures have names that are worth knowing:</p>
+<section id="chain-a-rightarrow-b-rightarrow-c" class="level4" data-number="14.3.3.1">
+<h4 data-number="14.3.3.1" class="anchored" data-anchor-id="chain-a-rightarrow-b-rightarrow-c"><span class="header-section-number">14.3.3.1</span> 1. Chain: <span class="math inline">\(A \rightarrow B \rightarrow C\)</span></h4>
+<p>A chain implies a causal association between <span class="math inline">\(A\)</span> and <span class="math inline">\(C\)</span>. This association is <em>mediated</em> by <span class="math inline">\(B\)</span>. Any directed path between two variables in a DAG transmits a causal association. Intervening on <span class="math inline">\(A\)</span> causes a change in <span class="math inline">\(B\)</span>, which causes a change in <span class="math inline">\(C\)</span>. We can generate a dataset to look at this relationship:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>chain <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">A =</span> <span class="fu">rnorm</span>(<span class="dv">1000</span>, <span class="at">mean =</span> <span class="dv">0</span>),</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">B =</span> <span class="fu">map_dbl</span>(A, <span class="cf">function</span>(i) <span class="fu">rnorm</span>(<span class="dv">1</span>, <span class="at">mean =</span> i)),</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">C =</span> <span class="fu">map_dbl</span>(B, <span class="cf">function</span>(i) <span class="fu">rnorm</span>(<span class="dv">1</span>, <span class="at">mean =</span> i))</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>If we “control for <span class="math inline">\(B\)</span>” in a regression on this data, the causal effect of <span class="math inline">\(A\)</span> on <span class="math inline">\(C\)</span> is masked, even though we know there is a causal relationship. Controlling for <span class="math inline">\(B\)</span> effectively <em>blocks</em> the association between <span class="math inline">\(A\)</span> and <span class="math inline">\(C\)</span>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>chain_m1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(C <span class="sc">~</span> A <span class="sc">+</span> B, <span class="at">data =</span> chain)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(chain_m1, <span class="at">conf.int =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 3 × 7</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   term        estimate std.error statistic   p.value conf.low conf.high</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 (Intercept) -0.00840    0.0315    -0.267 7.90e-  1  -0.0702    0.0534</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 A           -0.0133     0.0426    -0.313 7.54e-  1  -0.0970    0.0703</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 B            1.03       0.0306    33.7   5.90e-167   0.971     1.09</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>In a chain, we shouldn’t control for the middle variable <span class="math inline">\(B\)</span> if we’re intersted in the causal effect of <span class="math inline">\(A\)</span> on <span class="math inline">\(C\)</span>. Removing <span class="math inline">\(B\)</span> from our model, we get a correct estimate of the causal effect:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>chain_m2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(C <span class="sc">~</span> A, <span class="at">data =</span> chain)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(chain_m2, <span class="at">conf.int =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 2 × 7</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   term        estimate std.error statistic  p.value conf.low conf.high</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 (Intercept)  0.00822    0.0460     0.178 8.58e- 1  -0.0821    0.0986</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 A            0.955      0.0461    20.7   1.32e-79   0.864     1.05</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="fork-a-leftarrow-b-rightarrow-c" class="level4" data-number="14.3.3.2">
+<h4 data-number="14.3.3.2" class="anchored" data-anchor-id="fork-a-leftarrow-b-rightarrow-c"><span class="header-section-number">14.3.3.2</span> 2. Fork: <span class="math inline">\(A \leftarrow B \rightarrow C\)</span></h4>
+<p>A fork does not imply a causal association between <span class="math inline">\(A\)</span> and <span class="math inline">\(C\)</span>. Instead, <span class="math inline">\(A\)</span> and <span class="math inline">\(C\)</span> share a <em>common cause</em>, <span class="math inline">\(B\)</span>. Because <span class="math inline">\(A\)</span> and <span class="math inline">\(C\)</span> share a common cause, there is an association between them, but it is not causal. The causal effect of <span class="math inline">\(A\)</span> on <span class="math inline">\(C\)</span> is zero. Here, correlation very much does not imply causation. We can generate a dataset:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>fork <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">B =</span> <span class="fu">rnorm</span>(<span class="dv">1000</span>, <span class="at">mean =</span> <span class="dv">0</span>),</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">A =</span> <span class="fu">map_dbl</span>(B, <span class="cf">function</span>(i) <span class="fu">rnorm</span>(<span class="dv">1</span>, <span class="at">mean =</span> i)),</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">C =</span> <span class="fu">map_dbl</span>(B, <span class="cf">function</span>(i) <span class="fu">rnorm</span>(<span class="dv">1</span>, <span class="at">mean =</span> i))</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>And we can see that <span class="math inline">\(A\)</span> and <span class="math inline">\(C\)</span> are correlated, although they are not causally related:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>fork <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> A, <span class="at">y =</span> C)) <span class="sc">+</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="causal_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>But if we fit a model controlling for <span class="math inline">\(B\)</span>, we can see that <span class="math inline">\(A\)</span> in fact has no causal effect on <span class="math inline">\(C\)</span>. Again, controlling for <span class="math inline">\(B\)</span> blocks the association between <span class="math inline">\(A\)</span> and <span class="math inline">\(C\)</span>. Unlike the previous example of a chain, this is desirable – there is no causal relationship between <span class="math inline">\(A\)</span> and <span class="math inline">\(C\)</span>, so we want to block the non-causal association induced by <span class="math inline">\(B\)</span>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>fork_m1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(C <span class="sc">~</span> A <span class="sc">+</span> B, <span class="at">data =</span> fork)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(fork_m1, <span class="at">conf.int =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 3 × 7</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   term        estimate std.error statistic  p.value conf.low conf.high</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 (Intercept)  0.0470     0.0326     1.44  1.49e- 1  -0.0169    0.111 </span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 A           -0.00669    0.0332    -0.202 8.40e- 1  -0.0718    0.0584</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 B            1.02       0.0469    21.8   2.09e-86   0.929     1.11</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>In a fork, the common cause variable is known as a <em>confounder</em>: it can induce spurious correlations and bias measurement of the true causal effect.</p>
+</section>
+<section id="collider-a-rightarrow-b-leftarrow-c" class="level4" data-number="14.3.3.3">
+<h4 data-number="14.3.3.3" class="anchored" data-anchor-id="collider-a-rightarrow-b-leftarrow-c"><span class="header-section-number">14.3.3.3</span> 3. Collider: <span class="math inline">\(A \rightarrow B \leftarrow C\)</span></h4>
+<p>Also known as an <em>inverted fork</em>, a collider does not transmit an association between <span class="math inline">\(A\)</span> and <span class="math inline">\(C\)</span>. Manipulating <span class="math inline">\(A\)</span> has no effect on <span class="math inline">\(C\)</span>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>collider <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">A =</span> <span class="fu">rnorm</span>(<span class="dv">1000</span>, <span class="at">mean =</span> <span class="dv">0</span>),</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">C =</span> <span class="fu">rnorm</span>(<span class="dv">1000</span>, <span class="at">mean =</span> <span class="dv">3</span>),</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">B =</span> <span class="fu">map2_dbl</span>(A, C, <span class="cf">function</span>(i, j) <span class="fu">rnorm</span>(<span class="dv">1</span>, <span class="at">mean =</span> i <span class="sc">+</span> j))</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Here, <span class="math inline">\(A\)</span> and <span class="math inline">\(C\)</span> are not correlated:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>collider <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> A, <span class="at">y =</span> C)) <span class="sc">+</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="causal_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>If we include <span class="math inline">\(B\)</span> in our model, we incorrectly conclude that <span class="math inline">\(A\)</span> has an effect on <span class="math inline">\(C\)</span>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>collider_m1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(C <span class="sc">~</span> A <span class="sc">+</span> B, <span class="at">data =</span> collider)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(collider_m1, <span class="at">conf.int =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 3 × 7</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   term        estimate std.error statistic   p.value conf.low conf.high</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 (Intercept)    1.55     0.0515      30.0 2.17e-141    1.44      1.65 </span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 A             -0.470    0.0275     -17.1 1.80e- 57   -0.524    -0.416</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 B              0.483    0.0156      31.0 5.25e-148    0.453     0.514</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Instead, <span class="math inline">\(B\)</span> should be excluded from the model:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>collider_m2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(C <span class="sc">~</span> A, <span class="at">data =</span> collider)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(collider_m2, <span class="at">conf.int =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 2 × 7</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   term        estimate std.error statistic p.value conf.low conf.high</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 (Intercept)   2.98      0.0313    95.4     0       2.92      3.04  </span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 A             0.0122    0.0318     0.385   0.701  -0.0502    0.0746</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="confounding-and-back-door-paths" class="level4" data-number="14.3.3.4">
+<h4 data-number="14.3.3.4" class="anchored" data-anchor-id="confounding-and-back-door-paths"><span class="header-section-number">14.3.3.4</span> Confounding and back-door paths</h4>
+<p>To summarize the above examples in terms of “what to control for”:</p>
+<ol type="1">
+<li>In a chain <span class="math inline">\(A \rightarrow B \rightarrow C\)</span>, controlling for <span class="math inline">\(B\)</span> blocks the causal association between <span class="math inline">\(A\)</span> and <span class="math inline">\(C\)</span>, giving us <strong>biased</strong> causal effect estimate.</li>
+<li>In a fork <span class="math inline">\(A \leftarrow B \rightarrow C\)</span>, controlling for <span class="math inline">\(B\)</span> blocks the non-causal association, giving us an <strong>unbiased</strong> causal effect estimate.</li>
+<li>In a collider <span class="math inline">\(A \rightarrow B \leftarrow C\)</span>, controlling for <span class="math inline">\(B\)</span> unblocks the non-causal association, giving us a <strong>biased</strong> causal effect estimate.</li>
+</ol>
+<p>To estimate a causal effect between two variables, we want to ensure that all causal paths between them are unblocked, while all non-causal paths are blocked. Because forks transmit non-causal associations, any path <span class="math inline">\(X \leftarrow \dots \rightarrow Y\)</span> needs to be blocked. These paths are also called <em>back-door paths</em>.</p>
+<p>A path between two variables <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> is blocked by a set of variables <span class="math inline">\(\mathbf{Z}\)</span> if and only if:</p>
+<ol type="1">
+<li>It contains a fork <span class="math inline">\(X \leftarrow W \rightarrow Y\)</span> or a chain <span class="math inline">\(X \rightarrow W \rightarrow Y\)</span> where the middle variable <span class="math inline">\(W\)</span> is in the set <span class="math inline">\(\mathbf{Z}\)</span>.</li>
+<li>It contains a collider <span class="math inline">\(X \rightarrow W \leftarrow Y\)</span> where the middle variable <span class="math inline">\(W\)</span> or any descendent of it is <em>not</em> in the set <span class="math inline">\(\mathbf{Z}\)</span>.</li>
+</ol>
+<p>This is also known as <em>d-separation</em>. A set <span class="math inline">\(\mathbf{Z}\)</span> <em>d-separates</em> <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> if it blocks every path from <span class="math inline">\(X\)</span> to <span class="math inline">\(Y\)</span>.</p>
+<p>A causal effect is considered <em>identifiable</em> when it is possible to block all back-door paths in the DAG (under the assumption that the DAG is correct).</p>
+</section>
+</section>
+<section id="causal-inference-in-the-english-dataset" class="level3" data-number="14.3.4">
+<h3 data-number="14.3.4" class="anchored" data-anchor-id="causal-inference-in-the-english-dataset"><span class="header-section-number">14.3.4</span> Causal inference in the <code>english</code> dataset</h3>
+<p>Going back to our original example of the <code>english</code> data, we can now identify the causal effect of <code>WrittenFrequency</code> on <code>RTlexdec</code>. It turns out to be fairly straightforward.</p>
+<p>In our DAG, there is exactly one path between these variables: <code>WrittenFrequency</code> <span class="math inline">\(\rightarrow\)</span> <code>Familiarity</code> <span class="math inline">\(\rightarrow\)</span> <code>RTlexdec</code>. This path contains no forks, so it is not a back-door path, and does not need to be blocked to estimate the causal effect.</p>
+<p>There are no other paths from <code>WrittenFrequency</code> to <code>RTlexdec</code>, so including any other variables in our regression would only bias our estimate of the effect.</p>
+<p>This means we should use our first model, <code>eng_m2</code>, to estimate the causal effect of <code>WrittenFrequency</code> on <code>RTlexdec</code>, although it performed worse in our model comparison. The best <em>causal</em> model is not always the same as the best <em>predictive</em> model: Including <code>Familiarity</code> as a predictor improved the model’s performance under AIC, an estimator of prediction error, but confounded our causal effect estimate<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+<section id="the-causal-effect-of-diphonefreq-on-rtlexdec" class="level4" data-number="14.3.4.1">
+<h4 data-number="14.3.4.1" class="anchored" data-anchor-id="the-causal-effect-of-diphonefreq-on-rtlexdec"><span class="header-section-number">14.3.4.1</span> The causal effect of <code>DiphoneFreq</code> on <code>RTlexdec</code></h4>
+<p>Let’s look at a more complicated example. Suppose we want to estimate the causal effect of <code>DiphoneFreq</code> on <code>RTlexdec</code>. While we can manually figure out the backdoor paths in this DAG, you might be dealing with a much larger, interconnected set of variables in the future. Luckily, the <code>dagitty</code> package provides some convenient functions for figuring out the set of variables to control for in estimating a causal effect. To do this, first we input our DAG:<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>eng_dag <span class="ot">&lt;-</span> <span class="fu">dagitty</span>(<span class="st">'dag{</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="st">    "DiphoneFreq" [pos="4,2"]</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="st">    "WrittenFrequency" [pos="3,3"]</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="st">    "Familiarity" [pos="3,2"]</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="st">    "RTlexdec" [pos="3,1"]</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="st">    "AgeSubject" [pos="2,2"]</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="st">    "DiphoneFreq" &lt;- "WrittenFrequency"</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="st">    "WrittenFrequency" -&gt; "Familiarity"</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="st">    "Familiarity" -&gt; "RTlexdec"</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="st">    "RTlexdec" &lt;- "AgeSubject"</span></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="st">    }'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>In <code>dagitty</code> (and in much of the causal inference literature), <em>independent variables</em> are referred to as <em>exposure variables</em>, and <em>dependent effects</em> referred to as <em>outcome variables</em>. We can add these to our DAG:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exposures</span>(eng_dag) <span class="ot">&lt;-</span> <span class="st">"DiphoneFreq"</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">outcomes</span>(eng_dag) <span class="ot">&lt;-</span> <span class="st">"RTlexdec"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>While we have been referring to the additional variables in our analysis as <em>control variables</em>, <code>dagitty</code> refers to them as <em>adjustment variables</em>. An adjustment set is a minimal set of variables to control for to determine a causal effect. To calculate this set for our DAG:<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">adjustmentSets</span>(eng_dag)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="do">## { Familiarity }</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="do">## { WrittenFrequency }</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This gives us two possible adjustment sets. We can control for either <code>WrittenFrequency</code> or <code>Familiarity</code> to estimate the causal effect of <code>DiphoneFreq</code> on <code>RTlexdec</code>. We can fit both models with <code>lm</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>eng_m4 <span class="ot">&lt;-</span> <span class="fu">lm</span>(RTlexdec <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> WrittenFrequency_c <span class="sc">+</span> FrequencyInitialDiphoneWord_c, <span class="at">data =</span> eng)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(eng_m4, <span class="at">conf.int =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 3 × 7</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   term                 estimate std.error statistic   p.value conf.low conf.high</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;                   &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 (Intercept)           6.55      0.00209  3132.    0          6.55      6.55   </span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 WrittenFrequency_c   -0.137     0.00421   -32.5   3.00e-208 -0.145    -0.128  </span></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 FrequencyInitialDip…  0.00141   0.00421     0.335 7.38e-  1 -0.00684   0.00966</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>eng_m5 <span class="ot">&lt;-</span> <span class="fu">lm</span>(RTlexdec <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> Familiarity_c <span class="sc">+</span> FrequencyInitialDiphoneWord_c, <span class="at">data =</span> eng)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(eng_m5, <span class="at">conf.int =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 3 × 7</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   term                 estimate std.error statistic   p.value conf.low conf.high</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;                   &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 (Intercept)           6.55e+0   0.00208  3149.    0          6.55      6.55   </span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 Familiarity_c        -1.39e-1   0.00418   -33.4   1.32e-218 -0.148    -0.131  </span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 FrequencyInitialDip… -6.87e-4   0.00418    -0.164 8.69e-  1 -0.00888   0.00750</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Whether we control for <code>WrittenFrequency</code> or <code>Familiarity</code>, we get the same result: Initial diphone frequency has no effect on reaction time. This is expected, given our DAG: There is only one path from <code>DiphoneFreq</code> to <code>RTlexdec</code>, and it contains a fork, so we block it to estimate the causal effects. There are no paths left, so we get zero causal effect.</p>
+</section>
+<section id="the-causal-effect-of-agesubject-on-familiarity" class="level4" data-number="14.3.4.2">
+<h4 data-number="14.3.4.2" class="anchored" data-anchor-id="the-causal-effect-of-agesubject-on-familiarity"><span class="header-section-number">14.3.4.2</span> The causal effect of <code>AgeSubject</code> on <code>Familiarity</code></h4>
+<p>We can estimate the causal effect of age on familiarity in the same way:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exposures</span>(eng_dag) <span class="ot">&lt;-</span> <span class="st">"AgeSubject"</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">outcomes</span>(eng_dag) <span class="ot">&lt;-</span> <span class="st">"Familiarity"</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="fu">adjustmentSets</span>(eng_dag)</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="do">##  {}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>In this case, the adjustment set is empty, because <code>RTlexdec</code> is a collider and already blocks the non-causal path between <code>AgeSubject</code> and <code>Familiarity</code>. Next we fit a model with no control variables:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>eng_m6 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Familiarity_c <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> AgeSubject_c, <span class="at">data =</span> eng)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(eng_m6, <span class="at">conf.int =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 2 × 7</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   term          estimate std.error statistic p.value conf.low conf.high</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;            &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 (Intercept)  -2.06e-16   0.00740 -2.79e-14   1.000  -0.0145    0.0145</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 AgeSubject_c  1.49e-16   0.0148   1.01e-14   1.000  -0.0290    0.0290</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>As we would expect, age has no causal effect on familiarty.</p>
+</section>
+</section>
+<section id="direct-effects-and-mediation" class="level3" data-number="14.3.5">
+<h3 data-number="14.3.5" class="anchored" data-anchor-id="direct-effects-and-mediation"><span class="header-section-number">14.3.5</span> Direct effects and mediation</h3>
+<p>In a chain such as <code>WrittenFrequency</code> <span class="math inline">\(\rightarrow\)</span> <code>Familiarity</code> <span class="math inline">\(\rightarrow\)</span> <code>RTlexdec</code>, the middle variable is known as a <em>mediator</em>. Before, we were interested in how changing <code>WrittenFrequency</code> impacts <code>RTlexdec</code>. This is also called the <em>total effect</em> of <code>WrittenFrequency</code>.</p>
+<p>But, knowing that the relationship between <code>WrittenFrequency</code> and <code>RTlexdec</code> is mediated by <code>Familiarity</code>, we may also want to ask a different question: What is the remaining effect of frequency after accounting for familiarity? This is called a <em>direct effect</em>.</p>
+<p><code>dagitty</code> can also tell us what to control for to estimate a direct effect:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">adjustmentSets</span>(</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  eng_dag,</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">exposure =</span> <span class="st">"WrittenFrequency"</span>,</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">outcome =</span> <span class="st">"RTlexdec"</span>,</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">effect =</span> <span class="st">"direct"</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="do">## { Familiarity }</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>To answer this question, we can fit a model controlling for familiarity. However, if we look at our DAG, we can see that controlling for <code>Familiarity</code> blocks the only path between <code>WrittenFrequency</code> and <code>RTlexdec</code>. We should see zero direct causal effect.</p>
+<p>Let’s fit the model:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>eng_m7 <span class="ot">&lt;-</span> <span class="fu">lm</span>(RTlexdec <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> WrittenFrequency_c <span class="sc">+</span> Familiarity_c, <span class="at">data =</span> eng)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(eng_m7, <span class="at">conf.int =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 3 × 7</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   term               estimate std.error statistic  p.value conf.low conf.high</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;                 &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 (Intercept)          6.55     0.00206    3186.  0          6.55      6.55  </span></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 WrittenFrequency_c  -0.0698   0.00673     -10.4 5.84e-25  -0.0830   -0.0566</span></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 Familiarity_c       -0.0842   0.00673     -12.5 2.10e-35  -0.0974   -0.0710</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>WrittenFrequency</code> still has a negative effect, even after controlling for <code>Familiarity</code>. This result is inconsistent with our DAG. Why? There are multiple possibilities.</p>
+<section id="measurement-error" class="level4" data-number="14.3.5.1">
+<h4 data-number="14.3.5.1" class="anchored" data-anchor-id="measurement-error"><span class="header-section-number">14.3.5.1</span> 1. Measurement error</h4>
+<p>This effect, which was not predicted by our DAG, could be a result of measurement error in the dataset. This seems unlikely here, but is a possibility that should be considered in other datasets.</p>
+</section>
+<section id="an-unmeasured-confounder" class="level4" data-number="14.3.5.2">
+<h4 data-number="14.3.5.2" class="anchored" data-anchor-id="an-unmeasured-confounder"><span class="header-section-number">14.3.5.2</span> 2. An unmeasured confounder</h4>
+<p>Perhaps our DAG is missing a variable. It is generally a strong assumption that a dataset includes <em>all</em> causally relevant variables. An unmeasured confounder will lead to an unblocked back-door path.</p>
+<p>For example, if we add an unmeasured variable to our DAG, it might look like this:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>eng_dag2 <span class="ot">&lt;-</span> <span class="fu">dagitty</span>(<span class="st">'dag{</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="st">    "DiphoneFreq" [pos="4,2"]</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="st">    "WrittenFrequency" [pos="3,3"]</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="st">    "Familiarity" [pos="3,2"]</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="st">    "RTlexdec" [pos="3,1"]</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="st">    "AgeSubject" [pos="2,2"]</span></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a><span class="st">    "U" [pos="2.5,2"]</span></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a><span class="st">    "DiphoneFreq" &lt;- "WrittenFrequency"</span></span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a><span class="st">    "WrittenFrequency" -&gt; "Familiarity"</span></span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a><span class="st">    "Familiarity" -&gt; "RTlexdec"</span></span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a><span class="st">    "RTlexdec" &lt;- "AgeSubject"</span></span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a><span class="st">    "U" -&gt; "WrittenFrequency"</span></span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a><span class="st">    "U" -&gt; "RTlexdec"</span></span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a><span class="st">    }'</span>)</span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a><span class="fu">ggdag</span>(eng_dag2) <span class="sc">+</span></span>
+<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_dag</span>() <span class="sc">+</span></span>
+<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_dag_point</span>(<span class="at">col =</span> <span class="st">"gray"</span>) <span class="sc">+</span></span>
+<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_dag_text</span>(<span class="at">col =</span> <span class="st">"black"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="causal_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We can get an adjustment set for the direct effect in this new DAG:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">adjustmentSets</span>(</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  eng_dag2,</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">exposure =</span> <span class="st">"WrittenFrequency"</span>,</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">outcome =</span> <span class="st">"RTlexdec"</span>,</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">effect =</span> <span class="st">"direct"</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a><span class="do">## { Familiarity, U }</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We need to control for both <code>Familiarity</code> and the unmeasured variable <code>U</code>. We don’t have <code>U</code> in our dataset, so we cannot get an unbiased estimate of the effect if this is the correct DAG.</p>
+<p>Unmeasured confounders in general are a problem for causal inference. All of the methods described here assume a <em>causally sufficient set</em>: A set of variables that includes all common causes of all variables in the set. These methods also assume that the DAG being used for your analysis is accurate. If in reality there are missing arrows or incorrect arrows, your causal inference could be wrong.</p>
+<p>Subject matter knowledge and experimental evidence can help to verify the correctness of a DAG, but in general it is difficult to know if a causal DAG is 100% correct.</p>
+<p>In some cases, you might not even have an idea of how the variables are causally related. To solve this problem, a different set of methods exist to infer causal structure from data.</p>
+</section>
+</section>
+</section>
+<section id="causal-discovery" class="level2" data-number="14.4">
+<h2 data-number="14.4" class="anchored" data-anchor-id="causal-discovery"><span class="header-section-number">14.4</span> Causal Discovery</h2>
+<p>Causal discovery or <em>causal search</em> is the problem of identifying causal structure from observational data. We won’t go into detail about the algorithms here, but we can use the implementations in the <code>pcalg</code> package on the <code>english</code> data.</p>
+<p>We’ll use the PC algorithm<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>, which is able to identify causal structure up to a <em>Markov equivalence class</em>. A single dataset can correspond to multiple causal DAGs – with the data alone, it is impossible to tell which is correct within an equivalence class. This uncertainty is represented with <em>bidirected edges</em> in the output of the algorithm. A bidirected edge <span class="math inline">\(X \leftrightarrow Y\)</span> implies that there is no way to distinguish between two possibilities: <span class="math inline">\(X \rightarrow Y\)</span> and <span class="math inline">\(X \leftarrow Y\)</span>.</p>
+<p>The PC algorithm depends on <em>conditional independence tests</em> to determine the existence of edges in the DAG. We’ll use <code>pcalg</code>’s <code>gaussCItest</code>, which assumes our data is normally distributed. We also need to provide the <code>pc</code> function with “sufficient statistics” to conduct the conditional independence tests. In this case, that’s a list including a correlation matrix and the number of variables in our data. We also need to provide a significance level <code>alpha</code> and a list of <code>labels</code> for the variables:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># drop the AgeSubject column that was used for plotting earlier</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>eng_disc <span class="ot">&lt;-</span> eng <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(AgeSubject))</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>pc_dag_out <span class="ot">&lt;-</span> <span class="fu">pc</span>(</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">suffStat =</span> <span class="fu">list</span>(<span class="at">C =</span> <span class="fu">cor</span>(eng_disc), <span class="at">n =</span> <span class="fu">nrow</span>(eng_disc)),</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">indepTest =</span> gaussCItest,</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">labels =</span> <span class="fu">colnames</span>(eng_disc),</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.01</span></span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(pc_dag_out)</span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a><span class="do">## Object of class 'pcAlgo', from Call:</span></span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a><span class="do">## pc(suffStat = list(C = cor(eng_disc), n = nrow(eng_disc)), indepTest = gaussCItest, </span></span>
+<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a><span class="do">##     alpha = 0.01, labels = colnames(eng_disc))</span></span>
+<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a><span class="do">## Nmb. edgetests during skeleton estimation:</span></span>
+<span id="cb34-17"><a href="#cb34-17" aria-hidden="true" tabindex="-1"></a><span class="do">## ===========================================</span></span>
+<span id="cb34-18"><a href="#cb34-18" aria-hidden="true" tabindex="-1"></a><span class="do">## Max. order of algorithm:  2 </span></span>
+<span id="cb34-19"><a href="#cb34-19" aria-hidden="true" tabindex="-1"></a><span class="do">## Number of edgetests from m = 0 up to m = 2 :  17 25 6</span></span>
+<span id="cb34-20"><a href="#cb34-20" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb34-21"><a href="#cb34-21" aria-hidden="true" tabindex="-1"></a><span class="do">## Graphical properties of skeleton:</span></span>
+<span id="cb34-22"><a href="#cb34-22" aria-hidden="true" tabindex="-1"></a><span class="do">## =================================</span></span>
+<span id="cb34-23"><a href="#cb34-23" aria-hidden="true" tabindex="-1"></a><span class="do">## Max. number of neighbours:  3 at node(s) 3 </span></span>
+<span id="cb34-24"><a href="#cb34-24" aria-hidden="true" tabindex="-1"></a><span class="do">## Avg. number of neighbours:  1.4 </span></span>
+<span id="cb34-25"><a href="#cb34-25" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb34-26"><a href="#cb34-26" aria-hidden="true" tabindex="-1"></a><span class="do">## Adjacency Matrix G:</span></span>
+<span id="cb34-27"><a href="#cb34-27" aria-hidden="true" tabindex="-1"></a><span class="do">##                               RTlexdec AgeSubject_c WrittenFrequency_c</span></span>
+<span id="cb34-28"><a href="#cb34-28" aria-hidden="true" tabindex="-1"></a><span class="do">## RTlexdec                             .            .                  .</span></span>
+<span id="cb34-29"><a href="#cb34-29" aria-hidden="true" tabindex="-1"></a><span class="do">## AgeSubject_c                         1            .                  .</span></span>
+<span id="cb34-30"><a href="#cb34-30" aria-hidden="true" tabindex="-1"></a><span class="do">## WrittenFrequency_c                   1            .                  .</span></span>
+<span id="cb34-31"><a href="#cb34-31" aria-hidden="true" tabindex="-1"></a><span class="do">## Familiarity_c                        1            .                  1</span></span>
+<span id="cb34-32"><a href="#cb34-32" aria-hidden="true" tabindex="-1"></a><span class="do">## FrequencyInitialDiphoneWord_c        .            .                  1</span></span>
+<span id="cb34-33"><a href="#cb34-33" aria-hidden="true" tabindex="-1"></a><span class="do">##                               Familiarity_c FrequencyInitialDiphoneWord_c</span></span>
+<span id="cb34-34"><a href="#cb34-34" aria-hidden="true" tabindex="-1"></a><span class="do">## RTlexdec                                  .                             .</span></span>
+<span id="cb34-35"><a href="#cb34-35" aria-hidden="true" tabindex="-1"></a><span class="do">## AgeSubject_c                              .                             .</span></span>
+<span id="cb34-36"><a href="#cb34-36" aria-hidden="true" tabindex="-1"></a><span class="do">## WrittenFrequency_c                        1                             1</span></span>
+<span id="cb34-37"><a href="#cb34-37" aria-hidden="true" tabindex="-1"></a><span class="do">## Familiarity_c                             .                             .</span></span>
+<span id="cb34-38"><a href="#cb34-38" aria-hidden="true" tabindex="-1"></a><span class="do">## FrequencyInitialDiphoneWord_c             .                             .</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The output includes an <em>adjacency matrix</em>, a representation of the edges in the discovered graph. We can plot the graph using the <code>plot</code> function from the <code>igraph</code> package:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># convert the adjacency matrix into an igraph object</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>pc_dag <span class="ot">&lt;-</span> <span class="fu">graph_from_adjacency_matrix</span>(<span class="fu">as</span>(pc_dag_out, <span class="st">"amat"</span>))</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>  pc_dag,</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">layout =</span> layout_nicely,</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">vertex.label.dist =</span> <span class="fl">3.5</span>,</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">edge.color =</span> <span class="st">"black"</span></span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="causal_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The DAG discovered by the PC algorithm looks similar to the one shown above, with an additional edge between <code>WrittenFrequency</code> and <code>RTlexdec</code>. The PC algorithm cannot identify unmeasured confounders, so it is possible that there is an unmeasured variable between these variables. We also see uncertainty in edge direction: There are bidirected edges, and edges implying that <code>RTlexdec</code> causes age, familiarity, and frequency. We were able to find a reasonable <em>skeleton</em> for the DAG, but not edge directions. Other causal discovery algorithms exist, some of which can identify unmeasured confounders.</p>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-arif2022predictive" class="csl-entry" role="listitem">
+Arif, Suchinta, and M Aaron MacNeil. 2022. <span>“Predictive Models Aren’t for Causal Inference.”</span> <em>Ecology Letters</em> 25 (8): 1741–45. <a href="https://doi.org/10.1111/ele.14033">https://doi.org/10.1111/ele.14033</a>.
+</div>
+<div id="ref-baayen2008ald" class="csl-entry" role="listitem">
+Baayen, R. H. 2008. <em><span class="nocase">Analyzing linguistic data: A practical introduction to statistics using R</span></em>. Cambridge: Cambridge University Press.
+</div>
+<div id="ref-hernan2024causal" class="csl-entry" role="listitem">
+Hernan, M. A., and J. M. Robins. 2024. <em>Causal Inference: What If</em>. CRC Press.
+</div>
+<div id="ref-malinsky2018causal" class="csl-entry" role="listitem">
+Malinsky, Daniel, and David Danks. 2018. <span>“Causal Discovery Algorithms: A Practical Guide.”</span> <em>Philosophy Compass</em> 13 (1): e12470. <a href="https://doi.org/10.1111/phc3.12470">https://doi.org/10.1111/phc3.12470</a>.
+</div>
+<div id="ref-pearl2009" class="csl-entry" role="listitem">
+Pearl, Judea. 2009. <span>“<span class="nocase">Causal inference in statistics: An overview</span>.”</span> <em>Statistics Surveys</em> 3: 96–146. <a href="https://doi.org/10.1214/09-SS057">https://doi.org/10.1214/09-SS057</a>.
+</div>
+<div id="ref-rohrer2018thinking" class="csl-entry" role="listitem">
+Rohrer, Julia M. 2018. <span>“Thinking Clearly about Correlations and Causation: Graphical Causal Models for Observational Data.”</span> <em>Advances in Methods and Practices in Psychological Science</em> 1 (1): 27–42. <a href="https://doi.org/10.1177/2515245917745">https://doi.org/10.1177/2515245917745</a>.
+</div>
+</div>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>See <span class="citation" data-cites="arif2022predictive">Arif and MacNeil (<a href="references.html#ref-arif2022predictive" role="doc-biblioref">2022</a>)</span> for more discussion of predictive and causal models, written for ecologists.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>The <code>[pos=x,y]</code> indicators are completely optional, and are only used to provide a better layout for graphing functions.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Also possible: <code>adjustmentSets(eng_dag, exposure = "DiphoneFreq", outcome = "RTlexdec")</code><a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>named for its creators, Peter Spirtes and Clark Glymour<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./FDA_edited.html" class="pagination-link" aria-label="Functional principal components analysis">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Functional principal components analysis</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./references.html" class="pagination-link" aria-label="References">
+        <span class="nav-page-text">References</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

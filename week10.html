@@ -1,0 +1,1739 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>6&nbsp; Bayesian Hierarchical Models 2 – Advanced Quantitative Methods for Linguistic Data</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./week11.html" rel="next">
+<link href="./week9.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./week10.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Bayesian Hierarchical Models 2</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Advanced Quantitative Methods for Linguistic Data</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Bayesian basics 1</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Bayesian basics 2</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Bayesian Regression Models 1</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Bayesian Regression Models 2</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week9.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Bayesian Hierarchical Models 1</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week10.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Bayesian Hierarchical Models 2</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week11.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Bayesian Hierarchical Models 3</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week12.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Models for discrete data: counts, scales, and frequencies</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week13.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Multivariate models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week6.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Generalized Additive Models (GAMs)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week7.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Generalized additive mixed-effects models (GAMMs)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bayesian_gamms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Bayesian GAMs</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./FDA_edited.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Functional principal components analysis</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#preliminaries" id="toc-preliminaries" class="nav-link active" data-scroll-target="#preliminaries"><span class="header-section-number">6.1</span> Preliminaries</a>
+  <ul class="collapse">
+  <li><a href="#sec-hbm2-data" id="toc-sec-hbm2-data" class="nav-link" data-scroll-target="#sec-hbm2-data"><span class="header-section-number">6.1.1</span> Data</a></li>
+  </ul></li>
+  <li><a href="#sec-brm2-mgf" id="toc-sec-brm2-mgf" class="nav-link" data-scroll-target="#sec-brm2-mgf"><span class="header-section-number">6.2</span> Multiple grouping factors</a></li>
+  <li><a href="#random-slopes" id="toc-random-slopes" class="nav-link" data-scroll-target="#random-slopes"><span class="header-section-number">6.3</span> Random slopes</a>
+  <ul class="collapse">
+  <li><a href="#sec-hbm2-rqs" id="toc-sec-hbm2-rqs" class="nav-link" data-scroll-target="#sec-hbm2-rqs"><span class="header-section-number">6.3.1</span> Research questions</a></li>
+  <li><a href="#frequentist-model" id="toc-frequentist-model" class="nav-link" data-scroll-target="#frequentist-model"><span class="header-section-number">6.3.2</span> Frequentist model</a></li>
+  <li><a href="#priors-for-random-effect-terms" id="toc-priors-for-random-effect-terms" class="nav-link" data-scroll-target="#priors-for-random-effect-terms"><span class="header-section-number">6.3.3</span> Priors for random-effect terms</a></li>
+  <li><a href="#sec-hbm2-fm" id="toc-sec-hbm2-fm" class="nav-link" data-scroll-target="#sec-hbm2-fm"><span class="header-section-number">6.3.4</span> A first model</a></li>
+  <li><a href="#a-maximal-model" id="toc-a-maximal-model" class="nav-link" data-scroll-target="#a-maximal-model"><span class="header-section-number">6.3.5</span> A “Maximal” model</a></li>
+  </ul></li>
+  <li><a href="#sec-hbm2-mp" id="toc-sec-hbm2-mp" class="nav-link" data-scroll-target="#sec-hbm2-mp"><span class="header-section-number">6.4</span> Model predictions: random effects</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="sec-bhm-2" class="quarto-section-identifier"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Bayesian Hierarchical Models 2</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>These lecture notes cover topics from:</p>
+<ul>
+<li><span class="citation" data-cites="mcelreath2020statistical">McElreath (<a href="references.html#ref-mcelreath2020statistical" role="doc-biblioref">2020</a>)</span> Sec. 13.3-13.5.2, 14.0-14.1</li>
+<li><span class="citation" data-cites="kurz2021statistical">Kurz (<a href="references.html#ref-kurz2021statistical" role="doc-biblioref">2023</a>)</span> : same sections</li>
+</ul>
+<p>Topics:</p>
+<ul>
+<li>BHMs with more complex random effects
+<ul>
+<li>Multiple grouping factors</li>
+<li>Random slopes and correlations</li>
+</ul></li>
+<li>Model predictions: random effects</li>
+</ul>
+<section id="preliminaries" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="preliminaries"><span class="header-section-number">6.1</span> Preliminaries</h2>
+<p>Load libraries we will need:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(brms)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lme4)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(arm)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidybayes)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bayestestR)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bayesplot)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(loo)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom) <span class="do">## for tidy model summaries</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom.mixed) <span class="do">## for tidy model summaries for lme4 models</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Practical notes
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><p>If you have loaded <code>rethinking</code>, you need to detach it before using brms. See <span class="citation" data-cites="kurz2021statistical">Kurz (<a href="references.html#ref-kurz2021statistical" role="doc-biblioref">2023</a>)</span> Sec. 4.3.1.</p></li>
+<li><p>I use the <code>file</code> argument when fitting <code>brms</code> models to make compiling this document easier (so the models don’t refit every time I compile). You may or may not want to do this for your own models. See <code>file</code> and <code>file_refit</code> arguments in <code>?brm</code>.</p></li>
+<li><p>Here I set the <code>file_refit</code> option so “brms will refit the model if model, data or algorithm as passed to Stan differ from what is stored in the file.”</p></li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">brms.file_refit =</span> <span class="st">"on_change"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="4" type="1">
+<li>I use <code>chains = 4, cores = 4</code> when fitting <code>brm</code> models below—this means 4 chains, each to be run on one core on my laptop. <code>cores = 4</code> may need to be adjusted for your computer. (You may have fewer or more cores; I have 8 cores, so this leaves 50% free.) <strong>You should figure out how to use multiple cores on your machine</strong>.</li>
+</ol>
+</div>
+</div>
+</div>
+<p>Make numbers be printed only to 3 digits, for neater output:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">digits =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="sec-hbm2-data" class="level3" data-number="6.1.1">
+<h3 data-number="6.1.1" class="anchored" data-anchor-id="sec-hbm2-data"><span class="header-section-number">6.1.1</span> Data</h3>
+<p>Load the <code>neutralization</code> data from <em>RMLD</em> <span class="citation" data-cites="rmld-book">(<a href="references.html#ref-rmld-book" role="doc-biblioref">Sonderegger 2023</a>)</span>—where this dataset is described in more detail (Sec. 3.3.1)—and perform some preprocessing (described in Sec. 10.1).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>neutralization <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"https://osf.io/qg5fc/download"</span>, <span class="at">stringsAsFactors =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">voicing_fact =</span> <span class="fu">fct_relevel</span>(voicing, <span class="st">"voiceless"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(prosodic_boundary)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">prosodic_boundary =</span> <span class="fu">rescale</span>(prosodic_boundary),</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">voicing =</span> <span class="fu">rescale</span>(voicing_fact),</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">item_pair =</span> <span class="fu">as.factor</span>(item_pair),</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">subject =</span> <span class="fu">as.factor</span>(subject)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Code multi-level factors with Helmert contrasts</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="do">## so that all predictors are centered</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(neutralization<span class="sc">$</span>vowel) <span class="ot">&lt;-</span> contr.helmert</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(neutralization<span class="sc">$</span>place) <span class="ot">&lt;-</span> contr.helmert</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Recall that for this data:</p>
+<ul>
+<li><code>voicing</code> is of primary interest</li>
+<li>The response is <code>vowel_dur</code></li>
+<li>There are two grouping factors, <code>item_pair</code> and <code>subject</code></li>
+<li><code>voicing</code> varies within both item and subject</li>
+<li><code>prosodic_boundary</code>, <code>vowel</code>, <code>place</code> are controls.</li>
+</ul>
+</section>
+</section>
+<section id="sec-brm2-mgf" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="sec-brm2-mgf"><span class="header-section-number">6.2</span> Multiple grouping factors</h2>
+<p>Let’s fit a first model of the <code>neutralization</code> data, with:</p>
+<ul>
+<li>A realistic set of fixed effects: <code>voicing</code> (of primary interest), plus all controls: <code>vowel</code>, <code>place</code>, <code>prosodic_boundary</code>.</li>
+<li>Random intercepts for <code>item_pair</code> and <code>subject</code></li>
+</ul>
+<p>This is not a good model (we’d need random slopes for <code>voicing</code>), but it will do for now.</p>
+<p>Let’s first fit a frequentist <code>lmer()</code> model, to compare to what we’ll get with the Bayesian model:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>neut_m1 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(vowel_dur <span class="sc">~</span> voicing <span class="sc">+</span> vowel <span class="sc">+</span> place <span class="sc">+</span> prosodic_boundary <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> item_pair) <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> subject), <span class="at">data =</span> neutralization)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(neut_m1, <span class="at">correlation =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Linear mixed model fit by REML ['lmerMod']</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Formula: vowel_dur ~ voicing + vowel + place + prosodic_boundary + (1 |  </span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="do">##     item_pair) + (1 | subject)</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="do">##    Data: neutralization</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="do">## REML criterion at convergence: 6693</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="do">## Scaled residuals: </span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="do">##    Min     1Q Median     3Q    Max </span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="do">## -4.562 -0.604 -0.021  0.601  3.019 </span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="do">## Random effects:</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="do">##  Groups    Name        Variance Std.Dev.</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="do">##  item_pair (Intercept)  71.9     8.48   </span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="do">##  subject   (Intercept) 669.3    25.87   </span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="do">##  Residual              402.5    20.06   </span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="do">## Number of obs: 749, groups:  item_pair, 24; subject, 16</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="do">## Fixed effects:</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="do">##                   Estimate Std. Error t value</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="do">## (Intercept)        157.175      6.741   23.32</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="do">## voicing              9.599      1.469    6.53</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="do">## vowel1              -0.288      3.125   -0.09</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a><span class="do">## vowel2             -18.239      1.722  -10.59</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a><span class="do">## vowel3              -3.724      1.160   -3.21</span></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a><span class="do">## vowel4              -6.757      0.897   -7.53</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a><span class="do">## place1              -9.373      2.428   -3.86</span></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a><span class="do">## place2               1.604      1.321    1.21</span></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a><span class="do">## prosodic_boundary   12.392      2.612    4.74</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>To fit a Bayesian model, we need to set priors. We will determine weakly informative priors, for practice.</p>
+<p>To choose a prior for the intercept, note that the response variable <code>vowel_dur</code>, has range of about 50–300:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> vowel_dur), <span class="at">data =</span> neutralization) <span class="sc">+</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">fill =</span> <span class="st">"blue"</span>, <span class="at">alpha =</span> <span class="fl">0.25</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="week10_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Let’s use the following priors:</p>
+<ul>
+<li>Intercept: <span class="math inline">\(N(150, 50)\)</span>
+<ul>
+<li>Whatever the intercept corresponds to in this model, reasonable values must be positive (vowel duration can only be positive).<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></li>
+</ul></li>
+<li><span class="math inline">\(\beta_i\)</span>: <span class="math inline">\(N(0, 50)\)</span> — a change of 50 (msec) in <code>vowel_duration</code> is huge.</li>
+<li>Random intercept variances: <span class="math inline">\(\text{Exponential}(0.02)\)</span></li>
+</ul>
+<p>Why is <span class="math inline">\(\lambda = 0.02\)</span> for the exponential prior, <span class="math inline">\(\text{Exponential}(\lambda)\)</span>? <span class="math inline">\(\lambda\)</span> should be on the order of 1/<span class="math inline">\(SD_y\)</span>, the standard deviation of the response variable, to be “weakly informative”.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> The <span class="math inline">\(\text{Exponential(1)}\)</span> prior we’ve seen in other models was based on the assumption that <span class="math inline">\(y\)</span> has been standardized. In this case, it has not: <code>sd(neutralization$vowel_dur)</code> is 43.5, so <span class="math inline">\(\lambda\)</span> should be around 0.02.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Practical note: Weakly-informative vs.&nbsp;default priors
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Remember: <strong>if you are not comfortable determining weakly-informative priors, it’s always an option to just use brms’ default priors</strong>, by not specifying the <code>prior</code> argument of your model. <code>brms</code> is particularly good for weakly-informative default priors for random effects (see <code>?prior()</code> Sec. 2). To use these, we’d remove the <code>class = sd</code> line from our prior statement when fitting the model. Using weakly-informative priors is best practice, but it is better to use default/flat priors you don’t understand than to risk fitting a model with priors that don’t make sense.</p>
+<p>It’s also a good idea to use brms default priors whenever you just don’t understand what a model parameter is doing. (Well, the second-best idea, after actually understanding it.). This can happen even if you’re pretty comfortable with Bayesian models, when you move to a new model type. For example: if you fit a negative binomial model, everything might make sense except the <code>shape</code> parameter, which in fact requires substantial digging in documentation to find a good definition. It’s fine to just use <code>brms</code>’s default prior for it.</p>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>neutralization_m10_1 <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> neutralization,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> gaussian,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  vowel_dur <span class="sc">~</span> voicing <span class="sc">+</span> place <span class="sc">+</span> vowel <span class="sc">+</span> prosodic_boundary <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> subject) <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> item_pair),</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">prior =</span> <span class="fu">c</span>(</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">150</span>, <span class="dv">50</span>), <span class="at">class =</span> Intercept), <span class="co"># beta_0</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="dv">50</span>), <span class="at">class =</span> b),</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">exponential</span>(<span class="fl">0.02</span>), <span class="at">class =</span> sd) <span class="co"># sigma</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter =</span> <span class="dv">4000</span>, <span class="at">warmup =</span> <span class="dv">2000</span>, <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">cores =</span> <span class="dv">4</span>,</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">"models/neutralization_m10_1.brm"</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(neutralization_m10_1)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="do">##  Family: gaussian </span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="do">##   Links: mu = identity; sigma = identity </span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Formula: vowel_dur ~ voicing + place + vowel + prosodic_boundary + (1 | subject) + (1 | item_pair) </span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="do">##    Data: neutralization (Number of observations: 749) </span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   Draws: 4 chains, each with iter = 4000; warmup = 2000; thin = 1;</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="do">##          total post-warmup draws = 8000</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="do">## Multilevel Hyperparameters:</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="do">## ~item_pair (Number of levels: 24) </span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="do">##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="do">## sd(Intercept)     9.10      1.98     5.99    13.71 1.00     3047     4798</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="do">## ~subject (Number of levels: 16) </span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="do">##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="do">## sd(Intercept)    27.80      5.70    19.16    41.02 1.00     2312     3711</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="do">## Regression Coefficients:</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="do">##                   Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="do">## Intercept           156.99      7.09   143.28   171.16 1.00     1834     3038</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="do">## voicing               9.60      1.51     6.61    12.57 1.00    11511     5544</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="do">## place1               -9.36      2.56   -14.42    -4.26 1.00     5323     5081</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="do">## place2                1.56      1.45    -1.29     4.51 1.00     5502     4747</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="do">## vowel1               -0.23      3.37    -6.69     6.51 1.00     5919     4941</span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a><span class="do">## vowel2              -18.20      1.87   -21.95   -14.56 1.00     4969     4896</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a><span class="do">## vowel3               -3.74      1.25    -6.26    -1.27 1.00     5544     4502</span></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a><span class="do">## vowel4               -6.69      0.97    -8.52    -4.71 1.00     5548     5520</span></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a><span class="do">## prosodic_boundary    12.35      2.63     7.25    17.51 1.00     9918     6003</span></span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a><span class="do">## Further Distributional Parameters:</span></span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a><span class="do">##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS</span></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a><span class="do">## sigma    20.10      0.54    19.07    21.17 1.00    11169     4645</span></span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a><span class="do">## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS</span></span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a><span class="do">## and Tail_ESS are effective sample size measures, and Rhat is the potential</span></span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a><span class="do">## scale reduction factor on split chains (at convergence, Rhat = 1).</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Here is one possible visualization of the model’s coefficients:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># One possible posterior plot, showing all non-random effect parameters except intercept:</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># regexp means "anything starting with b_X, where X doen't begin with I, and anything starting with s".</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mcmc_plot</span>(neutralization_m10_1, <span class="at">variable =</span> <span class="fu">c</span>(<span class="st">"^b_[^I]"</span>, <span class="st">"^s"</span>), <span class="at">regex =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="week10_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="exr-bhm2-1" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 6.1</strong></span> &nbsp;</p>
+<ol type="a">
+<li>Match every fitted parameter shown in the Bayesian model output (there are 12) to the frequentist model output and verify that their values are (practically) the same.</li>
+</ol>
+<!-- b. Which parameters have errors in the Bayesian but not the frequentist model? -->
+<ol start="2" type="a">
+<li>Make plots of the marginal effect of vowel for model <code>neutralization_m10_1</code> (as in <a href="week9.html#sec-bhm2-plotting-effects" class="quarto-xref"><span>Section 5.3.2</span></a>): one plot for an “average item/speaker” (CIs), and another for a new observation (PIs).</li>
+</ol>
+<!-- (PIs).method = `posterior_predict()`). -->
+</div>
+<!-- **Exercise** -->
+<!-- * Examine some diagnostics (trace plots, $\hat{R}$, etc.) to convince yourself the model is OK (In the sense of a good sample from the posterior.) -->
+<p>Recall that the model contains many more fitted parameters than shown in the summary, where none of the random effects are shown. To see all parameters:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">posterior_summary</span>(neutralization_m10_1)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="do">##                            Estimate Est.Error     Q2.5     Q97.5</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="do">## b_Intercept                1.57e+02     7.095   143.28   171.164</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="do">## b_voicing                  9.60e+00     1.510     6.61    12.569</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="do">## b_place1                  -9.36e+00     2.564   -14.42    -4.259</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="do">## b_place2                   1.56e+00     1.446    -1.29     4.510</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="do">## b_vowel1                  -2.29e-01     3.370    -6.69     6.510</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="do">## b_vowel2                  -1.82e+01     1.868   -21.95   -14.557</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="do">## b_vowel3                  -3.74e+00     1.252    -6.26    -1.268</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="do">## b_vowel4                  -6.69e+00     0.967    -8.52    -4.715</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="do">## b_prosodic_boundary        1.24e+01     2.633     7.25    17.511</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="do">## sd_item_pair__Intercept    9.10e+00     1.983     5.99    13.712</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="do">## sd_subject__Intercept      2.78e+01     5.699    19.16    41.017</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="do">## sigma                      2.01e+01     0.537    19.07    21.171</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="do">## Intercept                  1.56e+02     7.096   141.81   169.675</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="do">## r_item_pair[1,Intercept]   3.87e+00     5.878    -7.53    16.024</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="do">## r_item_pair[2,Intercept]   1.81e+00     5.913   -10.04    13.362</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="do">## r_item_pair[3,Intercept]  -7.10e+00     5.706   -18.71     4.011</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="do">## r_item_pair[4,Intercept]  -6.95e+00     5.440   -17.22     3.702</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="do">## r_item_pair[5,Intercept]   1.72e+01     6.078     6.09    29.742</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a><span class="do">## r_item_pair[6,Intercept]   4.96e+00     5.470    -5.48    15.713</span></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="do">## r_item_pair[7,Intercept]  -1.96e+00     5.539   -13.20     8.793</span></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a><span class="do">## r_item_pair[8,Intercept]  -1.81e-02     5.590   -11.06    11.100</span></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a><span class="do">## r_item_pair[9,Intercept]   7.04e+00     5.878    -4.24    18.692</span></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a><span class="do">## r_item_pair[10,Intercept] -1.25e+01     6.242   -25.10    -0.622</span></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a><span class="do">## r_item_pair[11,Intercept]  1.14e+00     5.554    -9.76    12.399</span></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a><span class="do">## r_item_pair[12,Intercept]  6.88e+00     6.000    -4.72    18.763</span></span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a><span class="do">## r_item_pair[13,Intercept] -6.70e+00     5.583   -17.84     4.181</span></span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a><span class="do">## r_item_pair[14,Intercept]  5.86e-01     5.503   -10.41    11.221</span></span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a><span class="do">## r_item_pair[15,Intercept]  9.94e+00     6.283    -2.39    22.866</span></span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a><span class="do">## r_item_pair[16,Intercept] -6.58e+00     5.539   -17.70     4.332</span></span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a><span class="do">## r_item_pair[17,Intercept]  4.98e+00     5.445    -6.05    15.538</span></span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a><span class="do">## r_item_pair[18,Intercept]  5.13e-01     5.605   -10.40    11.993</span></span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a><span class="do">## r_item_pair[19,Intercept] -7.22e+00     5.584   -18.39     3.626</span></span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a><span class="do">## r_item_pair[20,Intercept]  2.18e-01     5.631   -10.80    11.244</span></span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a><span class="do">## r_item_pair[21,Intercept]  1.43e+00     5.456    -9.31    12.317</span></span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a><span class="do">## r_item_pair[22,Intercept]  1.98e+00     5.436    -8.57    12.995</span></span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a><span class="do">## r_item_pair[23,Intercept] -8.99e+00     5.552   -20.54     1.619</span></span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a><span class="do">## r_item_pair[24,Intercept] -4.11e+00     5.867   -15.62     7.216</span></span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a><span class="do">## r_subject[1,Intercept]     5.87e+01     7.473    44.10    73.399</span></span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a><span class="do">## r_subject[2,Intercept]    -2.84e+01     7.394   -43.27   -13.967</span></span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a><span class="do">## r_subject[3,Intercept]    -3.15e+01     7.421   -46.29   -16.872</span></span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a><span class="do">## r_subject[4,Intercept]    -4.32e+00     7.401   -19.15    10.203</span></span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a><span class="do">## r_subject[5,Intercept]    -3.57e-01     7.477   -15.16    14.374</span></span>
+<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a><span class="do">## r_subject[6,Intercept]    -2.68e+01     7.360   -41.44   -12.377</span></span>
+<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a><span class="do">## r_subject[7,Intercept]    -3.05e+00     7.422   -18.04    11.295</span></span>
+<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a><span class="do">## r_subject[8,Intercept]     3.20e+00     7.572   -11.90    18.068</span></span>
+<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a><span class="do">## r_subject[9,Intercept]    -2.08e+00     7.449   -16.80    12.308</span></span>
+<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a><span class="do">## r_subject[10,Intercept]   -1.44e+00     7.374   -16.22    13.181</span></span>
+<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a><span class="do">## r_subject[11,Intercept]   -1.80e+01     7.440   -32.88    -3.690</span></span>
+<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a><span class="do">## r_subject[12,Intercept]    2.64e+00     7.388   -12.13    17.021</span></span>
+<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a><span class="do">## r_subject[13,Intercept]    3.12e+01     7.439    16.42    45.626</span></span>
+<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a><span class="do">## r_subject[14,Intercept]    4.72e+01     7.494    32.32    62.069</span></span>
+<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a><span class="do">## r_subject[15,Intercept]   -6.02e+00     7.355   -20.66     8.392</span></span>
+<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a><span class="do">## r_subject[16,Intercept]   -1.82e+01     7.458   -33.17    -3.662</span></span>
+<span id="cb11-56"><a href="#cb11-56" aria-hidden="true" tabindex="-1"></a><span class="do">## lprior                    -5.64e+01     0.128   -56.68   -56.178</span></span>
+<span id="cb11-57"><a href="#cb11-57" aria-hidden="true" tabindex="-1"></a><span class="do">## lp__                      -3.41e+03     6.583 -3427.23 -3401.640</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Because the posterior distribution is over <em>all</em> terms, we can examine the posterior for any parameter(s), using tools to manipulate the posterior from previous models (<a href="week4.html" class="quarto-xref"><span>Chapter 3</span></a>).</p>
+<p>For example, to examine just the posterior for the by-item and by-subject random intercept variances:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>neutralization_m10_1 <span class="sc">%&gt;%</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">spread_draws</span>(sd_item_pair__Intercept, sd_subject__Intercept) <span class="sc">%&gt;%</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> sd_item_pair__Intercept, <span class="at">y =</span> sd_subject__Intercept)) <span class="sc">+</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hex</span>() <span class="sc">+</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"by-item variability"</span>) <span class="sc">+</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"by-subject variability"</span>) <span class="sc">+</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="fu">aes</span>(<span class="at">xintercept =</span> <span class="dv">0</span>), <span class="at">lty =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="fu">aes</span>(<span class="at">yintercept =</span> <span class="dv">0</span>), <span class="at">lty =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">lty =</span> <span class="dv">1</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="week10_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>A <span class="math inline">\(y = x\)</span> line has been added here to aid in an exercise.</p>
+<div id="exr-bhm2-2" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 6.2</strong></span> &nbsp;</p>
+<ol type="a">
+<li><p>Based on the plot just above and/or the model’s output, do you think that subjects or items vary more in vowel duration? Explain.</p></li>
+<li><p>This question can be formally tested using this command:</p></li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hypothesis</span>(neutralization_m10_1, <span class="st">"sd_subject__Intercept &gt; sd_item_pair__Intercept"</span>, <span class="at">class =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Run this command to evaluate the hypothesis: <code>Post.Prob</code> is <span class="math inline">\(p_d\)</span> and <code>Evid.Ratio</code> is a Bayes Factor.</p>
+</div>
+</section>
+<section id="random-slopes" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="random-slopes"><span class="header-section-number">6.3</span> Random slopes</h2>
+<p>Our model of the <code>neutralization</code> data above included by-subject and by-item random intercepts, with a set of control predictors. We now allow the <code>voicing</code> effect, which is of key interest, to vary by-subject and by-item, i.e.&nbsp;<em>random slopes</em>.</p>
+<section id="sec-hbm2-rqs" class="level3" data-number="6.3.1">
+<h3 data-number="6.3.1" class="anchored" data-anchor-id="sec-hbm2-rqs"><span class="header-section-number">6.3.1</span> Research questions</h3>
+<p>Our research questions will be:</p>
+<ol type="1">
+<li>Is there an overall effect of <code>voicing</code>?</li>
+<li>What by-subject variability is there in the <code>voicing</code> effect?</li>
+</ol>
+<p>It will be important background knowledge that:</p>
+<ul>
+<li>The <code>voicing</code> effect is expected to be small.</li>
+<li>A small enough <code>voicing</code> effect is functionally zero (humans can’t perceive the duration difference).
+<ul>
+<li>We will assume below that “small enough” is 5 msec, but other values might be reasonable (~5-10 msec).<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></li>
+</ul></li>
+</ul>
+</section>
+<section id="frequentist-model" class="level3" data-number="6.3.2">
+<h3 data-number="6.3.2" class="anchored" data-anchor-id="frequentist-model"><span class="header-section-number">6.3.2</span> Frequentist model</h3>
+<p>This model updates <code>neut_m1</code> to add random slopes:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>neut_m2 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(vowel_dur <span class="sc">~</span> voicing <span class="sc">+</span> place <span class="sc">+</span> vowel <span class="sc">+</span> prosodic_boundary <span class="sc">+</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  (<span class="dv">1</span> <span class="sc">+</span> voicing <span class="sc">|</span> subject) <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> voicing <span class="sc">|</span> item_pair), <span class="at">data =</span> neutralization)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="do">## boundary (singular) fit: see help('isSingular')</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(neut_m2, <span class="at">correlation =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Linear mixed model fit by REML ['lmerMod']</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Formula: vowel_dur ~ voicing + place + vowel + prosodic_boundary + (1 +  </span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="do">##     voicing | subject) + (1 + voicing | item_pair)</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="do">##    Data: neutralization</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="do">## REML criterion at convergence: 6683</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="do">## Scaled residuals: </span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="do">##    Min     1Q Median     3Q    Max </span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="do">## -4.460 -0.601  0.002  0.599  2.876 </span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="do">## Random effects:</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="do">##  Groups    Name        Variance Std.Dev. Corr </span></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="do">##  item_pair (Intercept)  76.57    8.75         </span></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a><span class="do">##            voicing       8.35    2.89    -1.00</span></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a><span class="do">##  subject   (Intercept) 674.27   25.97         </span></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a><span class="do">##            voicing      18.86    4.34    1.00 </span></span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a><span class="do">##  Residual              395.35   19.88         </span></span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a><span class="do">## Number of obs: 749, groups:  item_pair, 24; subject, 16</span></span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a><span class="do">## Fixed effects:</span></span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a><span class="do">##                   Estimate Std. Error t value</span></span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a><span class="do">## (Intercept)        157.085      6.777   23.18</span></span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a><span class="do">## voicing              9.604      1.910    5.03</span></span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a><span class="do">## place1             -10.592      2.336   -4.53</span></span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a><span class="do">## place2               2.120      1.269    1.67</span></span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a><span class="do">## vowel1              -0.400      3.013   -0.13</span></span>
+<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a><span class="do">## vowel2             -17.542      1.659  -10.58</span></span>
+<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a><span class="do">## vowel3              -3.185      1.115   -2.86</span></span>
+<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a><span class="do">## vowel4              -6.207      0.868   -7.15</span></span>
+<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a><span class="do">## prosodic_boundary   11.768      2.579    4.56</span></span>
+<span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a><span class="do">## optimizer (nloptwrap) convergence code: 0 (OK)</span></span>
+<span id="cb15-34"><a href="#cb15-34" aria-hidden="true" tabindex="-1"></a><span class="do">## boundary (singular) fit: see help('isSingular')</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This simple model, which includes the minimal random intercepts and slopes needed for the research questions, is singular. This is due to “perfect” random effect correlations, which are likely pathological. Fitting issues like singular models or non-convergence are common in mixed-effects models with linguistic data and often require substantial effort in model selection. Chapter 10 of <em>RMLD</em> covers these issues in detail. But as we’ll see below, using Bayesian models goes a long way to solving them.</p>
+<p>Ignoring the perfect correlations: the model predicts a clear <code>voicing</code> effect, with some variability by subject and item.</p>
+</section>
+<section id="priors-for-random-effect-terms" class="level3" data-number="6.3.3">
+<h3 data-number="6.3.3" class="anchored" data-anchor-id="priors-for-random-effect-terms"><span class="header-section-number">6.3.3</span> Priors for random-effect terms</h3>
+<p>Note that the random-effect terms in this model—describing covariance among random effects—are decomposed into:</p>
+<ul>
+<li><span class="math inline">\(k\)</span> random effect <em>variances</em></li>
+<li>A matrix of <span class="math inline">\(k(k-1)/2\)</span> <em>correlations</em></li>
+</ul>
+<p>For this model:</p>
+<ul>
+<li>By-subject random effects: 2 variances, 1 correlation (=2x2 matrix)</li>
+<li>By-item random effects: 2 variances, 1 correlation (=2x2 matrix)</li>
+</ul>
+<p>This is standard for frequentist mixed-effects models, though we usually don’t think about the parametrization, especially when focused on fixed effects.</p>
+<p>In a Bayesian model, we must understand this decomposition (at a high level) because both the random-effect variances and the correlation matrix need priors.</p>
+<p>The priors are typically set as:</p>
+<ul>
+<li>One prior for each variance</li>
+<li>One prior for each correlation matrix</li>
+</ul>
+<p>Instead of setting a prior for the entire covariance matrix, we decompose it into these components, just like in the <code>lmer()</code> output.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
+<p>For variances, we can use the same priors as for random intercepts or residual <span class="math inline">\(\sigma\)</span> variance.</p>
+<p>For correlation matrices, we use the LKJ prior, <span class="math inline">\(LKJ(\eta)\)</span>:</p>
+<ul>
+<li><span class="math inline">\(\eta = 1\)</span>: flat</li>
+<li><span class="math inline">\(0 &lt; \eta &lt; 1\)</span>: extreme correlations (closer to 1/-1) favored</li>
+<li><span class="math inline">\(\eta &gt; 1\)</span>: extreme correlations disfavored.</li>
+</ul>
+<p>See <span class="citation" data-cites="kurz2021statistical">Kurz (<a href="references.html#ref-kurz2021statistical" role="doc-biblioref">2023</a>)</span> 14.1.3 for intuition on LKJ priors.</p>
+<p>Since random-effect correlations near 1/-1 are unlikely, it is common to fit Bayesian mixed-effects models using LKJ priors with <span class="math inline">\(\eta &gt; 1\)</span>. A common choice is <span class="math inline">\(\eta = 2\)</span>, which we’ll use below, though this is somewhat arbitrary.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></p>
+</section>
+<section id="sec-hbm2-fm" class="level3" data-number="6.3.4">
+<h3 data-number="6.3.4" class="anchored" data-anchor-id="sec-hbm2-fm"><span class="header-section-number">6.3.4</span> A first model</h3>
+<p>We’ll fit the Bayesian equivalent of model <code>neut_m2</code>, using similar priors to <code>neutralization_m10_1</code>.</p>
+<ul>
+<li>Fixed effects
+<ul>
+<li>Intercept: <span class="math inline">\(N(150, 75)\)</span></li>
+<li>Each coefficient <span class="math inline">\(\beta_i\)</span>: <span class="math inline">\(N(0, 50)\)</span></li>
+</ul></li>
+<li>Random effects
+<ul>
+<li>Residual variance: <span class="math inline">\(\sigma \sim \text{Exponential}(0.02)\)</span></li>
+<li>Random effect variances: SDs <span class="math inline">\(\sim \text{Exponential}(0.02)\)</span></li>
+<li>Random effect correlation matrices: <span class="math inline">\(LKJ(2)\)</span></li>
+</ul></li>
+</ul>
+<p>Except for the LKJ prior, the justifications are the same as for <code>neutralization_m10_1</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>prior_1 <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">150</span>, <span class="dv">75</span>), <span class="at">class =</span> Intercept), <span class="co"># beta_0</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="dv">50</span>), <span class="at">class =</span> b),</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prior</span>(<span class="fu">exponential</span>(<span class="fl">0.02</span>), <span class="at">class =</span> sd), <span class="co"># random-effect SDs</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prior</span>(<span class="fu">lkj</span>(<span class="dv">2</span>), <span class="at">class =</span> cor), <span class="co"># random-effect correlation matrices</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prior</span>(<span class="fu">exponential</span>(<span class="fl">0.02</span>), <span class="at">class =</span> sigma) <span class="co"># residual variance</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Fit model:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>neutralization_m10_2 <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> neutralization,</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> gaussian,</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  vowel_dur <span class="sc">~</span> voicing <span class="sc">+</span> place <span class="sc">+</span> vowel <span class="sc">+</span> prosodic_boundary <span class="sc">+</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">1</span> <span class="sc">+</span> voicing <span class="sc">|</span> subject) <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> voicing <span class="sc">|</span> item_pair),</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">prior =</span> prior_1,</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter =</span> <span class="dv">2000</span>, <span class="at">warmup =</span> <span class="dv">1000</span>, <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">cores =</span> <span class="dv">4</span>,</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">"models/neutralization_m10_2.brm"</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(neutralization_m10_2)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="do">##  Family: gaussian </span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="do">##   Links: mu = identity; sigma = identity </span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Formula: vowel_dur ~ voicing + place + vowel + prosodic_boundary + (1 + voicing | subject) + (1 + voicing | item_pair) </span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="do">##    Data: neutralization (Number of observations: 749) </span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   Draws: 4 chains, each with iter = 2000; warmup = 1000; thin = 1;</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="do">##          total post-warmup draws = 4000</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="do">## Multilevel Hyperparameters:</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="do">## ~item_pair (Number of levels: 24) </span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="do">##                        Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="do">## sd(Intercept)              9.34      2.04     6.20    14.12 1.00     1737</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="do">## sd(voicing)                3.05      1.99     0.14     7.34 1.00     1546</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(Intercept,voicing)    -0.25      0.40    -0.87     0.63 1.00     4471</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="do">##                        Tail_ESS</span></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a><span class="do">## sd(Intercept)              2292</span></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a><span class="do">## sd(voicing)                1729</span></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(Intercept,voicing)     3012</span></span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a><span class="do">## ~subject (Number of levels: 16) </span></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a><span class="do">##                        Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS</span></span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a><span class="do">## sd(Intercept)             27.37      5.18    19.37    39.71 1.00     1451</span></span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a><span class="do">## sd(voicing)                5.02      2.14     1.13     9.54 1.00     1638</span></span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(Intercept,voicing)     0.53      0.27    -0.12     0.92 1.00     4566</span></span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a><span class="do">##                        Tail_ESS</span></span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a><span class="do">## sd(Intercept)              2565</span></span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a><span class="do">## sd(voicing)                1772</span></span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(Intercept,voicing)     2631</span></span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a><span class="do">## Regression Coefficients:</span></span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a><span class="do">##                   Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS</span></span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a><span class="do">## Intercept           157.24      7.16   142.69   171.47 1.00      944     1293</span></span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a><span class="do">## voicing               9.68      2.17     5.44    13.95 1.00     3285     3028</span></span>
+<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a><span class="do">## place1               -9.75      2.77   -15.40    -4.23 1.00     2848     2702</span></span>
+<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a><span class="do">## place2                1.73      1.49    -1.23     4.70 1.00     3346     2485</span></span>
+<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a><span class="do">## vowel1               -0.23      3.32    -6.75     6.42 1.00     3062     2538</span></span>
+<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a><span class="do">## vowel2              -17.98      1.88   -21.66   -14.25 1.00     2859     3030</span></span>
+<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a><span class="do">## vowel3               -3.63      1.28    -6.25    -1.08 1.00     3106     2762</span></span>
+<span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a><span class="do">## vowel4               -6.46      1.04    -8.45    -4.31 1.00     2778     2776</span></span>
+<span id="cb18-40"><a href="#cb18-40" aria-hidden="true" tabindex="-1"></a><span class="do">## prosodic_boundary    11.93      2.56     6.76    16.93 1.00     6359     2906</span></span>
+<span id="cb18-41"><a href="#cb18-41" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb18-42"><a href="#cb18-42" aria-hidden="true" tabindex="-1"></a><span class="do">## Further Distributional Parameters:</span></span>
+<span id="cb18-43"><a href="#cb18-43" aria-hidden="true" tabindex="-1"></a><span class="do">##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS</span></span>
+<span id="cb18-44"><a href="#cb18-44" aria-hidden="true" tabindex="-1"></a><span class="do">## sigma    19.90      0.53    18.92    20.98 1.00     6183     2951</span></span>
+<span id="cb18-45"><a href="#cb18-45" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb18-46"><a href="#cb18-46" aria-hidden="true" tabindex="-1"></a><span class="do">## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS</span></span>
+<span id="cb18-47"><a href="#cb18-47" aria-hidden="true" tabindex="-1"></a><span class="do">## and Tail_ESS are effective sample size measures, and Rhat is the potential</span></span>
+<span id="cb18-48"><a href="#cb18-48" aria-hidden="true" tabindex="-1"></a><span class="do">## scale reduction factor on split chains (at convergence, Rhat = 1).</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Posterior for the <code>voicing</code> term (RQ 1):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(neutralization_m10_1, <span class="at">variable =</span> <span class="st">"b_voicing"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="week10_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>There is also substantial by-subject and by-item variability in the <code>voicing</code> effect. We can see from the 95% CIs on those random-slope terms that it is unclear whether items or subjects vary more.</p>
+<p>To address individual variability, the posterior estimate for <code>sd(voicing)</code> tells us the model is confident there is some variability, but not how much: the 95% CredI is [1.13, 9,54].</p>
+<p>Just for fun, here is a visualization of all effects whose parameters end with <code>voicing</code>—which includes the two effects discussed just above:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mcmc_intervals</span>(neutralization_m10_2, <span class="at">pars =</span> <span class="fu">vars</span>(<span class="fu">ends_with</span>(<span class="st">"voicing"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="week10_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This illustrates the useful <a href="https://mc-stan.org/bayesplot/reference/tidy-params.html">tidy parameter selection</a> functionality, which bayesplot functions (like <code>mcmc_intervals()</code>) can use to pick out variable names of interest.</p>
+</section>
+<section id="a-maximal-model" class="level3" data-number="6.3.5">
+<h3 data-number="6.3.5" class="anchored" data-anchor-id="a-maximal-model"><span class="header-section-number">6.3.5</span> A “Maximal” model</h3>
+<!-- As illustrated by the models above: -->
+<!-- <!-- (including the exercise):  -->
+<p>Regularizing correlations tends to change fixed-effect estimates little, while allowing complex random effect structures which are important for accurately estimating fixed effects.</p>
+<p>Recall, from Chap 8 and 10 of <em>RMLD</em>:</p>
+<ul>
+<li>Random effect correlations were a big issue for frequentist mixed models.</li>
+<li>Different approaches to building up random effect structure (“maximal” vs.&nbsp;“data-driven” vs.&nbsp;“uncorrelated first”) all agree on the importance of adding many random slope terms.</li>
+<li>The simplest recipe was to fit a “maximal” model (<em>RMLD</em> Chap. 8) , with all possible random slopes.
+<ul>
+<li>This often wasn’t feasible, because the random effect structure is too complex for the data (especially given the number of correlations), causing the model to be singular or not converge.<br>
+</li>
+<li>The basic issue was <strong>overfitted random effect structure</strong>.</li>
+</ul></li>
+</ul>
+<!-- %fixed-effect terms of interest, but  -->
+<p>With a Bayesian model, we can just set a regularizing prior on random effect terms, and fit a random effect structure with a large number of terms. In other words, “maximal” models are always possible. This is not magic – using a very complex random-effect structure for a small dataset just means you will get random-effect parameter estimates which reflect the prior more, and may lower power on fixed-effect estimates.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> But the <em>practical</em> fitting issues which bedevil us for frequentist mixed-effects models are gone.</p>
+<!-- "Maximal" models are possible, even with large numbers of random slopes, thanks to the regularizing prior on the correlation matrix. -->
+<p>Let’s fit a maximal model to this data, using an <span class="math inline">\(LKJ(2)\)</span> prior for correlations:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>prior_2 <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">150</span>, <span class="dv">75</span>), <span class="at">class =</span> Intercept), <span class="co"># beta_0</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="dv">50</span>), <span class="at">class =</span> b),</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prior</span>(<span class="fu">exponential</span>(<span class="fl">0.02</span>), <span class="at">class =</span> sd), <span class="co"># random-effect SDs</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prior</span>(<span class="fu">lkj</span>(<span class="dv">2</span>), <span class="at">class =</span> cor), <span class="co"># random-effect correlation matrices</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prior</span>(<span class="fu">exponential</span>(<span class="fl">0.02</span>), <span class="at">class =</span> sigma) <span class="co"># residual variance</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="do">## by-speaker random slopes for all predictors</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="do">## by-item random slopes for all predictors which vary within item.</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>neutralization_m10_3 <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> neutralization,</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> gaussian,</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>  vowel_dur <span class="sc">~</span> voicing <span class="sc">+</span> place <span class="sc">+</span> vowel <span class="sc">+</span> prosodic_boundary <span class="sc">+</span></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">1</span> <span class="sc">+</span> voicing <span class="sc">+</span> place <span class="sc">+</span> vowel <span class="sc">+</span> prosodic_boundary <span class="sc">|</span> subject) <span class="sc">+</span></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">1</span> <span class="sc">+</span> voicing <span class="sc">+</span> prosodic_boundary <span class="sc">|</span> item_pair),</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">prior =</span> prior_2,</span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter =</span> <span class="dv">2000</span>, <span class="at">warmup =</span> <span class="dv">1000</span>, <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">cores =</span> <span class="dv">4</span>,</span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">"models/neutralization_m10_3.brm"</span></span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(neutralization_m10_3)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="do">##  Family: gaussian </span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="do">##   Links: mu = identity; sigma = identity </span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Formula: vowel_dur ~ voicing + place + vowel + prosodic_boundary + (1 + voicing + place + vowel + prosodic_boundary | subject) + (1 + voicing + prosodic_boundary | item_pair) </span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="do">##    Data: neutralization (Number of observations: 749) </span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   Draws: 4 chains, each with iter = 2000; warmup = 1000; thin = 1;</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="do">##          total post-warmup draws = 4000</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="do">## Multilevel Hyperparameters:</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="do">## ~item_pair (Number of levels: 24) </span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a><span class="do">##                                  Estimate Est.Error l-95% CI u-95% CI Rhat</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a><span class="do">## sd(Intercept)                        9.51      1.99     6.34    14.04 1.00</span></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a><span class="do">## sd(voicing)                          3.52      2.04     0.20     7.81 1.00</span></span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a><span class="do">## sd(prosodic_boundary)                2.28      1.63     0.08     5.99 1.00</span></span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(Intercept,voicing)              -0.29      0.35    -0.85     0.50 1.00</span></span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(Intercept,prosodic_boundary)    -0.18      0.38    -0.82     0.61 1.00</span></span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(voicing,prosodic_boundary)       0.07      0.40    -0.71     0.78 1.00</span></span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a><span class="do">##                                  Bulk_ESS Tail_ESS</span></span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a><span class="do">## sd(Intercept)                        1361     2213</span></span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a><span class="do">## sd(voicing)                          1471     1667</span></span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a><span class="do">## sd(prosodic_boundary)                2231     2030</span></span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(Intercept,voicing)               3407     2837</span></span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(Intercept,prosodic_boundary)     5026     3226</span></span>
+<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(voicing,prosodic_boundary)       4730     3394</span></span>
+<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a><span class="do">## ~subject (Number of levels: 16) </span></span>
+<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a><span class="do">##                                  Estimate Est.Error l-95% CI u-95% CI Rhat</span></span>
+<span id="cb22-28"><a href="#cb22-28" aria-hidden="true" tabindex="-1"></a><span class="do">## sd(Intercept)                       25.43      4.77    18.22    37.02 1.00</span></span>
+<span id="cb22-29"><a href="#cb22-29" aria-hidden="true" tabindex="-1"></a><span class="do">## sd(voicing)                          5.54      2.18     1.61    10.28 1.00</span></span>
+<span id="cb22-30"><a href="#cb22-30" aria-hidden="true" tabindex="-1"></a><span class="do">## sd(place1)                           3.96      1.57     0.92     7.28 1.00</span></span>
+<span id="cb22-31"><a href="#cb22-31" aria-hidden="true" tabindex="-1"></a><span class="do">## sd(place2)                           1.43      0.74     0.15     3.05 1.00</span></span>
+<span id="cb22-32"><a href="#cb22-32" aria-hidden="true" tabindex="-1"></a><span class="do">## sd(vowel1)                           9.12      2.34     5.42    14.53 1.00</span></span>
+<span id="cb22-33"><a href="#cb22-33" aria-hidden="true" tabindex="-1"></a><span class="do">## sd(vowel2)                           4.66      1.06     2.91     7.14 1.00</span></span>
+<span id="cb22-34"><a href="#cb22-34" aria-hidden="true" tabindex="-1"></a><span class="do">## sd(vowel3)                           0.68      0.52     0.03     1.94 1.00</span></span>
+<span id="cb22-35"><a href="#cb22-35" aria-hidden="true" tabindex="-1"></a><span class="do">## sd(vowel4)                           1.34      0.54     0.31     2.52 1.00</span></span>
+<span id="cb22-36"><a href="#cb22-36" aria-hidden="true" tabindex="-1"></a><span class="do">## sd(prosodic_boundary)                3.48      2.85     0.16    10.64 1.00</span></span>
+<span id="cb22-37"><a href="#cb22-37" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(Intercept,voicing)               0.33      0.22    -0.14     0.70 1.00</span></span>
+<span id="cb22-38"><a href="#cb22-38" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(Intercept,place1)               -0.21      0.23    -0.63     0.24 1.00</span></span>
+<span id="cb22-39"><a href="#cb22-39" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(voicing,place1)                 -0.23      0.25    -0.69     0.27 1.00</span></span>
+<span id="cb22-40"><a href="#cb22-40" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(Intercept,place2)                0.22      0.24    -0.27     0.64 1.00</span></span>
+<span id="cb22-41"><a href="#cb22-41" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(voicing,place2)                  0.11      0.27    -0.42     0.61 1.00</span></span>
+<span id="cb22-42"><a href="#cb22-42" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(place1,place2)                  -0.02      0.27    -0.53     0.51 1.00</span></span>
+<span id="cb22-43"><a href="#cb22-43" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(Intercept,vowel1)               -0.21      0.20    -0.58     0.19 1.00</span></span>
+<span id="cb22-44"><a href="#cb22-44" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(voicing,vowel1)                 -0.09      0.24    -0.54     0.40 1.00</span></span>
+<span id="cb22-45"><a href="#cb22-45" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(place1,vowel1)                   0.10      0.24    -0.37     0.54 1.00</span></span>
+<span id="cb22-46"><a href="#cb22-46" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(place2,vowel1)                   0.20      0.25    -0.32     0.66 1.00</span></span>
+<span id="cb22-47"><a href="#cb22-47" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(Intercept,vowel2)               -0.47      0.18    -0.78    -0.08 1.00</span></span>
+<span id="cb22-48"><a href="#cb22-48" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(voicing,vowel2)                 -0.03      0.24    -0.49     0.44 1.00</span></span>
+<span id="cb22-49"><a href="#cb22-49" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(place1,vowel2)                   0.10      0.24    -0.38     0.55 1.00</span></span>
+<span id="cb22-50"><a href="#cb22-50" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(place2,vowel2)                  -0.13      0.25    -0.59     0.38 1.00</span></span>
+<span id="cb22-51"><a href="#cb22-51" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(vowel1,vowel2)                   0.22      0.22    -0.23     0.62 1.00</span></span>
+<span id="cb22-52"><a href="#cb22-52" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(Intercept,vowel3)                0.00      0.27    -0.53     0.52 1.00</span></span>
+<span id="cb22-53"><a href="#cb22-53" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(voicing,vowel3)                  0.04      0.29    -0.50     0.58 1.00</span></span>
+<span id="cb22-54"><a href="#cb22-54" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(place1,vowel3)                  -0.03      0.28    -0.56     0.52 1.00</span></span>
+<span id="cb22-55"><a href="#cb22-55" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(place2,vowel3)                  -0.01      0.29    -0.56     0.56 1.00</span></span>
+<span id="cb22-56"><a href="#cb22-56" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(vowel1,vowel3)                  -0.03      0.29    -0.59     0.53 1.00</span></span>
+<span id="cb22-57"><a href="#cb22-57" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(vowel2,vowel3)                   0.10      0.28    -0.47     0.63 1.00</span></span>
+<span id="cb22-58"><a href="#cb22-58" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(Intercept,vowel4)               -0.16      0.23    -0.58     0.31 1.00</span></span>
+<span id="cb22-59"><a href="#cb22-59" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(voicing,vowel4)                  0.05      0.26    -0.46     0.55 1.00</span></span>
+<span id="cb22-60"><a href="#cb22-60" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(place1,vowel4)                   0.01      0.26    -0.51     0.52 1.00</span></span>
+<span id="cb22-61"><a href="#cb22-61" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(place2,vowel4)                  -0.10      0.26    -0.59     0.42 1.00</span></span>
+<span id="cb22-62"><a href="#cb22-62" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(vowel1,vowel4)                   0.04      0.24    -0.45     0.50 1.00</span></span>
+<span id="cb22-63"><a href="#cb22-63" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(vowel2,vowel4)                   0.39      0.23    -0.10     0.77 1.00</span></span>
+<span id="cb22-64"><a href="#cb22-64" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(vowel3,vowel4)                   0.09      0.28    -0.49     0.61 1.00</span></span>
+<span id="cb22-65"><a href="#cb22-65" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(Intercept,prosodic_boundary)     0.04      0.27    -0.51     0.56 1.00</span></span>
+<span id="cb22-66"><a href="#cb22-66" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(voicing,prosodic_boundary)       0.02      0.28    -0.53     0.56 1.00</span></span>
+<span id="cb22-67"><a href="#cb22-67" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(place1,prosodic_boundary)       -0.01      0.28    -0.55     0.53 1.00</span></span>
+<span id="cb22-68"><a href="#cb22-68" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(place2,prosodic_boundary)        0.06      0.28    -0.48     0.58 1.00</span></span>
+<span id="cb22-69"><a href="#cb22-69" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(vowel1,prosodic_boundary)        0.11      0.29    -0.48     0.63 1.00</span></span>
+<span id="cb22-70"><a href="#cb22-70" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(vowel2,prosodic_boundary)       -0.01      0.28    -0.55     0.53 1.00</span></span>
+<span id="cb22-71"><a href="#cb22-71" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(vowel3,prosodic_boundary)       -0.03      0.29    -0.57     0.54 1.00</span></span>
+<span id="cb22-72"><a href="#cb22-72" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(vowel4,prosodic_boundary)        0.00      0.28    -0.54     0.54 1.00</span></span>
+<span id="cb22-73"><a href="#cb22-73" aria-hidden="true" tabindex="-1"></a><span class="do">##                                  Bulk_ESS Tail_ESS</span></span>
+<span id="cb22-74"><a href="#cb22-74" aria-hidden="true" tabindex="-1"></a><span class="do">## sd(Intercept)                        1401     1751</span></span>
+<span id="cb22-75"><a href="#cb22-75" aria-hidden="true" tabindex="-1"></a><span class="do">## sd(voicing)                          1633     1228</span></span>
+<span id="cb22-76"><a href="#cb22-76" aria-hidden="true" tabindex="-1"></a><span class="do">## sd(place1)                           1269      954</span></span>
+<span id="cb22-77"><a href="#cb22-77" aria-hidden="true" tabindex="-1"></a><span class="do">## sd(place2)                           1585     1432</span></span>
+<span id="cb22-78"><a href="#cb22-78" aria-hidden="true" tabindex="-1"></a><span class="do">## sd(vowel1)                           2752     2983</span></span>
+<span id="cb22-79"><a href="#cb22-79" aria-hidden="true" tabindex="-1"></a><span class="do">## sd(vowel2)                           2823     2874</span></span>
+<span id="cb22-80"><a href="#cb22-80" aria-hidden="true" tabindex="-1"></a><span class="do">## sd(vowel3)                           2226     2278</span></span>
+<span id="cb22-81"><a href="#cb22-81" aria-hidden="true" tabindex="-1"></a><span class="do">## sd(vowel4)                           1970     1376</span></span>
+<span id="cb22-82"><a href="#cb22-82" aria-hidden="true" tabindex="-1"></a><span class="do">## sd(prosodic_boundary)                2486     2703</span></span>
+<span id="cb22-83"><a href="#cb22-83" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(Intercept,voicing)               4072     3055</span></span>
+<span id="cb22-84"><a href="#cb22-84" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(Intercept,place1)                4551     2958</span></span>
+<span id="cb22-85"><a href="#cb22-85" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(voicing,place1)                  3349     2872</span></span>
+<span id="cb22-86"><a href="#cb22-86" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(Intercept,place2)                4510     3135</span></span>
+<span id="cb22-87"><a href="#cb22-87" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(voicing,place2)                  4744     3169</span></span>
+<span id="cb22-88"><a href="#cb22-88" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(place1,place2)                   3759     3027</span></span>
+<span id="cb22-89"><a href="#cb22-89" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(Intercept,vowel1)                3911     2960</span></span>
+<span id="cb22-90"><a href="#cb22-90" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(voicing,vowel1)                  2119     2629</span></span>
+<span id="cb22-91"><a href="#cb22-91" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(place1,vowel1)                   2731     2891</span></span>
+<span id="cb22-92"><a href="#cb22-92" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(place2,vowel1)                   1892     2108</span></span>
+<span id="cb22-93"><a href="#cb22-93" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(Intercept,vowel2)                3959     3317</span></span>
+<span id="cb22-94"><a href="#cb22-94" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(voicing,vowel2)                  3400     2979</span></span>
+<span id="cb22-95"><a href="#cb22-95" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(place1,vowel2)                   2729     2682</span></span>
+<span id="cb22-96"><a href="#cb22-96" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(place2,vowel2)                   2708     2857</span></span>
+<span id="cb22-97"><a href="#cb22-97" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(vowel1,vowel2)                   4156     3519</span></span>
+<span id="cb22-98"><a href="#cb22-98" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(Intercept,vowel3)                6677     3109</span></span>
+<span id="cb22-99"><a href="#cb22-99" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(voicing,vowel3)                  5953     2826</span></span>
+<span id="cb22-100"><a href="#cb22-100" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(place1,vowel3)                   5178     2725</span></span>
+<span id="cb22-101"><a href="#cb22-101" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(place2,vowel3)                   3959     2857</span></span>
+<span id="cb22-102"><a href="#cb22-102" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(vowel1,vowel3)                   5850     3567</span></span>
+<span id="cb22-103"><a href="#cb22-103" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(vowel2,vowel3)                   4756     3049</span></span>
+<span id="cb22-104"><a href="#cb22-104" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(Intercept,vowel4)                5059     3348</span></span>
+<span id="cb22-105"><a href="#cb22-105" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(voicing,vowel4)                  4432     3514</span></span>
+<span id="cb22-106"><a href="#cb22-106" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(place1,vowel4)                   3982     3338</span></span>
+<span id="cb22-107"><a href="#cb22-107" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(place2,vowel4)                   3238     3125</span></span>
+<span id="cb22-108"><a href="#cb22-108" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(vowel1,vowel4)                   4307     3383</span></span>
+<span id="cb22-109"><a href="#cb22-109" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(vowel2,vowel4)                   3596     3457</span></span>
+<span id="cb22-110"><a href="#cb22-110" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(vowel3,vowel4)                   3126     3493</span></span>
+<span id="cb22-111"><a href="#cb22-111" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(Intercept,prosodic_boundary)     6602     3114</span></span>
+<span id="cb22-112"><a href="#cb22-112" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(voicing,prosodic_boundary)       6357     3276</span></span>
+<span id="cb22-113"><a href="#cb22-113" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(place1,prosodic_boundary)        5217     3160</span></span>
+<span id="cb22-114"><a href="#cb22-114" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(place2,prosodic_boundary)        4202     3272</span></span>
+<span id="cb22-115"><a href="#cb22-115" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(vowel1,prosodic_boundary)        4926     3252</span></span>
+<span id="cb22-116"><a href="#cb22-116" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(vowel2,prosodic_boundary)        4648     3258</span></span>
+<span id="cb22-117"><a href="#cb22-117" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(vowel3,prosodic_boundary)        2986     2818</span></span>
+<span id="cb22-118"><a href="#cb22-118" aria-hidden="true" tabindex="-1"></a><span class="do">## cor(vowel4,prosodic_boundary)        3670     3552</span></span>
+<span id="cb22-119"><a href="#cb22-119" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb22-120"><a href="#cb22-120" aria-hidden="true" tabindex="-1"></a><span class="do">## Regression Coefficients:</span></span>
+<span id="cb22-121"><a href="#cb22-121" aria-hidden="true" tabindex="-1"></a><span class="do">##                   Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS</span></span>
+<span id="cb22-122"><a href="#cb22-122" aria-hidden="true" tabindex="-1"></a><span class="do">## Intercept           157.26      6.62   144.18   170.64 1.00      662      857</span></span>
+<span id="cb22-123"><a href="#cb22-123" aria-hidden="true" tabindex="-1"></a><span class="do">## voicing               9.57      2.14     5.34    13.73 1.00     2410     2755</span></span>
+<span id="cb22-124"><a href="#cb22-124" aria-hidden="true" tabindex="-1"></a><span class="do">## place1              -10.00      2.89   -15.66    -4.22 1.00     2249     2617</span></span>
+<span id="cb22-125"><a href="#cb22-125" aria-hidden="true" tabindex="-1"></a><span class="do">## place2                1.85      1.47    -1.17     4.74 1.00     2209     2637</span></span>
+<span id="cb22-126"><a href="#cb22-126" aria-hidden="true" tabindex="-1"></a><span class="do">## vowel1               -0.24      4.24    -8.56     8.17 1.00     2801     2609</span></span>
+<span id="cb22-127"><a href="#cb22-127" aria-hidden="true" tabindex="-1"></a><span class="do">## vowel2              -17.77      2.25   -22.13   -13.20 1.00     2139     2422</span></span>
+<span id="cb22-128"><a href="#cb22-128" aria-hidden="true" tabindex="-1"></a><span class="do">## vowel3               -3.54      1.28    -6.06    -1.07 1.00     2422     2473</span></span>
+<span id="cb22-129"><a href="#cb22-129" aria-hidden="true" tabindex="-1"></a><span class="do">## vowel4               -6.42      1.07    -8.44    -4.28 1.00     2112     2349</span></span>
+<span id="cb22-130"><a href="#cb22-130" aria-hidden="true" tabindex="-1"></a><span class="do">## prosodic_boundary    14.14      2.96     8.39    19.94 1.00     4224     3003</span></span>
+<span id="cb22-131"><a href="#cb22-131" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb22-132"><a href="#cb22-132" aria-hidden="true" tabindex="-1"></a><span class="do">## Further Distributional Parameters:</span></span>
+<span id="cb22-133"><a href="#cb22-133" aria-hidden="true" tabindex="-1"></a><span class="do">##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS</span></span>
+<span id="cb22-134"><a href="#cb22-134" aria-hidden="true" tabindex="-1"></a><span class="do">## sigma    18.03      0.52    17.06    19.07 1.00     3790     2607</span></span>
+<span id="cb22-135"><a href="#cb22-135" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb22-136"><a href="#cb22-136" aria-hidden="true" tabindex="-1"></a><span class="do">## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS</span></span>
+<span id="cb22-137"><a href="#cb22-137" aria-hidden="true" tabindex="-1"></a><span class="do">## and Tail_ESS are effective sample size measures, and Rhat is the potential</span></span>
+<span id="cb22-138"><a href="#cb22-138" aria-hidden="true" tabindex="-1"></a><span class="do">## scale reduction factor on split chains (at convergence, Rhat = 1).</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="exr-bhm2-3" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 6.3</strong></span> Verify that the estimates for the terms of interest for the RQs have barely changed between models <code>neutralization_m10_3</code> and <code>neutralization_m10_2</code>:</p>
+<ul>
+<li><code>voicing</code> fixed effect</li>
+<li>By-speaker <code>voicing</code> random slope SD</li>
+</ul>
+<p>NB:</p>
+<ul>
+<li>This requires first determining the relevant row of <code>## Multilevel Hyperparameters:</code> in the model output.</li>
+<li>This does <em>not</em> require refitting the models, which might take a while on your computer (~6 minutes for student laptops in 2024). The model summaries are shown above.</li>
+</ul>
+<!-- (The by-speaker correlation estimate differs, but this is not of interest for our RQs.) -->
+</div>
+<div id="exr-bhm2-4" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 6.4</strong></span> Refit <code>neutralization_m10_3</code> as a frequentist model. What issue is there?</p>
+</div>
+</section>
+</section>
+<section id="sec-hbm2-mp" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="sec-hbm2-mp"><span class="header-section-number">6.4</span> Model predictions: random effects</h2>
+<p>Our second RQ relates to by-subject differences in the effect of <code>voicing</code>. How can we examine these?</p>
+<p>In the frequentist model, we could just look at the distribution of estimated <code>voicing</code> effects for each subject, using the <code>coefficients()</code> function:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coefficients</span>(neut_m2)<span class="sc">$</span>subject</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="do">##    (Intercept)   voicing    place1   place2     vowel1    vowel2    vowel3</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="do">## 1     215.8745 19.435870 -10.59214 2.120172 -0.3999683 -17.54189 -3.184979</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="do">## 2     128.5247  4.827369 -10.59214 2.120172 -0.3999683 -17.54189 -3.184979</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="do">## 3     124.9758  4.233839 -10.59214 2.120172 -0.3999683 -17.54189 -3.184979</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="do">## 4     152.0437  8.760712 -10.59214 2.120172 -0.3999683 -17.54189 -3.184979</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 5     157.2912  9.638314 -10.59214 2.120172 -0.3999683 -17.54189 -3.184979</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 6     129.9029  5.057855 -10.59214 2.120172 -0.3999683 -17.54189 -3.184979</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 7     153.5643  9.015020 -10.59214 2.120172 -0.3999683 -17.54189 -3.184979</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 8     160.6845 10.205820 -10.59214 2.120172 -0.3999683 -17.54189 -3.184979</span></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="do">## 9     155.1717  9.283853 -10.59214 2.120172 -0.3999683 -17.54189 -3.184979</span></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a><span class="do">## 10    155.4794  9.335308 -10.59214 2.120172 -0.3999683 -17.54189 -3.184979</span></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a><span class="do">## 11    138.5167  6.498433 -10.59214 2.120172 -0.3999683 -17.54189 -3.184979</span></span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a><span class="do">## 12    159.4236  9.994944 -10.59214 2.120172 -0.3999683 -17.54189 -3.184979</span></span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a><span class="do">## 13    187.5889 14.705350 -10.59214 2.120172 -0.3999683 -17.54189 -3.184979</span></span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a><span class="do">## 14    204.2916 17.498730 -10.59214 2.120172 -0.3999683 -17.54189 -3.184979</span></span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a><span class="do">## 15    151.1975  8.619187 -10.59214 2.120172 -0.3999683 -17.54189 -3.184979</span></span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a><span class="do">## 16    138.8313  6.551059 -10.59214 2.120172 -0.3999683 -17.54189 -3.184979</span></span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a><span class="do">##       vowel4 prosodic_boundary</span></span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a><span class="do">## 1  -6.206707          11.76825</span></span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a><span class="do">## 2  -6.206707          11.76825</span></span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a><span class="do">## 3  -6.206707          11.76825</span></span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a><span class="do">## 4  -6.206707          11.76825</span></span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a><span class="do">## 5  -6.206707          11.76825</span></span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a><span class="do">## 6  -6.206707          11.76825</span></span>
+<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a><span class="do">## 7  -6.206707          11.76825</span></span>
+<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a><span class="do">## 8  -6.206707          11.76825</span></span>
+<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a><span class="do">## 9  -6.206707          11.76825</span></span>
+<span id="cb23-29"><a href="#cb23-29" aria-hidden="true" tabindex="-1"></a><span class="do">## 10 -6.206707          11.76825</span></span>
+<span id="cb23-30"><a href="#cb23-30" aria-hidden="true" tabindex="-1"></a><span class="do">## 11 -6.206707          11.76825</span></span>
+<span id="cb23-31"><a href="#cb23-31" aria-hidden="true" tabindex="-1"></a><span class="do">## 12 -6.206707          11.76825</span></span>
+<span id="cb23-32"><a href="#cb23-32" aria-hidden="true" tabindex="-1"></a><span class="do">## 13 -6.206707          11.76825</span></span>
+<span id="cb23-33"><a href="#cb23-33" aria-hidden="true" tabindex="-1"></a><span class="do">## 14 -6.206707          11.76825</span></span>
+<span id="cb23-34"><a href="#cb23-34" aria-hidden="true" tabindex="-1"></a><span class="do">## 15 -6.206707          11.76825</span></span>
+<span id="cb23-35"><a href="#cb23-35" aria-hidden="true" tabindex="-1"></a><span class="do">## 16 -6.206707          11.76825</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Each subject’s predicted <code>voicing</code> slope is the seecond column.</p>
+<p>To do the same for the Bayesian model, we can apply the same <code>coefficients()</code> function, but the syntax to access by-<code>subject</code> effects is different:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="do">## For the "maximal" model:</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="co"># model predicted voicing effect for each speaker: estimated random effect + fixed-effect</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="fu">coefficients</span>(neutralization_m10_3)<span class="sc">$</span>subject[, , <span class="st">"voicing"</span>]</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="do">##     Estimate Est.Error       Q2.5    Q97.5</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="do">## 1  18.349845  4.821197  9.3384185 27.84298</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="do">## 2   8.295398  3.700706  1.2027796 15.77378</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 3   2.060514  4.528705 -7.2423731 10.26555</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 4   5.424699  4.110228 -3.2951036 12.72515</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 5  13.966328  4.101631  6.6968663 22.96792</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 6   6.940101  3.745876 -0.8041782 13.98368</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a><span class="do">## 7   8.716751  3.650439  1.1978122 15.64319</span></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a><span class="do">## 8  11.384075  3.534655  4.5988210 18.68192</span></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a><span class="do">## 9  11.259319  3.875665  3.5712874 19.09196</span></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a><span class="do">## 10  9.228546  3.788430  1.6255860 16.67072</span></span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a><span class="do">## 11  5.120790  3.883003 -3.2873839 12.04578</span></span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a><span class="do">## 12  8.022669  3.798239  0.1814080 15.38926</span></span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a><span class="do">## 13  9.947688  3.851994  2.1833171 17.59587</span></span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a><span class="do">## 14 12.149368  4.075520  4.5862079 20.48364</span></span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a><span class="do">## 15 11.847352  3.844718  4.7049233 19.66762</span></span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a><span class="do">## 16 10.997811  3.770996  3.8324372 18.78784</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Note the errors/CredI’s here, where frequentist model only outputs point estimates.</p>
+<p>Plot the distribution of these values:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coefficients</span>(neutralization_m10_3)<span class="sc">$</span>subject[, , <span class="st">"voicing"</span>] <span class="sc">%&gt;%</span> <span class="fu">data.frame</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Estimate)) <span class="sc">+</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>() <span class="sc">+</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_rug</span>() <span class="sc">+</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="fu">aes</span>(<span class="at">xintercept =</span> <span class="dv">0</span>), <span class="at">lty =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Speaker voicing effect estimates"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="week10_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The model predicts that all subjects have positive <code>voicing</code> effects.</p>
+<p>These are the by-subject offsets we would see in the posterior summary (<code>posterior_summary(neutralization_m10_3)</code>), added to the model’s estimate for <code>b_voicing</code>.</p>
+<!-- ```{r} -->
+<!-- # by- -->
+<!-- posterior_summary(neutralization_m10_3)  -->
+<!-- ``` -->
+<p>What’s shown in the <code>coefficients()</code> output is one of two ways to capture uncertainty in speaker <code>voicing</code> effects—incorporating <!-- #This does not incorporate any of the uncertainty in the speaker voicing` effects, from  --> uncertainty in the fixed effect coefficient and the by-speaker random effects:<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a></p>
+<ol type="1">
+<li>Compute predictions for <em>observed</em> subjects, with PIs.</li>
+<li>Compute predictions for <em>new</em> subjects, with PIs.</li>
+</ol>
+<p>These two ways, illustrated in <span class="citation" data-cites="mcelreath2020statistical">McElreath (<a href="references.html#ref-mcelreath2020statistical" role="doc-biblioref">2020</a>)</span> Sec. 13.5.1-13.5.2, are subtly but importantly different. (1) is shown above. It would would be appropriate if we are interested in these particular subjects. (2) is appropriate if we are interested in what the model predicts about individual differences, but not these particular subjects (they are just a random sample). (2) incorporates an extra source of uncertainty, in the degree of by-subject variability in the <code>voicing</code> effect.</p>
+<p>We can implement (2) as follows:</p>
+<ol type="1">
+<li>Draw values for (a) <span class="math inline">\(\beta_{voicing}\)</span> and (b) the by-subject <code>voicing</code> slope SD</li>
+<li>Use these to simulate the <code>voicing</code> effect for one new subject.</li>
+<li>Do this 2000 times.</li>
+<li>Plot the distribution.</li>
+</ol>
+<p>This can be thought of as the posterior predictive distribution of the <code>voicing</code> effect for a <em>random</em> new speaker. Workflow adapted from <span class="citation" data-cites="kurz2021statistical">Kurz (<a href="references.html#ref-kurz2021statistical" role="doc-biblioref">2023</a>)</span>, Sec. 13.5.2:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># nbumber of simulated subjects</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>n_sim <span class="ot">&lt;-</span> <span class="dv">2000</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>sub_voicing_sim <span class="ot">&lt;-</span> neutralization_m10_3 <span class="sc">%&gt;%</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># draw (a) and (b)</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">spread_draws</span>(b_voicing, sd_subject__voicing, <span class="at">ndraws =</span> n_sim) <span class="sc">%&gt;%</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>  <span class="do">## for each draw, simulate a single new speaker's voicing effect</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sub_voicing =</span> <span class="fu">rnorm</span>(<span class="fu">n</span>(), <span class="at">mean =</span> b_voicing, <span class="at">sd =</span> sd_subject__voicing))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>These estimates look like:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>sub_voicing_sim <span class="sc">%&gt;%</span> <span class="fu">head</span>()</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 6 × 6</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="do">##   .chain .iteration .draw b_voicing sd_subject__voicing sub_voicing</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="do">##    &lt;int&gt;      &lt;int&gt; &lt;int&gt;     &lt;dbl&gt;               &lt;dbl&gt;       &lt;dbl&gt;</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="do">## 1      2        295  1295      7.25                4.24      6.25  </span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="do">## 2      1        137   137     10.0                 5.99      3.39  </span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 3      1        262   262     11.1                 8.58     12.5   </span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 4      2        643  1643      7.89                6.64      9.29  </span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 5      1        970   970      6.34                5.62      1.56  </span></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 6      4        370  3370     11.5                 7.76     -0.0381</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Plot the distribution:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>sub_voicing_sim <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> sub_voicing)) <span class="sc">+</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">fill =</span> <span class="st">"grey"</span>) <span class="sc">+</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"By-speaker voicing effect"</span>) <span class="sc">+</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="fu">aes</span>(<span class="at">xintercept =</span> <span class="dv">0</span>), <span class="at">lty =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Posterior predictive distribution density"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="week10_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="exr-bhm2-5" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 6.5</strong></span> Both density plots immediately above show a distribution of model-predicted <code>voicing</code> effects, across subjects, calculated in two different ways.</p>
+<ol type="a">
+<li><p>How are they different? (width? mode?)</p></li>
+<li><p>Why do these plots look different?</p></li>
+<li><p>What would the answer to RQ2 be using the first plot? Using the second plot? Which one makes more sense / why?</p></li>
+</ol>
+</div>
+<div id="exr-bhm2-6" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 6.6 (Extra)</strong></span> Before drawing any firm conclusions about what the model predicts about individual differences, it would be good to examine uncertainty in these predictions.</p>
+<ol type="a">
+<li>Make a spaghetti plot showing uncertainty in the <em>distribution</em> of by-speaker voicing effects.</li>
+</ol>
+<ul>
+<li>That is: draw 50 new values of <code>b_voicing</code> and <code>sd_subject__voicing</code>. For each draw, simulate 100 new subjects, and plot the distribution of their <code>voicing</code> effects. The resulting plot should show 50 densities/distributions, overplotted.</li>
+</ul>
+<ol start="2" type="a">
+<li>How, if at all, has the answer to “what does this model say about RQ2” changed relative to the plot showing just a single distribution of by-speaker voicing effects?</li>
+</ol>
+</div>
+<!-- - conclusion about *correlation* would differ somewhat, if this was of interest. -->
+<!-- Compare:frequentist model: -->
+<!-- ```{r} -->
+<!-- neutralization_freq_m10_2 <- lmer(vowel_dur ~ voicing + place + vowel + prosodic_boundary +  -->
+<!--                                     (1+voicing+place+vowel+prosodic_boundary|subject) + -->
+<!--                              (1+voicing+prosodic_boundary|item_pair),  -->
+<!--                              data=neutralization) -->
+<!-- ``` -->
+<!-- **Exercises** -->
+<!-- * Your `lmer` model above should give estimates equivalent to `sd_item_pair__Intercept` and `sd_subject__Intercept` -- these are point estimates of the degree of by-item and by-subject variability.  Based on these estimates, does `vowel_dur` vary more by-item or by-subject? -->
+<!-- * Using the bayesian model `neutralization_m81`, you can actually *test* the hypothesis that subjects vary more than items. (Or the reverse, if that's what you found.)  Do so, using the `hypothesis` function discussed in Week 4. -->
+<!-- * Plot the posterior distribution of the random intercept for item 4. -->
+<!-- * Make plots of the marginal effect of `vowel` for model `neutralization_m81`---one plot for an "average item/speaker" (CIs), and another for a new observation (PIs:`method = 'posterior_predict'`). -->
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-kirby2018mixed" class="csl-entry" role="listitem">
+Kirby, James, and Morgan Sonderegger. 2018. <span>“Mixed-Effects Design Analysis for Experimental Phonetics.”</span> <em>Journal of Phonetics</em> 70: 70–85.
+</div>
+<div id="ref-kurz2021statistical" class="csl-entry" role="listitem">
+Kurz, S. 2023. <em>Statistical Rethinking (Second Edition) with Brms, Ggplot2, and the Tidyverse</em>. <a href="https://bookdown.org/content/4857/" class="uri">https://bookdown.org/content/4857/</a>.
+</div>
+<div id="ref-mcelreath2020statistical" class="csl-entry" role="listitem">
+McElreath, Richard. 2020. <em>Statistical Rethinking: A <span>B</span>ayesian Course with Examples in <span>R</span> and <span>S</span>tan</em>. Second. Chapman; Hall/CRC.
+</div>
+<div id="ref-rmld-book" class="csl-entry" role="listitem">
+Sonderegger, Morgan. 2023. <em>Regression Modeling for Linguistic Data</em>. MIT Press, <a href="https://osf.io/pnumg/" class="uri">https://osf.io/pnumg/</a>, preprint at <a href="https://github.com/msonderegger/rmld-v1.1/" class="uri">https://github.com/msonderegger/rmld-v1.1/</a>.
+</div>
+</div>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>The intercept here actually corresponds to “average value of <code>vowel_dur</code>”, which must be positive. From <code>?prior()</code>: “Note that technically, this prior is set on an intercept that results when internally centering all population-level predictors around zero to improve sampling efficiency. On this centered intercept, specifying a prior is actually much easier and intuitive than on the original intercept, since the former represents the expected response value when all predictors are at their means.”<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>This is because <span class="math inline">\(\lambda\)</span> describes how fast the exponential prior decreases: a larger value means a faster decrease.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>See discussion in <em>RMLD</em> Sec. 3.2.3.2 and <span class="citation" data-cites="kirby2018mixed">Kirby and Sonderegger (<a href="references.html#ref-kirby2018mixed" role="doc-biblioref">2018</a>)</span>.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Only the lower half of the correlation matrix is shown because the matrix is symmetric.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>Even <span class="math inline">\(\eta = 1.02\)</span> can help the model avoid extreme correlations, though more iterations may be needed for convergence.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>The discussion in RMLD Chapter 10 on the benefits and risks of more/less complex random effect structure still holds: more and less complex random effect structure both run risks, and rather than applying a recipe it is best to decide on a random effect structure with research questions in mind.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>I think! TODO: check that <code>coefficients()</code> output incoroprates both sources of uncertainty.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./week9.html" class="pagination-link" aria-label="Bayesian Hierarchical Models 1">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Bayesian Hierarchical Models 1</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./week11.html" class="pagination-link" aria-label="Bayesian Hierarchical Models 3">
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Bayesian Hierarchical Models 3</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

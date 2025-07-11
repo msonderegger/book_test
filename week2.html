@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>1&nbsp; Bayesian basics 1 – Advanced Quantitative Methods for Linguistic Data</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./week3.html" rel="next">
+<link href="./index.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./week2.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Bayesian basics 1</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Advanced Quantitative Methods for Linguistic Data</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week2.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Bayesian basics 1</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Bayesian basics 2</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Bayesian Regression Models 1</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Bayesian Regression Models 2</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week9.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Bayesian Hierarchical Models 1</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Bayesian Hierarchical Models 2</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week11.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Bayesian Hierarchical Models 3</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week12.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Models for discrete data: counts, scales, and frequencies</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week13.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Multivariate models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week6.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Generalized Additive Models (GAMs)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week7.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Generalized additive mixed-effects models (GAMMs)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bayesian_gamms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Bayesian GAMs</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./FDA_edited.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Functional principal components analysis</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#sec-bb1-prelim" id="toc-sec-bb1-prelim" class="nav-link active" data-scroll-target="#sec-bb1-prelim"><span class="header-section-number">1.1</span> Preliminaries</a></li>
+  <li><a href="#bayes-theorem" id="toc-bayes-theorem" class="nav-link" data-scroll-target="#bayes-theorem"><span class="header-section-number">1.2</span> Bayes’ theorem</a></li>
+  <li><a href="#prior-likelihood-posterior" id="toc-prior-likelihood-posterior" class="nav-link" data-scroll-target="#prior-likelihood-posterior"><span class="header-section-number">1.3</span> Prior, likelihood, posterior</a></li>
+  <li><a href="#prior-vs.-posterior-and-sample-size" id="toc-prior-vs.-posterior-and-sample-size" class="nav-link" data-scroll-target="#prior-vs.-posterior-and-sample-size"><span class="header-section-number">1.4</span> Prior vs.&nbsp;posterior and sample size</a></li>
+  <li><a href="#computing-the-posterior" id="toc-computing-the-posterior" class="nav-link" data-scroll-target="#computing-the-posterior"><span class="header-section-number">1.5</span> Computing the posterior</a>
+  <ul class="collapse">
+  <li><a href="#mcmc" id="toc-mcmc" class="nav-link" data-scroll-target="#mcmc"><span class="header-section-number">1.5.1</span> MCMC</a></li>
+  </ul></li>
+  <li><a href="#brms-a-first-look" id="toc-brms-a-first-look" class="nav-link" data-scroll-target="#brms-a-first-look"><span class="header-section-number">1.6</span> brms: a first look</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="sec-bb1" class="quarto-section-identifier"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Bayesian basics 1</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>These lecture notes cover topics from:</p>
+<ul>
+<li><span class="citation" data-cites="mcelreath2020statistical">McElreath (<a href="references.html#ref-mcelreath2020statistical" role="doc-biblioref">2020</a>)</span> Ch. 2, except 2.4.2-2.4.3</li>
+<li><span class="citation" data-cites="kurz2021statistical">Kurz (<a href="references.html#ref-kurz2021statistical" role="doc-biblioref">2023</a>)</span> <a href="https://bookdown.org/content/4857/">2.4.5</a></li>
+</ul>
+<p>Note that <span class="citation" data-cites="kurz2021statistical">Kurz (<a href="references.html#ref-kurz2021statistical" role="doc-biblioref">2023</a>)</span> is a “translation” of <span class="citation" data-cites="mcelreath2020statistical">McElreath (<a href="references.html#ref-mcelreath2020statistical" role="doc-biblioref">2020</a>)</span> into tidyverse and brms code.</p>
+<section id="sec-bb1-prelim" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="sec-bb1-prelim"><span class="header-section-number">1.1</span> Preliminaries</h2>
+<p>Load libraries we will need:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(arm) <span class="co"># for the invlogit function</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(brms)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Practical note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If you have loaded <code>rethinking</code>, you need to detach it before using <code>brms</code>. See <a href="https://bookdown.org/content/4857/geocentric-models.html">Sec 4.3.1 of Kurz</a>.</p>
+</div>
+</div>
+<p>Load the <code>diatones</code> dataset from <a href="https://osf.io/pnumg/"><em>Regression Modeling for Linguistic Data</em></a>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>diatones <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"https://osf.io/tqjm8/download"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This dataset is described in Sec. 6.1.1 of <span class="citation" data-cites="rmld-book">Sonderegger (<a href="references.html#ref-rmld-book" role="doc-biblioref">2023</a>)</span>,<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> where you can learn more as needed. For the moment, all we need to know is:</p>
+<ul>
+<li>There are 130 observations: English noun/verb pairs (or “words”) like “research”, “combat”.</li>
+<li>All had noun and verb forms pronounced with final stress (“proTEST”) in 1700.</li>
+<li><code>stress_shifted</code> indicates whether the noun form of the verb shifted stress between 1700 and 2005—e.g.&nbsp;“protest” and “debate” have <code>stress_shifted</code>=1, 0.</li>
+</ul>
+</section>
+<section id="bayes-theorem" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="bayes-theorem"><span class="header-section-number">1.2</span> Bayes’ theorem</h2>
+<p>Bayes’ theorem (or “rule”) says that for any events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>:</p>
+<p><span class="math display">\[
+P(A|B) = \frac{P(B|A) P(A)}{P(B)}
+\]</span></p>
+<p>Here, <span class="math inline">\(P(A|B)\)</span> and <span class="math inline">\(P(B|A)\)</span> are conditional probabilities, and Bayes’ theorem follows almost directly from the definition of conditional probabilities. We can think of <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> above as discrete random variables, and the same rule holds for continuous random variables (that is, their probability density functions).</p>
+<ul>
+<li><strong>Note</strong>: a method which uses Bayes rule is not (automatically) “Bayesian” (McElreath pp.&nbsp;38-39 box).</li>
+</ul>
+<p>It is customary to introduce Bayes’ theorem with an example where <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are discrete, like medical diagnostics, to develop intuition for how it works and can give unexpected results, even in a simple case. An exercise is below (to skip in class).</p>
+<div id="exr-bb1-1" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 1.1</strong></span> Open Chapter 5 of <a href="https://seeing-theory.brown.edu/bayesian-inference/index.html#section3"><em>Seeing Theory</em></a> and go to “Bayes Theorem”. Consider a Covid-19 testing example, characteristic of the early days of the pandemic:</p>
+<ul>
+<li><p><span class="math inline">\(P(D)\)</span> = 0.05, <span class="math inline">\(P(H)\)</span> = 0.95</p></li>
+<li><p><span class="math inline">\(P(+|D) = 0.99\)</span>, <span class="math inline">\(P(-|H)=0.95\)</span></p></li>
+</ul>
+<p>That is, the test detects Covid near-perfectly in people who have the disease (“very high sensitivity”), and gives a few false positives for people who don’t (“high specificity”). We assume that the <em>base rate</em>—the percentage of people who have Covid—is low (5%).</p>
+<ol type="a">
+<li>What is the posterior probability <span class="math inline">\(P(D|+)\)</span>—that is, the probability that someone has Covid if they test positive?</li>
+<li>Why might your answer seem surprising?</li>
+<li>Now suppose that the base rate is 0.25 (25% of the population is infected). What is <span class="math inline">\(P(D|+)\)</span> now?</li>
+</ol>
+</div>
+</section>
+<section id="prior-likelihood-posterior" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="prior-likelihood-posterior"><span class="header-section-number">1.3</span> Prior, likelihood, posterior</h2>
+<p>McElreath (Sec. 2.1-2.2) introduces key concepts of Bayesian inference using marble-counting and “globe tossing” examples. We will instead use a simple linguistic example, after first introducing notation:</p>
+<ul>
+<li>We are interested in a <em>parameter</em>, <span class="math inline">\(p\)</span>.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></li>
+<li>We observe <em>data</em> <span class="math inline">\(D\)</span> to estimate the parameters.</li>
+<li>We have some knowledge about how likely different parameter values are, the <em>prior</em> (probability): <span class="math inline">\(P(p)\)</span></li>
+<li>The <em>likelihood</em> is the probability of the data for a particular parameter value: <span class="math inline">\(P(D|p)\)</span>.</li>
+<li>The <em>posterior</em> (probability) is the plausibility of any parameter value (<span class="math inline">\(p\)</span>) after seeing the data: <span class="math inline">\(P(p|D)\)</span>.</li>
+</ul>
+<p>Bayes’ rule gives:</p>
+<p><span class="math display">\[
+P(p | D ) = \frac{P(D|p) P(p)}{P(D)}
+\]</span></p>
+<p><span class="math inline">\(P(D)\)</span> is called the <em>average probability</em> or <em>marginal likelihood</em>, or other names.</p>
+<p>Consider the <code>diatones</code> data:</p>
+<ul>
+<li><span class="math inline">\(p_{\text{shift}}\)</span> is the probability that a word of English shifts stress between 1700 and 2005.</li>
+<li>The data is a sequence of 0 or 1 values.
+<ul>
+<li>Technically: each is a measurement of a random variable <span class="math inline">\(y\)</span>. The <span class="math inline">\(i\)</span>th observation is <span class="math inline">\(y_i\)</span>. In this data <span class="math inline">\(y_1 = 1\)</span>, <span class="math inline">\(y_2 = 0\)</span>, and so on.</li>
+</ul></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>diatones <span class="sc">%&gt;%</span> <span class="fu">select</span>(word, stress_shifted) <span class="sc">%&gt;%</span> <span class="fu">head</span>()</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="do">##      word stress_shifted</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 proceed              1</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 protest              1</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="do">## 3  debate              0</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="do">## 4 debauch              0</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 5   decay              0</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 6 decease              1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">xtabs</span>(<span class="sc">~</span>stress_shifted, <span class="at">data=</span>diatones)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="do">## stress_shifted</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="do">##   0   1 </span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="do">## 109  21</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>To build a Bayesian model we must specify the exact data, then fit the model to the data. It is useful to always first have a <em>data story</em> (McElreath 2.2), describing the <em>generative</em> process behind the data. This helps to write down the model.</p>
+<p>In our case, the story is just a description of how the process leading to this sample:</p>
+<ol start="0" type="1">
+<li>We have no prior knowledge about how likely English N/V pairs (“words”) are to shift stress.</li>
+<li>The true proportion of words which shift stress is <span class="math inline">\(p\)</span>.</li>
+<li>Every time we look up a new English word in the 1700 and 2005 dictionaries, we get a new 0 (stress didn’t shift) or 1 (stress shifted) observation, <span class="math inline">\(y\)</span>.</li>
+<li>Each word lookup is independent of the others.</li>
+</ol>
+<p>(I have added a Step 0 for the prior, which McElreath doesn’t include.)</p>
+<p>We observe <span class="math inline">\(N\)</span> words, of which <span class="math inline">\(k\)</span> have shifted stress.</p>
+<p>This lets us write down a probability model:</p>
+<ul>
+<li><span class="math inline">\(p \sim \text{Uniform}(0,1)\)</span></li>
+<li><span class="math inline">\(k \sim \text{Binomial}(N, p)\)</span></li>
+</ul>
+<p>See <a href="https://shiny.rit.albany.edu/stat/binomial/">here</a> what the binomial distribution looks like for different <span class="math inline">\(N\)</span> and <span class="math inline">\(p\)</span> values, if you’re rusty.</p>
+<p>This probability model means the pieces <span class="math inline">\(P(p)\)</span>, <span class="math inline">\(P(D|p)\)</span>, and <span class="math inline">\(P(D)\)</span> of the equation above are all defined: once we know the observed data (<span class="math inline">\(D\)</span>), the posterior distribution automatically results (left-hand side of Bayes’ rule above).</p>
+<p>This is <em>Bayesian update</em>, which can be thought of either as:</p>
+<ul>
+<li><p>An incremental process—update the posterior after <span class="math inline">\(y_i\)</span>; this is the prior when we see <span class="math inline">\(y_{i+1}\)</span>.</p></li>
+<li><p>Seeing all <span class="math inline">\(N\)</span> observations at once—update the posterior once.</p></li>
+</ul>
+<p>We can substitute the formula for binomial likelihood in to Bayes’ rule in this case to give the mathematical formula for the posterior:</p>
+<p><span class="math display">\[
+P(p | k) = \frac{{n\choose{k}} p^{k}(1-p)^{n-k}}{P(k)}  \quad \text{for } 0 \le p \le 1
+\]</span></p>
+<p>(The prior here, <span class="math inline">\(P(p)\)</span>, is <em>flat</em>, a.k.a. <em>uniform</em>: it is 1 when <span class="math inline">\(0 \le p \le 1\)</span> and 0 otherwise.)</p>
+<p>It is common to just write this kind of Bayesian update without the denominator, which is only there to make sure the posterior distribution is a probability distribution (it sums to 1 over all possible values of <span class="math inline">\(p\)</span>). This is written with the “proportional to” symbol:</p>
+<p><span class="math display">\[
+P(p | k) \propto {n\choose{k}} p^{k}(1-p)^{n-k}  \quad \text{for } 0 \le p \le 1
+\]</span></p>
+<p>If you find the analytic derivation or more details for this case helpful, see Sec <a href="https://vasishth.github.io/bayescogsci/book/ch-introBDA.html#sec-analytical">Sec. 2.2</a> of <span class="citation" data-cites="bdacs">Nicenboim, Schad, and Vaishth (<a href="references.html#ref-bdacs" role="doc-biblioref">2024</a>)</span>. (If you find the math confusing, don’t worry.)</p>
+<div id="exr-bb1-2" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 1.2</strong></span> We will instead get a feel for Bayesian update visually, by playing with the <em>Seeing Theory</em> app <a href="https://seeing-theory.brown.edu/bayesian-inference/index.html#section3">here</a>.</p>
+<p>This app shows a <a href="https://en.wikipedia.org/wiki/Beta_distribution"><em>beta</em></a> prior on <span class="math inline">\(p\)</span>, which has parameters <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span>. When <span class="math inline">\(\alpha=\beta=1\)</span>, this is a uniform distribution (over <span class="math inline">\(p \in [0,1]\)</span>).</p>
+<p>Let <span class="math inline">\(p=0.2\)</span> for this example—meaning that in reality, 1/5 of words shifted stress.</p>
+<p>With default settings, change <span class="math inline">\(p=0.2\)</span>. Click “flip the coin” 5 times, and watch what happens. Do this again (resetting first) a few times.</p>
+<ol type="a">
+<li>What is the same every time? (Does the posterior narrow? Shift right or left?)</li>
+<li>What is different every time?</li>
+</ol>
+</div>
+<div id="exr-bb1-3" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 1.3</strong></span> Now do the same exercise, with 50 flips (with <span class="math inline">\(p=0.2\)</span>)—use “Flip 10 times”x5.</p>
+</div>
+<div id="exr-bb1-4" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 1.4</strong></span> Play around with <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> to get priors which captures the intuition that:</p>
+<ol type="a">
+<li>Values of <span class="math inline">\(p\)</span> further from 0 are less likely</li>
+<li>Values of <span class="math inline">\(p\)</span> further from 1 are less likely</li>
+<li>Values of <span class="math inline">\(p\)</span> which are below 0.05 or above 0.95 are very unlikely</li>
+</ol>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Linguistics note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Each of these priors could be reasonable when studying different kinds of language variation and change.</p>
+<p>For example, prior (b) could be applied for data from a <em>completed</em> sound change, to capture the intuition that most sound changes eventually apply to all possible words (the “Neogrammarian hypothesis”). Prior (c) could be applied to data from a sound change in progress.</p>
+</div>
+</div>
+<p>We will discuss soon how to actually choose priors. The goal for now is just to get comfortable thinking about the concept, and the effect they have on the final model (the posterior).</p>
+</section>
+<section id="prior-vs.-posterior-and-sample-size" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="prior-vs.-posterior-and-sample-size"><span class="header-section-number">1.4</span> Prior vs.&nbsp;posterior and sample size</h2>
+<p>Now let’s try manually computing the posterior distribution, starting from a uniform prior for <span class="math inline">\(p\)</span>, for our <code>diatones</code> example. (This is the case being simulated in the Seeing Theory app.)</p>
+<p>The plot below shows the prior and the posterior, assuming we have just seen the first:</p>
+<ul>
+<li>5 observations</li>
+<li>10 observations</li>
+<li>65 observations (50% of the data)</li>
+<li>130 observations (all data)</li>
+</ul>
+<p>We can do this without simulation, in this case, because the beta distribution is the <a href="https://towardsdatascience.com/conjugate-prior-explained-75957dc80bfb"><em>conjugate prior</em></a> for a binomial distribution—meaning that the posterior is also a beta distribution. You don’t need to understand this code.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Beta is conjugate prior for binomial means:</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># If you start with a Beta(\alpha, \beta) prior, </span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># then observe $k$ $y=1$ observations of $N$ total, the posterior is:</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Beta(k+\alpha, N-k + \beta)</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co"># For this case: </span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#The numbers of observations with `stress_shifted`=1 in the first 5/10/65/130 observations are:</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>k_5 <span class="ot">&lt;-</span> <span class="fu">sum</span>(diatones<span class="sc">$</span>stress_shifted[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>])</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>k_10 <span class="ot">&lt;-</span> <span class="fu">sum</span>(diatones<span class="sc">$</span>stress_shifted[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>])</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>k_65 <span class="ot">&lt;-</span> <span class="fu">sum</span>(diatones<span class="sc">$</span>stress_shifted[<span class="dv">1</span><span class="sc">:</span><span class="dv">65</span>])</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>k_130 <span class="ot">&lt;-</span> <span class="fu">sum</span>(diatones<span class="sc">$</span>stress_shifted[<span class="dv">1</span><span class="sc">:</span><span class="dv">130</span>])</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co">#set up a vector of p=0...1</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>p_vec <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>, <span class="at">by=</span><span class="fl">0.01</span>)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="co"># beta dist parameters for the prior</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="do">## ugly generation of posterior for each case -- should use a map function!</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="fu">bind_rows</span>(</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(<span class="at">p=</span>p_vec, <span class="at">post=</span><span class="fu">dbeta</span>(p_vec, a,b), <span class="at">n=</span><span class="dv">0</span>),</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(<span class="at">p=</span>p_vec, <span class="at">post=</span><span class="fu">dbeta</span>(p_vec, a<span class="sc">+</span>k_5,b<span class="sc">+</span><span class="dv">5</span><span class="sc">-</span>k_5), <span class="at">n=</span><span class="dv">5</span>),</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(<span class="at">p=</span>p_vec, <span class="at">post=</span><span class="fu">dbeta</span>(p_vec, a<span class="sc">+</span>k_10,b<span class="sc">+</span><span class="dv">10</span><span class="sc">-</span>k_10), <span class="at">n=</span><span class="dv">10</span>),</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(<span class="at">p=</span>p_vec, <span class="at">post=</span><span class="fu">dbeta</span>(p_vec, a<span class="sc">+</span>k_65,b<span class="sc">+</span><span class="dv">65</span><span class="sc">-</span>k_65), <span class="at">n=</span><span class="dv">65</span>),</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">data.frame</span>(<span class="at">p=</span>p_vec, <span class="at">post=</span><span class="fu">dbeta</span>(p_vec, a<span class="sc">+</span>k_130,b<span class="sc">+</span><span class="dv">130</span><span class="sc">-</span>k_130), <span class="at">n=</span><span class="dv">130</span>)</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">n=</span><span class="fu">factor</span>(n)) <span class="sc">%&gt;%</span> <span class="do">## make the plot</span></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>p, <span class="at">y=</span>post)) <span class="sc">+</span> <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">color=</span>n)) <span class="sc">+</span></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Posterior prob"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="week2_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Note how the posterior shifts a lot more in the first 10 observations than in the last 50% of observations.</p>
+<!-- ```{r} -->
+<!-- #| echo: false -->
+<!-- #|  -->
+<!-- # If you start with a $Beta(\alpha, \beta)$ prior, then observe $k$ $y=1$ observations of $N$ total, the posterior is: -->
+<!-- # Beta(k+\alpha, N-k + \beta) -->
+<!-- # For this case: -->
+<!-- #The numbers of observations with `stress_shifted`=1 in the first 5/10/65/130 observations are: -->
+<!-- k_5 <- sum(diatones$stress_shifted[1:5]) -->
+<!-- k_10 <- sum(diatones$stress_shifted[1:10]) -->
+<!-- k_65 <- sum(diatones$stress_shifted[1:65]) -->
+<!-- k_130 <- sum(diatones$stress_shifted[1:130]) -->
+<!-- #set up a vector of p=0...1 -->
+<!-- p_vec <- seq(0,1, by=0.01) -->
+<!-- # beta dist parameters for the prior -->
+<!-- a <- 3 -->
+<!-- b <- 3 -->
+<!-- ## ugly generation of posterior for each case -- should use a map function! -->
+<!-- bind_rows( -->
+<!--   data.frame(p=p_vec, post=dbeta(p_vec, a,b), n=0), -->
+<!--   data.frame(p=p_vec, post=dbeta(p_vec, a+k_5,b+5-k_5), n=5), -->
+<!--   data.frame(p=p_vec, post=dbeta(p_vec, a+k_10,b+10-k_10), n=10), -->
+<!--   data.frame(p=p_vec, post=dbeta(p_vec, a+k_65,b+65-k_65), n=65), -->
+<!--     data.frame(p=p_vec, post=dbeta(p_vec, a+k_130,b+130-k_130), n=130) -->
+<!-- ) %>% mutate(n=factor(n)) %>% ## make the plot -->
+<!--   ggplot(aes(x=p, y=post)) + geom_line(aes(color=n)) + -->
+<!--   ylab("Posterior prob") -->
+<!-- ``` -->
+<p>This example demonstrates how:</p>
+<ul>
+<li>The posterior is a compromise between the prior and the likelihood</li>
+<li>For smaller samples, the prior matters more</li>
+<li><strong>For large enough samples, the likelihood dominates</strong></li>
+</ul>
+<!-- - Why is it always said that the marginal likelihood doesn't really matter? show plots without dividing by this.  THe *shape* is the same, just a matter of normalization. -->
+<p>Again, <a href="https://vasishth.github.io/bayescogsci/book/ch-introBDA.html#sec-analytical">Sec. 2.2 of BDA for CogSci</a> shows a similar example in much more detail (and discusses what “conjugate prior” means).</p>
+<p>In practice you rarely have to do Bayesian analyses “analytically”, by manually calculating the posterior distribution, and it is impossible for more realistic models. It is worth seeing this one example to emphasize that at a low level, <strong>every</strong> Bayesian model is just doing this process: given a prior and a probability model, calculate the likelihood of the observed data, use it to compute the posterior.</p>
+<p>This is different from frequentist methods: even for a linear regression, much less a mixed-effects model, it’s often harder to conceptualize what fitting the model is “doing”. The black magic part of Bayesian modeling is the MCMC methods used to actually fit the models (compute the posterior)—but this is conceptually separate.</p>
+<div id="exr-bb1-5" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 1.5</strong></span> &nbsp;</p>
+<ol type="a">
+<li><p>Redo the plot above, now using a different prior: the one you chose for “Values of <span class="math inline">\(p\)</span> which are below 0.05 or above 0.95 are very unlikely” above. This just requires changing <code>a</code> and <code>b</code> in the code.</p></li>
+<li><p>Re-generate the plot with these <code>a</code> and <code>b</code>. What do you notice, comparing the two plots for lower <code>n</code> (5, 10) and higher <code>n</code> (65, 130)?</p></li>
+</ol>
+</div>
+</section>
+<section id="computing-the-posterior" class="level2" data-number="1.5">
+<h2 data-number="1.5" class="anchored" data-anchor-id="computing-the-posterior"><span class="header-section-number">1.5</span> Computing the posterior</h2>
+<p>For most realistic models it is not possible to manually compute the posterior, so an approximation method is used. McElreath makes extensive use in the first chapters of two methods:</p>
+<ul>
+<li><em>Grid approximation</em></li>
+<li><em>Quadratic approximation</em>, closely related to the <em>MAP estimate</em> (“maximum a -posteriori”)</li>
+</ul>
+<p>We will not be using these, but they are worth knowing about—especially MAP, which often gives similar results to frequentist methods.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Practical note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>An important practical example is the <a href="https://cran.r-project.org/web/packages/blme/index.html"><code>blme</code> package</a> for fitting <code>lme4</code>-style mixed-effects models. This package:</p>
+<ul>
+<li>Redefines these models in a Bayesian framework</li>
+<li>Uses weakly-informative priors (more on this later)</li>
+<li>Returns MAP estimates of model parameters (fixed, random-effect coefficients).</li>
+</ul>
+<p>This alone is enough to eliminate many model convergence woes with <code>lme4</code> models, and fitting a <code>blme</code> model is often faster than the equivalent <code>brms</code> model. It will be less accurate (as the MAP approximation is just that).</p>
+</div>
+</div>
+<section id="mcmc" class="level3" data-number="1.5.1">
+<h3 data-number="1.5.1" class="anchored" data-anchor-id="mcmc"><span class="header-section-number">1.5.1</span> MCMC</h3>
+<p>Instead, we will follow <a href="https://bookdown.org/content/4857/">Kurz</a> by immediately turning to a third method—Markov Chain Monte Carlo (MCMC)—which is more generally applicable.</p>
+<p>For now we will just introduce MCMC at a high level, and will return for more discussion in a future week. (hopefully) return in more detail in a later week. There are various introductions online (post one you like!) if you’d like to go further, at varying levels of technical detail. A relevant McElreath blog post is <a href="http://elevanth.org/blog/2017/11/28/build-a-better-markov-chain/">here</a>.</p>
+<p>The basic idea behind MCMC is that it is often much easier to simulate from a posterior distribution than to actually compute it. MCMC algorithms “walk around” the posterior distribution in a stochastic way, taking a sample of the parameters (here, <span class="math inline">\(p\)</span>) at each step. “walk around” is defined such that <strong>the sample approximates the posterior distribution</strong>—once you wait long enough.</p>
+<p>The simplest MCMC algorithm is called Metropolis-Hastings. MCMC is “easier to see than to understand” (McElreath). Open <a href="https://chi-feng.github.io/mcmc-demo/">this demo</a>, by Chi Feng, then:</p>
+<ul>
+<li>Click “Random Walk Metropolis Hastings”</li>
+<li>Set “target distribution” to “standard”</li>
+</ul>
+<p>The underlying distribution here is a 2D Gaussian—a Gaussian hill. (If this is confusing, you can just focus on one dimension—its a Gaussian.) Note how the marginal distributions (on the <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> axes) get closer to normal distributions the longer you let the simulation run.</p>
+<p>We will discuss some in class.</p>
+<!-- We will return to MCMC later, but since we will start using it immediately, there are some facts to be aware of (TODO: finish) -->
+<!-- - we'll return to MCMC later, but since we're going to start using it immediately, some things to be aware of: -->
+<!-- -- model output = samples of parameter values from the posterior. -->
+<!-- -- to have a good model, our sample has to approximate the posterior well -- that means independence of where you started the chain, and enough iterations.  once sampling well, *independent* samples.   Without confidence in the sample, the model is garbage. -->
+<!-- This is why: -->
+<!-- - sampler has to "burn in" => usually discard the first N "warmup" samples.   -->
+<!-- - "thin" = could discard every K samples, hope that this makes more independent -->
+<!-- - always run multiple chains => *multiple cores* needed/v useful. -->
+<!-- - run for at least several thousand. no magic number. -->
+<!-- -- Various diagnostics to check the chains/model, which we'll get to soon.  ("Rhat", "ESS", etc. are related to these in brms output) -->
+</section>
+</section>
+<section id="brms-a-first-look" class="level2" data-number="1.6">
+<h2 data-number="1.6" class="anchored" data-anchor-id="brms-a-first-look"><span class="header-section-number">1.6</span> brms: a first look</h2>
+<p>To estimate <span class="math inline">\(p\)</span> in a frequentist framework, we would fit a logistic regression with an intercept and no predictors:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>m1_glm <span class="ot">&lt;-</span> <span class="fu">glm</span>(stress_shifted <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data=</span>diatones, <span class="at">family=</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>                <span class="st">'binomial'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The estimated intercept, and its 95% confidence intervals are (in log-odds):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coefficients</span>(m1_glm)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="do">## (Intercept) </span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="do">##   -1.646825</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(m1_glm)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Waiting for profiling to be done...</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="do">##     2.5 %    97.5 % </span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="do">## -2.141121 -1.202033</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>These correspond in probability to:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">invlogit</span>(<span class="fu">coefficients</span>(m1_glm))</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="do">## (Intercept) </span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="do">##   0.1615385</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">invlogit</span>(<span class="fu">confint</span>(m1_glm))</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Waiting for profiling to be done...</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="do">##     2.5 %    97.5 % </span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 0.1051638 0.2311138</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>So the estimate is <span class="math inline">\(\hat{p} = 0.12\)</span> (95% CI: 0.11-0.23).</p>
+<p>The equivalent model is fitted in <code>brms</code>, with a uniform prior on <span class="math inline">\(p\)</span>, as follows:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>diatones_m1 <span class="ot">&lt;-</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">brm</span>(<span class="at">data =</span> diatones,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"identity"</span>),</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>      stress_shifted <span class="sc">|</span> <span class="fu">trials</span>(<span class="dv">1</span>) <span class="sc">~</span> <span class="dv">0</span> <span class="sc">+</span> Intercept,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">prior</span>(<span class="fu">beta</span>(<span class="dv">1</span>, <span class="dv">1</span>), <span class="at">class =</span> b, <span class="at">lb =</span> <span class="dv">0</span>, <span class="at">ub =</span> <span class="dv">1</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Only 2 levels detected so that family 'bernoulli' might be a more efficient choice.</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Compiling Stan program...</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="do">## Trying to compile a simple C file</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="do">## Running /Library/Frameworks/R.framework/Resources/bin/R CMD SHLIB foo.c</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="do">## using C compiler: ‘Apple clang version 15.0.0 (clang-1500.1.0.2.5)’</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="do">## using SDK: ‘MacOSX14.2.sdk’</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="do">## clang -arch arm64 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I"/Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library/Rcpp/include/"  -I"/Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library/RcppEigen/include/"  -I"/Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library/RcppEigen/include/unsupported"  -I"/Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library/BH/include" -I"/Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library/StanHeaders/include/src/"  -I"/Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library/StanHeaders/include/"  -I"/Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library/RcppParallel/include/"  -I"/Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library/rstan/include" -DEIGEN_NO_DEBUG  -DBOOST_DISABLE_ASSERTS  -DBOOST_PENDING_INTEGER_LOG2_HPP  -DSTAN_THREADS  -DUSE_STANC3 -DSTRICT_R_HEADERS  -DBOOST_PHOENIX_NO_VARIADIC_EXPRESSION  -D_HAS_AUTO_PTR_ETC=0  -include '/Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp'  -D_REENTRANT -DRCPP_PARALLEL_USE_TBB=1   -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2  -c foo.c -o foo.o</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="do">## In file included from &lt;built-in&gt;:1:</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="do">## In file included from /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp:22:</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="do">## In file included from /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library/RcppEigen/include/Eigen/Dense:1:</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="do">## In file included from /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library/RcppEigen/include/Eigen/Core:19:</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="do">## /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library/RcppEigen/include/Eigen/src/Core/util/Macros.h:679:10: fatal error: 'cmath' file not found</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="do">## #include &lt;cmath&gt;</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="do">##          ^~~~~~~</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 error generated.</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="do">## make: *** [foo.o] Error 1</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="do">## Start sampling</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a><span class="do">## SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 1).</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 1: </span></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 1: Gradient evaluation took 2.8e-05 seconds</span></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.28 seconds.</span></span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 1: Adjust your expectations accordingly!</span></span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 1: </span></span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 1: </span></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 1: Iteration:    1 / 2000 [  0%]  (Warmup)</span></span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 1: Iteration:  200 / 2000 [ 10%]  (Warmup)</span></span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 1: Iteration:  400 / 2000 [ 20%]  (Warmup)</span></span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 1: Iteration:  600 / 2000 [ 30%]  (Warmup)</span></span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 1: Iteration:  800 / 2000 [ 40%]  (Warmup)</span></span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 1: Iteration: 1000 / 2000 [ 50%]  (Warmup)</span></span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 1: Iteration: 1001 / 2000 [ 50%]  (Sampling)</span></span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 1: Iteration: 1200 / 2000 [ 60%]  (Sampling)</span></span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 1: Iteration: 1400 / 2000 [ 70%]  (Sampling)</span></span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 1: Iteration: 1600 / 2000 [ 80%]  (Sampling)</span></span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 1: </span></span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 1:  Elapsed Time: 0.013 seconds (Warm-up)</span></span>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 1:                0.012 seconds (Sampling)</span></span>
+<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 1:                0.025 seconds (Total)</span></span>
+<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 1: </span></span>
+<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a><span class="do">## SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 2).</span></span>
+<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 2: </span></span>
+<span id="cb9-52"><a href="#cb9-52" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 2: Gradient evaluation took 6e-06 seconds</span></span>
+<span id="cb9-53"><a href="#cb9-53" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.06 seconds.</span></span>
+<span id="cb9-54"><a href="#cb9-54" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 2: Adjust your expectations accordingly!</span></span>
+<span id="cb9-55"><a href="#cb9-55" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 2: </span></span>
+<span id="cb9-56"><a href="#cb9-56" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 2: </span></span>
+<span id="cb9-57"><a href="#cb9-57" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 2: Iteration:    1 / 2000 [  0%]  (Warmup)</span></span>
+<span id="cb9-58"><a href="#cb9-58" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 2: Iteration:  200 / 2000 [ 10%]  (Warmup)</span></span>
+<span id="cb9-59"><a href="#cb9-59" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 2: Iteration:  400 / 2000 [ 20%]  (Warmup)</span></span>
+<span id="cb9-60"><a href="#cb9-60" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 2: Iteration:  600 / 2000 [ 30%]  (Warmup)</span></span>
+<span id="cb9-61"><a href="#cb9-61" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 2: Iteration:  800 / 2000 [ 40%]  (Warmup)</span></span>
+<span id="cb9-62"><a href="#cb9-62" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 2: Iteration: 1000 / 2000 [ 50%]  (Warmup)</span></span>
+<span id="cb9-63"><a href="#cb9-63" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 2: Iteration: 1001 / 2000 [ 50%]  (Sampling)</span></span>
+<span id="cb9-64"><a href="#cb9-64" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 2: Iteration: 1200 / 2000 [ 60%]  (Sampling)</span></span>
+<span id="cb9-65"><a href="#cb9-65" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 2: Iteration: 1400 / 2000 [ 70%]  (Sampling)</span></span>
+<span id="cb9-66"><a href="#cb9-66" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 2: Iteration: 1600 / 2000 [ 80%]  (Sampling)</span></span>
+<span id="cb9-67"><a href="#cb9-67" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
+<span id="cb9-68"><a href="#cb9-68" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
+<span id="cb9-69"><a href="#cb9-69" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 2: </span></span>
+<span id="cb9-70"><a href="#cb9-70" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 2:  Elapsed Time: 0.013 seconds (Warm-up)</span></span>
+<span id="cb9-71"><a href="#cb9-71" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 2:                0.012 seconds (Sampling)</span></span>
+<span id="cb9-72"><a href="#cb9-72" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 2:                0.025 seconds (Total)</span></span>
+<span id="cb9-73"><a href="#cb9-73" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 2: </span></span>
+<span id="cb9-74"><a href="#cb9-74" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb9-75"><a href="#cb9-75" aria-hidden="true" tabindex="-1"></a><span class="do">## SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 3).</span></span>
+<span id="cb9-76"><a href="#cb9-76" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 3: </span></span>
+<span id="cb9-77"><a href="#cb9-77" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 3: Gradient evaluation took 4e-06 seconds</span></span>
+<span id="cb9-78"><a href="#cb9-78" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.04 seconds.</span></span>
+<span id="cb9-79"><a href="#cb9-79" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 3: Adjust your expectations accordingly!</span></span>
+<span id="cb9-80"><a href="#cb9-80" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 3: </span></span>
+<span id="cb9-81"><a href="#cb9-81" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 3: </span></span>
+<span id="cb9-82"><a href="#cb9-82" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 3: Iteration:    1 / 2000 [  0%]  (Warmup)</span></span>
+<span id="cb9-83"><a href="#cb9-83" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 3: Iteration:  200 / 2000 [ 10%]  (Warmup)</span></span>
+<span id="cb9-84"><a href="#cb9-84" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 3: Iteration:  400 / 2000 [ 20%]  (Warmup)</span></span>
+<span id="cb9-85"><a href="#cb9-85" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 3: Iteration:  600 / 2000 [ 30%]  (Warmup)</span></span>
+<span id="cb9-86"><a href="#cb9-86" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 3: Iteration:  800 / 2000 [ 40%]  (Warmup)</span></span>
+<span id="cb9-87"><a href="#cb9-87" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 3: Iteration: 1000 / 2000 [ 50%]  (Warmup)</span></span>
+<span id="cb9-88"><a href="#cb9-88" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 3: Iteration: 1001 / 2000 [ 50%]  (Sampling)</span></span>
+<span id="cb9-89"><a href="#cb9-89" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 3: Iteration: 1200 / 2000 [ 60%]  (Sampling)</span></span>
+<span id="cb9-90"><a href="#cb9-90" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 3: Iteration: 1400 / 2000 [ 70%]  (Sampling)</span></span>
+<span id="cb9-91"><a href="#cb9-91" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 3: Iteration: 1600 / 2000 [ 80%]  (Sampling)</span></span>
+<span id="cb9-92"><a href="#cb9-92" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
+<span id="cb9-93"><a href="#cb9-93" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
+<span id="cb9-94"><a href="#cb9-94" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 3: </span></span>
+<span id="cb9-95"><a href="#cb9-95" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 3:  Elapsed Time: 0.013 seconds (Warm-up)</span></span>
+<span id="cb9-96"><a href="#cb9-96" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 3:                0.012 seconds (Sampling)</span></span>
+<span id="cb9-97"><a href="#cb9-97" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 3:                0.025 seconds (Total)</span></span>
+<span id="cb9-98"><a href="#cb9-98" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 3: </span></span>
+<span id="cb9-99"><a href="#cb9-99" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb9-100"><a href="#cb9-100" aria-hidden="true" tabindex="-1"></a><span class="do">## SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 4).</span></span>
+<span id="cb9-101"><a href="#cb9-101" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 4: </span></span>
+<span id="cb9-102"><a href="#cb9-102" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 4: Gradient evaluation took 4e-06 seconds</span></span>
+<span id="cb9-103"><a href="#cb9-103" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.04 seconds.</span></span>
+<span id="cb9-104"><a href="#cb9-104" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 4: Adjust your expectations accordingly!</span></span>
+<span id="cb9-105"><a href="#cb9-105" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 4: </span></span>
+<span id="cb9-106"><a href="#cb9-106" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 4: </span></span>
+<span id="cb9-107"><a href="#cb9-107" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 4: Iteration:    1 / 2000 [  0%]  (Warmup)</span></span>
+<span id="cb9-108"><a href="#cb9-108" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 4: Iteration:  200 / 2000 [ 10%]  (Warmup)</span></span>
+<span id="cb9-109"><a href="#cb9-109" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 4: Iteration:  400 / 2000 [ 20%]  (Warmup)</span></span>
+<span id="cb9-110"><a href="#cb9-110" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 4: Iteration:  600 / 2000 [ 30%]  (Warmup)</span></span>
+<span id="cb9-111"><a href="#cb9-111" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 4: Iteration:  800 / 2000 [ 40%]  (Warmup)</span></span>
+<span id="cb9-112"><a href="#cb9-112" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 4: Iteration: 1000 / 2000 [ 50%]  (Warmup)</span></span>
+<span id="cb9-113"><a href="#cb9-113" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 4: Iteration: 1001 / 2000 [ 50%]  (Sampling)</span></span>
+<span id="cb9-114"><a href="#cb9-114" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 4: Iteration: 1200 / 2000 [ 60%]  (Sampling)</span></span>
+<span id="cb9-115"><a href="#cb9-115" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 4: Iteration: 1400 / 2000 [ 70%]  (Sampling)</span></span>
+<span id="cb9-116"><a href="#cb9-116" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 4: Iteration: 1600 / 2000 [ 80%]  (Sampling)</span></span>
+<span id="cb9-117"><a href="#cb9-117" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
+<span id="cb9-118"><a href="#cb9-118" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
+<span id="cb9-119"><a href="#cb9-119" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 4: </span></span>
+<span id="cb9-120"><a href="#cb9-120" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 4:  Elapsed Time: 0.013 seconds (Warm-up)</span></span>
+<span id="cb9-121"><a href="#cb9-121" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 4:                0.015 seconds (Sampling)</span></span>
+<span id="cb9-122"><a href="#cb9-122" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 4:                0.028 seconds (Total)</span></span>
+<span id="cb9-123"><a href="#cb9-123" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 4:</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>brm()</code> is the workhorse function for fitting bayesian regression models. The <code>family</code> argument and the model formula together express the likelihood for <span class="math inline">\(p\)</span>: this is a logistic regression on data where each <span class="math inline">\(y\)</span> is 0 or 1. The <code>prior</code> argument captures the uniform (<span class="math inline">\(\text{Beta}(1,1)\)</span>) prior. (This particular model needs an unusual structure to make the prior work—when we do logistic regression we’ll proceed differently.)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(diatones_m1)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="do">##  Family: binomial </span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="do">##   Links: mu = identity </span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Formula: stress_shifted | trials(1) ~ 0 + Intercept </span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="do">##    Data: diatones (Number of observations: 130) </span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   Draws: 4 chains, each with iter = 2000; warmup = 1000; thin = 1;</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="do">##          total post-warmup draws = 4000</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="do">## Regression Coefficients:</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="do">##           Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Intercept     0.17      0.03     0.11     0.24 1.01     1251     1540</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="do">## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="do">## and Tail_ESS are effective sample size measures, and Rhat is the potential</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="do">## scale reduction factor on split chains (at convergence, Rhat = 1).</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We will discuss the arguments, the messages during fitting, and the model output more soon. For now we focus on the posterior for <span class="math inline">\(p\)</span>. A numeric summary is:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">posterior_summary</span>(diatones_m1)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="do">##                Estimate  Est.Error        Q2.5       Q97.5</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="do">## b_Intercept   0.1664336 0.03187322   0.1080541   0.2352411</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="do">## lprior        0.0000000 0.00000000   0.0000000   0.0000000</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="do">## lp__        -59.9652369 0.70648371 -62.0371273 -59.4744656</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>(Ignore the second row for now.) This shows the mean, SD, and 95% quantiles of the posterior distribution for <span class="math inline">\(p\)</span>. Note how similar these are to the <code>glm</code>-derived values above.</p>
+<p>The actual posterior can be visualized by extracting and plotting the model’s sample from the posterior, using the <code>as_draws_df()</code> function from the posterior package.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as_draws_df</span>(diatones_m1) <span class="sc">%&gt;%</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> b_Intercept)) <span class="sc">+</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">fill =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="st">"Prob. of stress shifting"</span>, <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)) <span class="sc">+</span> </span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Posterior probability"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="week2_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>(Usually we will just call this “plotting the results”, or similar.) This looks very similar to the analytically-computed posterior above (for all <span class="math inline">\(n=130\)</span> observations).</p>
+<div id="exr-bb1-6" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 1.6</strong></span> &nbsp;</p>
+<ol type="a">
+<li>Refit the <code>brms</code> model, now with your prior that captures that values of <span class="math inline">\(p\)</span> very near 0 or 1 are unlikely. How does the posterior look different, if at all?</li>
+</ol>
+<!-- (A: it shouldn't) -->
+<ol start="2" type="a">
+<li>Now refit both of the last two models, but just using the first 20 observations from <code>diatones</code>. How do the posteriors of these models differ? Why? <!-- (A: it should. fewer samples) --></li>
+</ol>
+</div>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-kurz2021statistical" class="csl-entry" role="listitem">
+Kurz, S. 2023. <em>Statistical Rethinking (Second Edition) with Brms, Ggplot2, and the Tidyverse</em>. <a href="https://bookdown.org/content/4857/" class="uri">https://bookdown.org/content/4857/</a>.
+</div>
+<div id="ref-mcelreath2020statistical" class="csl-entry" role="listitem">
+McElreath, Richard. 2020. <em>Statistical Rethinking: A <span>B</span>ayesian Course with Examples in <span>R</span> and <span>S</span>tan</em>. Second. Chapman; Hall/CRC.
+</div>
+<div id="ref-bdacs" class="csl-entry" role="listitem">
+Nicenboim, B., D. Schad, and S. Vaishth. 2024. <em>An Introduction to Bayesian Data Analysis for Cognitive Science</em>. <a href="https://vasishth.github.io/bayescogsci/book/" class="uri">https://vasishth.github.io/bayescogsci/book/</a>. 5/2024 version.
+</div>
+<div id="ref-rmld-book" class="csl-entry" role="listitem">
+Sonderegger, Morgan. 2023. <em>Regression Modeling for Linguistic Data</em>. MIT Press, <a href="https://osf.io/pnumg/" class="uri">https://osf.io/pnumg/</a>, preprint at <a href="https://github.com/msonderegger/rmld-v1.1/" class="uri">https://github.com/msonderegger/rmld-v1.1/</a>.
+</div>
+</div>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>PDF available <a href="https://github.com/msonderegger/rmld-v1.1/">here</a>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>In more complex models, there will be many parameters.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p><code>as_draws_*</code> functions from this package extract posterior draws in various formats, like <code>as_draws_matrix()</code>, <code>as_draws_list()</code>. Here we need draws in dataframe format.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./index.html" class="pagination-link" aria-label="Preface">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Preface</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./week3.html" class="pagination-link" aria-label="Bayesian basics 2">
+        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Bayesian basics 2</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

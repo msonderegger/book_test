@@ -1,0 +1,1412 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>13&nbsp; Functional principal components analysis – Advanced Quantitative Methods for Linguistic Data</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./causal.html" rel="next">
+<link href="./bayesian_gamms.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./FDA_edited.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Functional principal components analysis</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Advanced Quantitative Methods for Linguistic Data</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Bayesian basics 1</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Bayesian basics 2</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Bayesian Regression Models 1</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Bayesian Regression Models 2</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week9.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Bayesian Hierarchical Models 1</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Bayesian Hierarchical Models 2</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week11.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Bayesian Hierarchical Models 3</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week12.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Models for discrete data: counts, scales, and frequencies</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week13.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Multivariate models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week6.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Generalized Additive Models (GAMs)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week7.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Generalized additive mixed-effects models (GAMMs)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bayesian_gamms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Bayesian GAMs</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./FDA_edited.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Functional principal components analysis</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./causal.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Causal Inference and Causal Discovery</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#preliminaries" id="toc-preliminaries" class="nav-link active" data-scroll-target="#preliminaries"><span class="header-section-number">13.1</span> Preliminaries</a>
+  <ul class="collapse">
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data"><span class="header-section-number">13.1.1</span> Data</a></li>
+  </ul></li>
+  <li><a href="#basics-of-fpca" id="toc-basics-of-fpca" class="nav-link" data-scroll-target="#basics-of-fpca"><span class="header-section-number">13.2</span> Basics of FPCA</a>
+  <ul class="collapse">
+  <li><a href="#functional-data-in-linguistics" id="toc-functional-data-in-linguistics" class="nav-link" data-scroll-target="#functional-data-in-linguistics"><span class="header-section-number">13.2.1</span> Functional data in linguistics</a></li>
+  <li><a href="#functional-principal-components-analysis-fpca" id="toc-functional-principal-components-analysis-fpca" class="nav-link" data-scroll-target="#functional-principal-components-analysis-fpca"><span class="header-section-number">13.2.2</span> Functional principal components analysis (FPCA)</a></li>
+  </ul></li>
+  <li><a href="#adavantages-and-limitations" id="toc-adavantages-and-limitations" class="nav-link" data-scroll-target="#adavantages-and-limitations"><span class="header-section-number">14</span> Adavantages and limitations</a>
+  <ul class="collapse">
+  <li><a href="#affrication-of-t-releases-in-danish" id="toc-affrication-of-t-releases-in-danish" class="nav-link" data-scroll-target="#affrication-of-t-releases-in-danish"><span class="header-section-number">14.1</span> Affrication of /t/ releases in Danish</a>
+  <ul class="collapse">
+  <li><a href="#fitting-the-fpca-and-unpacking-the-output" id="toc-fitting-the-fpca-and-unpacking-the-output" class="nav-link" data-scroll-target="#fitting-the-fpca-and-unpacking-the-output"><span class="header-section-number">14.1.1</span> Fitting the FPCA and unpacking the output</a></li>
+  <li><a href="#extracting-and-interpreting-fpc-scores" id="toc-extracting-and-interpreting-fpc-scores" class="nav-link" data-scroll-target="#extracting-and-interpreting-fpc-scores"><span class="header-section-number">14.1.2</span> Extracting and interpreting FPC scores</a></li>
+  <li><a href="#reconstructing-functions-from-fpc-scores" id="toc-reconstructing-functions-from-fpc-scores" class="nav-link" data-scroll-target="#reconstructing-functions-from-fpc-scores"><span class="header-section-number">14.1.3</span> Reconstructing functions from FPC scores</a></li>
+  <li><a href="#introducing-controls" id="toc-introducing-controls" class="nav-link" data-scroll-target="#introducing-controls"><span class="header-section-number">14.1.4</span> Introducing controls</a></li>
+  </ul></li>
+  <li><a href="#nearsquare-merger-in-new-zealand-english" id="toc-nearsquare-merger-in-new-zealand-english" class="nav-link" data-scroll-target="#nearsquare-merger-in-new-zealand-english"><span class="header-section-number">14.2</span> <span class="smallcaps">near</span>–<span class="smallcaps">square</span> merger in New Zealand English</a>
+  <ul class="collapse">
+  <li><a href="#multivariate-fpca" id="toc-multivariate-fpca" class="nav-link" data-scroll-target="#multivariate-fpca"><span class="header-section-number">14.2.1</span> Multivariate FPCA</a></li>
+  <li><a href="#extracting-fpc-scores" id="toc-extracting-fpc-scores" class="nav-link" data-scroll-target="#extracting-fpc-scores"><span class="header-section-number">14.2.2</span> Extracting FPC scores</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="sec-fpca" class="quarto-section-identifier"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Functional principal components analysis</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><strong>Author</strong>: <a href="https://massimolipari.github.io/">Massimo Lipari</a></p>
+<p>This tutorial gives a brief overview of <em>functional principal components analysis</em> (FPCA) for linguistic data using existing <code>R</code> packages. We use data from <span class="citation" data-cites="puggaard-rode23">Puggaard-Rode (<a href="references.html#ref-puggaard-rode23" role="doc-biblioref">2023</a>)</span> and <span class="citation" data-cites="gubian_etal19a">Gubian et al. (<a href="references.html#ref-gubian_etal19a" role="doc-biblioref">2019</a>)</span>.</p>
+<section id="preliminaries" class="level2" data-number="13.1">
+<h2 data-number="13.1" class="anchored" data-anchor-id="preliminaries"><span class="header-section-number">13.1</span> Preliminaries</h2>
+<p>Load libraries we will need:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fda)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fdapace)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MFPCA)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mgcv)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>select <span class="ot">&lt;-</span> dplyr<span class="sc">::</span>select</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Install this package if need be</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># devtools::install_github('uasolo/landmarkregUtils')</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(landmarkregUtils)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We use several new packages for FPCA and multivariate FPCA:</p>
+<ul>
+<li>fda <span class="citation" data-cites="fda">(<a href="references.html#ref-fda" role="doc-biblioref">Ramsay 2024</a>)</span></li>
+<li>fdapace <span class="citation" data-cites="fdapace">(<a href="references.html#ref-fdapace" role="doc-biblioref">Zhou et al. 2024</a>)</span></li>
+<li>MFPCA <span class="citation" data-cites="mfpca2 mfpca1">(<a href="references.html#ref-mfpca2" role="doc-biblioref">Happ and Greven 2018</a>; <a href="references.html#ref-mfpca1" role="doc-biblioref">Happ-Kurz 2022</a>)</span></li>
+</ul>
+<section id="data" class="level3" data-number="13.1.1">
+<h3 data-number="13.1.1" class="anchored" data-anchor-id="data"><span class="header-section-number">13.1.1</span> Data</h3>
+<section id="danish-t-releases" class="level4" data-number="13.1.1.1">
+<h4 data-number="13.1.1.1" class="anchored" data-anchor-id="danish-t-releases"><span class="header-section-number">13.1.1.1</span> Danish /t/ releases</h4>
+<p>We’ll be working with two publicly available datasets, replicating parts of the analysis from the associated papers (with some extensions). The first is from <span class="citation" data-cites="puggaard-rode23">Puggaard-Rode (<a href="references.html#ref-puggaard-rode23" role="doc-biblioref">2023</a>)</span>: this is a study of the release of the voiceless coronal stop /t/ in Danish, which is variably aspirated or affricated. Each datapoint is the spectrum a /t/ release, where amplitude (in decibels) is a function of frequency (in Hz) measured at 37 frequency bands.</p>
+<p>Let’s load the data and do some pre-processing. (The data can be found <a href="https://dataverse.nl/dataset.xhtml?persistentId=doi:10.34894/FJKFD1">here, under the heading for Ch. 6</a>. Much of the code in this section is taken with minimal modifications from the <a href="https://rpuggaardrode.github.io/icphs2023/">Quarto notebook associated with the paper</a>.):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Read in the data</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>affric <span class="ot">&lt;-</span> <span class="fu">read_delim</span>(<span class="st">'fda_data/affric.csv'</span>, <span class="at">delim =</span> <span class="st">';'</span>, <span class="at">locale =</span> readr<span class="sc">::</span><span class="fu">locale</span>(<span class="at">encoding =</span> <span class="st">'ISO-8859-1'</span>))</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>participant_info <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">'fda_data/participant_info.csv'</span>, <span class="at">locale =</span> readr<span class="sc">::</span><span class="fu">locale</span>(<span class="at">encoding =</span> <span class="st">'ISO-8859-1'</span>))</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>danish_stops <span class="ot">&lt;-</span> <span class="fu">left_join</span>(affric, participant_info)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert character vectors to factors</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (col <span class="cf">in</span> <span class="fu">c</span>(</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">'height'</span>, <span class="st">'round'</span>, <span class="st">'pal'</span>, <span class="st">'stress'</span>, <span class="st">'gender'</span>, <span class="st">'parish'</span>, <span class="st">'backness'</span>)){</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  danish_stops[[col]] <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(danish_stops[[col]])</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Collapse backness distinction to two levels</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>danish_stops <span class="ot">&lt;-</span> danish_stops <span class="sc">%&gt;%</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">bkn2l =</span> <span class="fu">case_when</span>(</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    backness <span class="sc">==</span> <span class="st">'front'</span> <span class="sc">|</span> backness <span class="sc">==</span> <span class="st">'central'</span> <span class="sc">~</span> <span class="st">'nbk'</span>,</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">'bk'</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">bkn2l =</span> <span class="fu">as.factor</span>(bkn2l))</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Read in the multitaper spectra</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>spectra <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">'fda_data/yind_log.csv'</span>)</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter to only /t/</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>danish_t <span class="ot">&lt;-</span> danish_stops <span class="sc">%&gt;%</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(stop <span class="sc">==</span> <span class="st">'t'</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">new_id =</span> <span class="fu">seq.int</span>(<span class="fu">nrow</span>(<span class="fu">filter</span>(danish_stops, stop <span class="sc">==</span> <span class="st">'t'</span>))))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Here, we simply restrict the domain of the function to the range slightly to help avoid spurious effects: intrusive voicing from a previous or following segment can appear below 500 Hz, and the effects of aspiration/affrication above 8000 Hz are not likely to be of interest.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter the spectra dataframe to only /t/</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>t_spectra <span class="ot">&lt;-</span> danish_t <span class="sc">%&gt;%</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(spectra) <span class="sc">%&gt;%</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(.index <span class="sc">&gt;</span> <span class="dv">500</span> <span class="sc">&amp;</span> .index <span class="sc">&lt;</span> <span class="dv">8000</span>) <span class="sc">%&gt;%</span> <span class="co"># Filter to a sensible frequency range</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(.obs, ...<span class="dv">1</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">.obs =</span> new_id)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="new-zealand-english-nearsquare-merger" class="level4" data-number="13.1.1.2">
+<h4 data-number="13.1.1.2" class="anchored" data-anchor-id="new-zealand-english-nearsquare-merger"><span class="header-section-number">13.1.1.2</span> New Zealand English <span class="smallcaps">near</span>–<span class="smallcaps">square</span> merger</h4>
+<p>The second dataset comes from <span class="citation" data-cites="gubian_etal19a">Gubian et al. (<a href="references.html#ref-gubian_etal19a" role="doc-biblioref">2019</a>)</span>, a study of a change in progress in New Zealand English which is causing the diphthongs /ɪə/ (lexical set <span class="smallcaps">near</span>) and /eə/ (lexical set <span class="smallcaps">square</span>) to merge. Here, each observation is a pair of formant tracks (F1 and F2), measured at 11 evenly spaced points: formant frequency <span class="citation" data-cites="lobanov71">(in <a href="references.html#ref-lobanov71" role="doc-biblioref">Lobanov 1971</a> normalized units)</span> is a function of time (in units of relative duration).</p>
+<p>The data can be found in <a href="https://github.com/uasolo/FPCA-phonetics-workshop/blob/master/projects/NZE/NZE.csv">this GitHub repository</a>, which is also the source of much of the code used here.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the data</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>nze <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">'fda_data/NZE.csv'</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert character vectors to factors</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>nze <span class="ot">&lt;-</span> nze <span class="sc">%&gt;%</span> </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">c</span>(Diphthong, Region, Age, Sex, Speaker, Word, Phrase, Age2), <span class="sc">~</span><span class="fu">as.factor</span>(.x)))</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>nze<span class="sc">$</span>Age <span class="ot">&lt;-</span> <span class="fu">factor</span>(nze<span class="sc">$</span>Age, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">'Young'</span>, <span class="st">'MidAge'</span>, <span class="st">'Old'</span>))</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>nze<span class="sc">$</span>Age2 <span class="ot">&lt;-</span> <span class="fu">factor</span>(nze<span class="sc">$</span>Age2, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">'Younger'</span>, <span class="st">'older'</span>))</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Add a column for the measurement point</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>nze<span class="sc">$</span>time <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="at">length.out =</span> <span class="dv">11</span>), <span class="fu">nrow</span>(nze)<span class="sc">/</span><span class="dv">11</span>)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Add a column for token duration</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>nze <span class="ot">&lt;-</span> nze <span class="sc">%&gt;%</span> </span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">duration =</span> <span class="fu">max</span>(time_ms), <span class="at">.by =</span> tokenId)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="basics-of-fpca" class="level2" data-number="13.2">
+<h2 data-number="13.2" class="anchored" data-anchor-id="basics-of-fpca"><span class="header-section-number">13.2</span> Basics of FPCA</h2>
+<section id="functional-data-in-linguistics" class="level3" data-number="13.2.1">
+<h3 data-number="13.2.1" class="anchored" data-anchor-id="functional-data-in-linguistics"><span class="header-section-number">13.2.1</span> Functional data in linguistics</h3>
+<p>Speech production and perception and both fundamentally time-dynamic processes. Think, for example, of how formants or pitch change across vowels or words. This dynamic information is an important cue to all sorts of contrasts. There are also other kinds of functions in linguistic data: we’ve already seen the example of spectra, which are functions in the frequency domain.</p>
+<div id="exr-fpca-1" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 13.1</strong></span> What are some other examples of functional linguistic data that come to mind?</p>
+</div>
+<p>Most linguistic analyses rely solely on point measures (e.g., formants at vowel midpoint), which may or may not be good representations of the trajectories. In some cases, there may even be considerable disagreement about what a reasonable point measure would be (this is notably the case for fricative spectra, for example). Functional data can be challenging to work with directly, however, since they are inherently high-dimensional. This forms part of the motivation for <em>functional principal components analysis (FPCA)</em>, which allows arbitrary functions to be represented with only a few parameters.</p>
+</section>
+<section id="functional-principal-components-analysis-fpca" class="level3" data-number="13.2.2">
+<h3 data-number="13.2.2" class="anchored" data-anchor-id="functional-principal-components-analysis-fpca"><span class="header-section-number">13.2.2</span> Functional principal components analysis (FPCA)</h3>
+<p><a href="https://en.wikipedia.org/wiki/Principal_component_analysis">Principal components analysis</a> is used to project a set of points (usually in a high-dimensional space) into a new coordinate space, such that:</p>
+<ol type="1">
+<li><p>Data are centered on the mean of each dimension,</p></li>
+<li><p>The first dimension (principal component 1, or PC1) is the single dimension which accounts for the largest possible proportion of variance in the data. All dimensions are ranked in decreasing order of proportion of variance explained.</p></li>
+<li><p>All dimensions are orthogonal to one another.</p></li>
+</ol>
+<p>It is often described as (moving the origin and) ‘rotating the axes’. A somewhat less intuitive way of thinking about it (which may, however, make the analogy with FPCA clearer) is this: each point in the original space is being decomposed into a weighted sum of the vectors describing the mean and each of the principal components. FPCA similarly allows a set of functions to be represented as a linear combination of the mean and of a series of orthogonal functions, each capturing a diminishing proportion of variance in the data.</p>
+<p>Both PCA and FPCA allow for several different kinds of research questions to be investigated. One common use case is for subsequent regression analysis, where PC scores can be used in place of or in addition to other measures. For example, we can fit a linear regression model to examine which variables predict PC scores along a given dimension, or we can fit a logistic regression model to investigate how well PC scores predict a certain contrast of interest. Alternatively, the dimensions of variation (the principal components themselves) and their relative importance may be of interest.</p>
+</section>
+</section>
+<section id="adavantages-and-limitations" class="level1" data-number="14">
+<h1 data-number="14"><span class="header-section-number">14</span> Adavantages and limitations</h1>
+<p>FPCA (like regular PCA) is commonly used for dimensionality reduction: it is often possible to achieve a good approximation of the original data using only the first few (functional) principal components, allowing the others to be discarded to simplify the analysis. In this sense, it can be likened to discrete cosine transforms (DCTs), which decompose functions into sums of cosine functions of increasing numbers of half periods, also used in linguistic analyses. The major difference between the two approaches is that for DCTs, the shapes of the components are entirely predictable, whereas in FPCA, the shapes of the components is completely arbitrary and learned from the data. This comes with a tradeoff: DCT components are guaranteed to have certain interpretations, but may or may not capture a relevant dimension of variation in the data; FPCA components are guaranteed to be the best at capturing variation in the data, but there is no guarantee that they will be easy to interpret or theoretically interesting.</p>
+<p>In the simplest case, FPCA requires all inputted functions to have the same domain. This requirement may not be satisfied by all kinds of data: for example, different vowel tokens in a corpus will in general have different durations. A simple solution is to convert absolute time measures into relative ones: this loses information about the duration of the token, however, which itself is often an important variable. Duration must thus somehow be reincorporated into the analysis somewhere else.</p>
+<section id="affrication-of-t-releases-in-danish" class="level2" data-number="14.1">
+<h2 data-number="14.1" class="anchored" data-anchor-id="affrication-of-t-releases-in-danish"><span class="header-section-number">14.1</span> Affrication of /t/ releases in Danish</h2>
+<p>Danish /t/ is variably aspirated (realized as [tʰ]) or affricated (realized as [t^s]). Per <span class="citation" data-cites="puggaard-rode23">Puggaard-Rode (<a href="references.html#ref-puggaard-rode23" role="doc-biblioref">2023</a>)</span>,</p>
+<blockquote class="blockquote">
+<p>The acoustics of alveolar frication and aspiration are well-understood. In alveolar frication, a jet of air impinges on a hard surface (the upper front teeth) immediately in front of the coronal constriction, resulting in noise in a broad range of high frequencies (mainly above 4 kHz) (Stevens 1993). In aspiration, lower frequency turbulence noise in a narrower frequency range (mainly below 1 kHz) is generated at and near the glottis (Stevens 1998). This noise is filtered through the supraglottal cavity, where the resonance frequencies of the following vowel significantly affect the resulting noise.</p>
+</blockquote>
+<p>Let’s take a look at the dataset:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>t_spectra <span class="sc">%&gt;%</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glimpse</span>()</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Rows: 188,885</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Columns: 21</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="do">## $ parish    &lt;fct&gt; Agerskov, Agerskov, Agerskov, Agerskov, Agerskov, Agerskov, …</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="do">## $ token     &lt;chr&gt; "tæ2", "tæ2", "tæ2", "tæ2", "tæ2", "tæ2", "tæ2", "tæ2", "tæ2…</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="do">## $ cog       &lt;dbl&gt; 4305, 4305, 4305, 4305, 4305, 4305, 4305, 4305, 4305, 4305, …</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="do">## $ vot       &lt;dbl&gt; 63.3, 63.3, 63.3, 63.3, 63.3, 63.3, 63.3, 63.3, 63.3, 63.3, …</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="do">## $ pal       &lt;fct&gt; negpal, negpal, negpal, negpal, negpal, negpal, negpal, negp…</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="do">## $ height    &lt;fct&gt; mid, mid, mid, mid, mid, mid, mid, mid, mid, mid, mid, mid, …</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="do">## $ backness  &lt;fct&gt; front, front, front, front, front, front, front, front, fron…</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="do">## $ round     &lt;fct&gt; negrd, negrd, negrd, negrd, negrd, negrd, negrd, negrd, negr…</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="do">## $ stop      &lt;chr&gt; "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", "t", …</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="do">## $ stress    &lt;fct&gt; str, str, str, str, str, str, str, str, str, str, str, str, …</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="do">## $ parishno  &lt;dbl&gt; 3074, 3074, 3074, 3074, 3074, 3074, 3074, 3074, 3074, 3074, …</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="do">## $ tape_id   &lt;dbl&gt; 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, …</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="do">## $ birthyear &lt;dbl&gt; 1883, 1883, 1883, 1883, 1883, 1883, 1883, 1883, 1883, 1883, …</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="do">## $ gender    &lt;fct&gt; male, male, male, male, male, male, male, male, male, male, …</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="do">## $ year      &lt;dbl&gt; 1972, 1972, 1972, 1972, 1972, 1972, 1972, 1972, 1972, 1972, …</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="do">## $ dialect   &lt;chr&gt; "Søn", "Søn", "Søn", "Søn", "Søn", "Søn", "Søn", "Søn", "Søn…</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="do">## $ rec_age   &lt;dbl&gt; 89, 89, 89, 89, 89, 89, 89, 89, 89, 89, 89, 89, 89, 89, 89, …</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="do">## $ bkn2l     &lt;fct&gt; nbk, nbk, nbk, nbk, nbk, nbk, nbk, nbk, nbk, nbk, nbk, nbk, …</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="do">## $ .obs      &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, …</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="do">## $ .index    &lt;dbl&gt; 601.6667, 802.5000, 1003.3333, 1204.1667, 1405.0000, 1605.83…</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="do">## $ .value    &lt;dbl&gt; -0.60640837, -0.55430433, -0.48678129, -0.21229655, 0.273846…</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The main variables of interest here are:</p>
+<ol type="1">
+<li><code>.obs</code>: A unique identifier for each spectrum,</li>
+<li><code>.index</code>: The center frequency of the spectral bin associated with a given measurement,</li>
+<li><code>.value</code>: The amplitude measure at a given spectral bin,</li>
+<li><code>vot</code>: The voice onset time (in ms) of the stop</li>
+<li><code>token</code>: A phonetic transcription for the syllable that the token comes from, used to determine:</li>
+</ol>
+<!-- -->
+<ol type="i">
+<li><code>pal</code>: Whether the stop is palatalized or not.</li>
+<li><code>height</code>: The height of the following vowel (high, mid, or low)</li>
+<li><code>bkn2l</code>: The backness of the following vowel (back or non-back)</li>
+<li><code>round</code>: The roundness of the following vowel (rounded or unrounded)</li>
+<li><code>stress</code>: Whether the token comes from a stressed or unstressed syllable</li>
+</ol>
+<!-- -->
+<ol start="6" type="1">
+<li><code>parish</code>: The place of origin of the speaker who produced the token. There’s only a single speaker from each parish, so this also uniquely identifies each speaker.</li>
+</ol>
+<p>Let’s see what the average spectrum looks like:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>t_spectra <span class="sc">%&gt;%</span> </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> .index, <span class="at">y =</span> .value)) <span class="sc">+</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>()</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="do">## `geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="FDA_edited_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="exr-fpca-2" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 14.1</strong></span> Make some exploratory plots to examine how different variables affect the shape of the spectrum. Why do you think those variables have an effect?</p>
+</div>
+<section id="fitting-the-fpca-and-unpacking-the-output" class="level3" data-number="14.1.1">
+<h3 data-number="14.1.1" class="anchored" data-anchor-id="fitting-the-fpca-and-unpacking-the-output"><span class="header-section-number">14.1.1</span> Fitting the FPCA and unpacking the output</h3>
+<p>We’ll be using the function <code>FPCA()</code> from the <code>fdapace</code> to fit the FPCA. This function takes two lists of vectors as inputs (<code>Ly</code> and <code>Lt</code>, containing the y and x values, respectively), where each vector corresponds to one functional observation. We can use the convenience function <code>MakeFPCAInputs()</code> in <code>fdapace</code> to wrangle our long form dataframe of spectra into this format.</p>
+<p>Options for the FPCA can be passed as a named list to the <code>optns</code> parameter of <code>FPCA()</code>. Setting <code>methodMuCovEst = 'smooth'</code> will enable smoothing of the functions before fitting (which is often useful in limiting spurious effects due to noise in the data): <code>methodBwCov = 'GCV'</code> will use generalized cross-validation to determine the correct degree of smoothness. Finally, the <code>FVEthreshold</code> (FVE = fraction of variance explained), indeirectly determines the number of FPCs: enough dimensions to account for at least that percentage of the variation in the data will be computed (default is 0.99, but we’ll use 0.95 here.)</p>
+<p>For more options, see the <code>fdapace</code> <a href="https://cran.r-project.org/web/packages/fdapace/vignettes/fdapaceVig.html">vignette</a> or the function’s documentation, by running the command <code>?FPCA()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make the FPCA inputs</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>t_input <span class="ot">&lt;-</span> <span class="fu">with</span>(t_spectra,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                <span class="fu">MakeFPCAInputs</span>(<span class="at">IDs =</span> .obs, <span class="co"># A unique ID for each observation</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>                               <span class="at">tVec =</span> .index, <span class="co"># The x value of the measure (in this case, the frequency bin)</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>                               <span class="at">yVec =</span> .value) <span class="co"># The y value of the measure (in this case, the amplitude value)</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Run the FPCA</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>fpca_t <span class="ot">&lt;-</span> <span class="fu">with</span>(t_input,</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>               <span class="fu">FPCA</span>(Ly, Lt,</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>                    <span class="at">optns =</span> <span class="fu">list</span>(<span class="at">dataType =</span> <span class="st">'Dense'</span>,</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">methodMuCovEst =</span> <span class="st">'smooth'</span>, <span class="co"># Smooth the data (not the default for dense data)</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">methodBwCov =</span> <span class="st">'GCV'</span>, <span class="co"># Estimate the degree of smoothing required via generalized cross-validation</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">FVEthreshold =</span> <span class="fl">0.95</span>)) <span class="co"># Find a solution with enough principal components to explain 95% of the variance</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>fpca_t <span class="sc">%&gt;%</span> <span class="fu">plot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="FDA_edited_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Running the <code>plot</code> function on the FPCA object produces some useful summary metrics:</p>
+<p><em>Design plot</em>: This shows how individual measurements are spaced across the x axis (called ‘time grid’ in the plot, but actually the frequency domain in our example). It serves as a sanity check that the inputted data look the way they’re supposed to: here, we have many observations along the frequency dimension (37 bins) and they’re all equally spaced, so our data is said to be <em>dense</em>. FPCA also works with <em>sparse</em> data, but fitting can be more complex or prone to problems.</p>
+<p><em>Mean function</em>: As the name suggests, this is the average of all (smoothed) observations. (You can check for yourself that this indeed looks like the mean spectrum we plotted earlier with <code>ggplot2</code>.) This is stored in the FPCA object as <code>$mu</code>.</p>
+<p><em>Scree plot</em>: This will be familiar to you if you’ve used plain PCA before. The bars on this plot give the FVE by each given PC, and the connected red dots give the running sum of the FVE up to a given PC. The total FVE and the list of cumulative FVE values are stored in the FPCA object as <code>$FVE</code> and <code>$cumFVE</code>, respectively. If we want to calculate the FVE associated with a particular PC, we can use this function:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A convenience function for getting the FVE for a given set of principal components (by default, for all FPCs)</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>FVE <span class="ot">&lt;-</span> <span class="cf">function</span>(fpca_obj, <span class="at">fpcs =</span> <span class="dv">1</span><span class="sc">:</span>fpca_obj<span class="sc">$</span>selectK) {</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">c</span>(fpca_obj<span class="sc">$</span>cumFVE[<span class="dv">1</span>], <span class="fu">diff</span>(fpca_obj<span class="sc">$</span>cumFVE))[fpcs])</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>fpca_t <span class="sc">%&gt;%</span> <span class="fu">FVE</span>()</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 0.58418897 0.18240035 0.09251821 0.05992529 0.03934014</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We see that the majority of the variance is capture by a single dimension (FPC1). FVE rapidly drops off FPC2, to the point that FPC4 and 5 aren’t contributing much. When several FPCs have similarly low FVE like this, it’s often a sign that they’re picking up on noise rather than signal.</p>
+<p><em>A plot of the first three eigenfunctions</em>: This is the meat and potatoes of the FPCA, showing the shape of the three functions which have been determined to explain the largest proportion of variance and which are used to calculate principal component scores. It can be hard to interpret the eigenfunctions just by looking at them: it’s thus often useful to visualize their modifying effect on the mean function.</p>
+<p>To do this, we simply multiply the eigenfunction by some arbitrary value and add it to the mean. To get a good sense of the range of variability found in our data, we can use quantiles of PC scores along that dimension calculated from the data: for example, if we choose the first and third quartiles, it would mean that half of the observations vary along that PC within the range described by those two curves. The following convenience function makes it easy to do just that, allowing the user to specify which FPCs are of interest and which quantiles to use.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A convenience function for visualizing the effects of FPCs, adapted from Puggaard-Rode (2023)</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>plot_fpc_effects <span class="ot">&lt;-</span> <span class="cf">function</span>(fpca_obj, <span class="at">fpcs =</span> <span class="dv">1</span><span class="sc">:</span>fpca_obj<span class="sc">$</span>selectK, <span class="at">range =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)) {</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  vals <span class="ot">&lt;-</span> <span class="fu">data.frame</span>()</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (fpc <span class="cf">in</span> fpcs) {</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    vals <span class="ot">&lt;-</span> vals <span class="sc">%&gt;%</span> </span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">rbind</span>(<span class="fu">data.frame</span>(<span class="at">fpc =</span> <span class="fu">paste0</span>(<span class="st">'FPC'</span>, fpc),</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>                       <span class="at">measurement =</span> fpca_obj<span class="sc">$</span>obsGrid, <span class="at">mu =</span> fpca_obj<span class="sc">$</span>mu,</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>                       <span class="at">highq =</span> fpca_obj<span class="sc">$</span>mu <span class="sc">+</span> <span class="fu">quantile</span>(fpca_obj<span class="sc">$</span>xiEst[, fpc], range[<span class="dv">2</span>]) <span class="sc">*</span> fpca_obj<span class="sc">$</span>phi[, fpc],</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>                       <span class="at">lowq =</span> fpca_obj<span class="sc">$</span>mu <span class="sc">+</span> <span class="fu">quantile</span>(fpca_obj<span class="sc">$</span>xiEst[, fpc], range[<span class="dv">1</span>]) <span class="sc">*</span> fpca_obj<span class="sc">$</span>phi[, fpc]))</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  vals <span class="ot">&lt;-</span> vals <span class="sc">%&gt;%</span> </span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">fpc =</span> fpc <span class="sc">%&gt;%</span> <span class="fu">as.factor</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(mu, highq, lowq))</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>  plt <span class="ot">&lt;-</span> vals <span class="sc">%&gt;%</span> </span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> measurement, <span class="at">y =</span> value, <span class="at">colour =</span> name)) <span class="sc">+</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">facet_wrap</span>(<span class="sc">~</span>fpc, <span class="at">ncol =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">xlab</span>(<span class="st">'Measurement'</span>) <span class="sc">+</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ylab</span>(<span class="st">'Peak (ERB)'</span>) <span class="sc">+</span> </span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_colour_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">'red'</span>, <span class="st">'blue'</span>, <span class="st">'gray'</span>),</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>                       <span class="at">name =</span> <span class="st">'Score'</span>,</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>                       <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">'Low'</span>, <span class="st">'High'</span>, <span class="st">'Mean'</span>)) <span class="sc">+</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">'bottom'</span>)</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(plt)</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>fpca_t <span class="sc">%&gt;%</span> </span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_fpc_effects</span>(<span class="at">fpcs =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">range =</span> <span class="fu">c</span>(<span class="fl">0.25</span>, <span class="fl">0.75</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="FDA_edited_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Here, the first quantile (low value) is plotted in red, the third quantile (high value) in blue, and the mean in grey. Note that the sign of any given dimension is arbitrary, and can be flipped without affecting the fit (this may sometimes facilitate interpretation).</p>
+<p>From these plots, we see that FPC1 primarily affects the spectral peak: peak <em>frequency</em> varies monotonically (low values = lower frequency, high values = higher frequency), but peak <em>amplitude</em> does not (amplitude is highest at low values, drops towards the mean and increases again at high values). FPC2 simultaneously affects peak amplitude and peak prominence (low = higher amplitude and more prominent peak, high = lower amplitude peak and more of a plateau). Conversely, FPC3 captures joint change in peak frequency and peak prominence (low = higher frequency, less prominent peak, high = lower frequency, more prominent peak).</p>
+<div id="exr-fpca-3" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 14.2</strong></span> Try running the FPCA again, but this time without smoothing the functions (set <code>methodMuCovEst = 'cross-sectional'</code> in the <code>optns()</code> parameter). How does this change the results?</p>
+</div>
+</section>
+<section id="extracting-and-interpreting-fpc-scores" class="level3" data-number="14.1.2">
+<h3 data-number="14.1.2" class="anchored" data-anchor-id="extracting-and-interpreting-fpc-scores"><span class="header-section-number">14.1.2</span> Extracting and interpreting FPC scores</h3>
+<p>FPC scores are contained in a matrix, stored in the FPCA object as <code>xiEst</code>. We can make pulling them out and adding them back to our original dataframe a little easier with the following function:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A convenience function to pull the FPC scores out of the FPCA object and store them in the original dataframe</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>extract_fpc_scores <span class="ot">&lt;-</span> <span class="cf">function</span>(df, fpca_obj, <span class="at">fpcs =</span> <span class="dv">1</span><span class="sc">:</span>fpca_obj<span class="sc">$</span>selectK) {</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (fpc <span class="cf">in</span> fpcs) {</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> </span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="st">'fpc{fpc}'</span> <span class="sc">:</span><span class="er">=</span> fpca_obj<span class="sc">$</span>xiEst[,fpc]) <span class="co"># Creates a column `fpcx`, where x = fpc, for the scores</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(df)</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>danish_t <span class="ot">&lt;-</span> danish_t <span class="sc">%&gt;%</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">extract_fpc_scores</span>(fpca_t)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="exr-fpca-4" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 14.3</strong></span> Building off what was learned previously, make some exploratory plots to determine which variables are predictive of FPC1, FPC2 and FPC3 scores.</p>
+</div>
+<div id="exr-fpca-5" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 14.4</strong></span> Try and fit a simple, reasonable linear model for FPC1, FPC2, and FPC3 scores, using the predictors which seemed important in the previous question. (Separate univariate models are fine for our purposes, although a single multivariate model would in principle be better.)</p>
+</div>
+</section>
+<section id="reconstructing-functions-from-fpc-scores" class="level3" data-number="14.1.3">
+<h3 data-number="14.1.3" class="anchored" data-anchor-id="reconstructing-functions-from-fpc-scores"><span class="header-section-number">14.1.3</span> Reconstructing functions from FPC scores</h3>
+<p>Let’s now try to reconstruct the original spectra using the mean function and the first three principal components.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Join in the extracted FPC scores</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>t_spectra <span class="ot">&lt;-</span> t_spectra <span class="sc">%&gt;%</span> </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(danish_t <span class="sc">%&gt;%</span> <span class="fu">select</span>(new_id<span class="sc">:</span>fpc5), <span class="at">by =</span> <span class="fu">c</span>(<span class="st">'.obs'</span> <span class="ot">=</span> <span class="st">'new_id'</span>))</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a dataframe with the mean and the principal components</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>fpcs <span class="ot">&lt;-</span> <span class="fu">with</span>(fpca_t,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>             <span class="fu">data.frame</span>(<span class="at">.index =</span> obsGrid,</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>                        <span class="at">mu =</span> mu,</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>                        <span class="at">FPC1 =</span> phi[, <span class="dv">1</span>],</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>                        <span class="at">FPC2 =</span> phi[, <span class="dv">2</span>],</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>                        <span class="at">FPC3 =</span> phi[, <span class="dv">3</span>])) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">index =</span> <span class="fu">floor</span>(.index)) <span class="sc">%&gt;%</span> <span class="co"># Gets around a floating point precision issue</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>.index)</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>t_spectra <span class="ot">&lt;-</span> t_spectra <span class="sc">%&gt;%</span> </span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">index =</span> <span class="fu">floor</span>(.index)) <span class="sc">%&gt;%</span> <span class="co"># Gets around a floating point precision issue</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(fpcs, <span class="at">by =</span> <span class="st">'index'</span>)</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate the reconstructed measures</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>t_spectra <span class="ot">&lt;-</span> t_spectra <span class="sc">%&gt;%</span> </span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">reconstructed =</span> mu <span class="sc">+</span> fpc1 <span class="sc">*</span> FPC1 <span class="sc">+</span> fpc2 <span class="sc">*</span> FPC2 <span class="sc">+</span> fpc3 <span class="sc">*</span> FPC3)</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Take a small subsample of curves for visualization</span></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">76</span>)</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>trajs <span class="ot">&lt;-</span> t_spectra<span class="sc">$</span>.obs <span class="sc">%&gt;%</span> <span class="fu">sample</span>(<span class="dv">9</span>) </span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>t_spectra_samples <span class="ot">&lt;-</span> t_spectra <span class="sc">%&gt;%</span> </span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(.obs <span class="sc">%in%</span> trajs)</span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the observed values vs reconstructed curves</span></span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>t_spectra_samples <span class="sc">%&gt;%</span> </span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> index)) <span class="sc">+</span></span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y =</span> .value), <span class="at">colour =</span> <span class="st">'red'</span>, <span class="at">shape =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> reconstructed), <span class="at">colour =</span> <span class="st">'black'</span>) <span class="sc">+</span></span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>.obs) <span class="sc">+</span></span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">strip.text =</span> <span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="FDA_edited_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The measured frequency values are represented by the red dots, whereas the reconstructed spectra are represented by the solid black line. As expected, the first three PCs offer a fair, but not perfect, approximation of the original data.</p>
+</section>
+<section id="introducing-controls" class="level3" data-number="14.1.4">
+<h3 data-number="14.1.4" class="anchored" data-anchor-id="introducing-controls"><span class="header-section-number">14.1.4</span> Introducing controls</h3>
+<p>The results of the previous FPCA tell us what the most important dimensions of variation are <em>across the entire dataset</em>. However, we’ve used heavily imbalanced corpus data, which may skew the results. We may, moreover, be particularly interested in certain kinds of variability—for example, inter-speaker variability, rather than variability due to the phonological environment.</p>
+<p>In these cases, we can fit a model to control for certain variables, make marginal predictions for the given variable of interest, and run the FPCA on those predictions rather than on the empirical data. Here’s a reasonable GAMM for the data, controlling for gender, the VOT of the stop, and the following vowel:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Some more data wrangling</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>t_spectra <span class="ot">&lt;-</span> t_spectra <span class="sc">%&gt;%</span> </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">start.event =</span> ((<span class="fu">row_number</span>() <span class="sc">-</span> <span class="dv">1</span> <span class="sc">%%</span> <span class="dv">37</span>) <span class="sc">==</span> <span class="dv">0</span>),</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">token =</span> token <span class="sc">%&gt;%</span> <span class="fu">as.factor</span>(),</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">gender.ord =</span> gender <span class="sc">%&gt;%</span> <span class="fu">as.ordered</span>(),</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">vot.std =</span> vot <span class="sc">%&gt;%</span> arm<span class="sc">::</span><span class="fu">rescale</span>())</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(t_spectra<span class="sc">$</span>gender.ord) <span class="ot">&lt;-</span> <span class="fu">contr.treatment</span>(<span class="at">n =</span> <span class="dv">2</span>)</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit a first model without an AR1 error model</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>danish_mod1 <span class="ot">&lt;-</span> t_spectra <span class="sc">%&gt;%</span> </span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bam</span>(.value <span class="sc">~</span> gender.ord <span class="sc">+</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>        <span class="fu">s</span>(.index, <span class="at">bs =</span> <span class="st">'cr'</span>) <span class="sc">+</span> <span class="fu">s</span>(.index, <span class="at">by =</span> gender.ord, <span class="at">bs =</span> <span class="st">'cr'</span>) <span class="sc">+</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>        <span class="fu">s</span>(vot.std, <span class="at">bs =</span> <span class="st">'cr'</span>) <span class="sc">+</span> <span class="fu">ti</span>(.index, vot.std, <span class="at">bs =</span> <span class="st">'cr'</span>) <span class="sc">+</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>        <span class="fu">s</span>(.index, parish, <span class="at">bs =</span> <span class="st">'fs'</span>, <span class="at">xt =</span> <span class="st">'cr'</span>, <span class="at">k =</span> <span class="dv">5</span>, <span class="at">m =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>        <span class="fu">s</span>(.index, token, <span class="at">bs =</span> <span class="st">'fs'</span>, <span class="at">xt =</span> <span class="st">'cr'</span>, <span class="at">k =</span> <span class="dv">5</span>, <span class="at">m =</span> <span class="dv">1</span>),</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">data =</span> ., <span class="at">method =</span> <span class="st">'fREML'</span>, <span class="at">discrete =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>danish_mod2 <span class="ot">&lt;-</span> t_spectra <span class="sc">%&gt;%</span> </span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bam</span>(.value <span class="sc">~</span> gender.ord <span class="sc">+</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>        <span class="fu">s</span>(.index, <span class="at">bs =</span> <span class="st">'cr'</span>) <span class="sc">+</span> <span class="fu">s</span>(.index, <span class="at">by =</span> gender.ord, <span class="at">bs =</span> <span class="st">'cr'</span>) <span class="sc">+</span></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>        <span class="fu">s</span>(vot.std, <span class="at">bs =</span> <span class="st">'cr'</span>) <span class="sc">+</span> <span class="fu">ti</span>(.index, vot.std, <span class="at">bs =</span> <span class="st">'cr'</span>) <span class="sc">+</span></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>        <span class="fu">s</span>(.index, parish, <span class="at">bs =</span> <span class="st">'fs'</span>, <span class="at">xt =</span> <span class="st">'cr'</span>, <span class="at">k =</span> <span class="dv">5</span>, <span class="at">m =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>        <span class="fu">s</span>(.index, token, <span class="at">bs =</span> <span class="st">'fs'</span>, <span class="at">xt =</span> <span class="st">'cr'</span>, <span class="at">k =</span> <span class="dv">5</span>, <span class="at">m =</span> <span class="dv">1</span>),</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>      <span class="at">data =</span> ., <span class="at">method =</span> <span class="st">'fREML'</span>, <span class="at">discrete =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>      <span class="at">rho =</span> itsadug<span class="sc">::</span><span class="fu">start_value_rho</span>(danish_mod1), <span class="at">AR.start =</span> .<span class="sc">$</span>start.event)</span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>danish_mod2 <span class="sc">%&gt;%</span> </span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_rds</span>(<span class="at">file =</span> <span class="st">'fda_data/danish_mod2.rds'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The model has been fitted in advance in order to save time, so let’s load it now.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>danish_mod2 <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">'fda_data/danish_mod2.rds'</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>danish_mod2 <span class="sc">%&gt;%</span> <span class="fu">summary</span>()</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Family: gaussian </span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Link function: identity </span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Formula:</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="do">## .value ~ gender.ord + s(.index, bs = "cr") + s(.index, by = gender.ord, </span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="do">##     bs = "cr") + s(vot.std, bs = "cr") + ti(.index, vot.std, </span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="do">##     bs = "cr") + s(.index, parish, bs = "fs", xt = "cr", k = 5, </span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="do">##     m = 1) + s(.index, token, bs = "fs", xt = "cr", k = 5, m = 1)</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="do">## Parametric coefficients:</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="do">##              Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="do">## (Intercept)  0.256054   0.011237  22.787   &lt;2e-16 ***</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="do">## gender.ord.L 0.009974   0.010799   0.924    0.356    </span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="do">## ---</span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a><span class="do">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a><span class="do">## Approximate significance of smooth terms:</span></span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a><span class="do">##                              edf   Ref.df      F  p-value    </span></span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a><span class="do">## s(.index)                  8.774    8.896 35.109  &lt; 2e-16 ***</span></span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a><span class="do">## s(.index):gender.ordmale   7.758    8.433  8.541  &lt; 2e-16 ***</span></span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a><span class="do">## s(vot.std)                 7.467    8.401  3.826 7.94e-05 ***</span></span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a><span class="do">## ti(.index,vot.std)        12.217   13.601 24.379  &lt; 2e-16 ***</span></span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a><span class="do">## s(.index,parish)         940.227 1062.000 42.661  &lt; 2e-16 ***</span></span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a><span class="do">## s(.index,token)          167.855  249.000 12.770  &lt; 2e-16 ***</span></span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a><span class="do">## ---</span></span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a><span class="do">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a><span class="do">## R-sq.(adj) =   0.49   Deviance explained = 49.3%</span></span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a><span class="do">## fREML = -1.1695e+05  Scale est. = 0.079677  n = 188885</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We then use the <code>mgcv::predict.bam()</code> function to make by-speaker predictions for the smooth over frequency, marginalizing over all other predictors (including <code>gender.ord</code>), which are then stored in the dataframe <code>parish_df</code>. These will allow us to examine the dimensions of residual inter-speaker variability (i.e., that which is not explained by gender). (You don’t need to worry too much about the details of the code here. This probably isn’t the cleanest way to make these predictions.)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a dataframe for predictions</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>parish_df <span class="ot">&lt;-</span> t_spectra <span class="sc">%&gt;%</span> </span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(parish, .index) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">vot.std =</span> <span class="dv">0</span>)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Make predictions</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>parish_df<span class="sc">$</span>gender.ord <span class="ot">&lt;-</span> <span class="st">'male'</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>parish_pred_male <span class="ot">&lt;-</span> danish_mod2 <span class="sc">%&gt;%</span> </span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">predict.bam</span>(parish_df,</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>              <span class="at">terms =</span> <span class="fu">c</span>(<span class="st">'(Intercept)'</span>,</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>                        <span class="st">'gender.ord'</span>,</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>                        <span class="st">'s(.index)'</span>,</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>                        <span class="st">'s(.index):gender.ordmale'</span>,</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>                        <span class="st">'s(vot.std)'</span>,</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>                        <span class="st">'s(.index,parish)'</span>),</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>              <span class="at">newdata.guaranteed =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>              <span class="at">discrete =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>parish_df<span class="sc">$</span>gender.ord <span class="ot">&lt;-</span> <span class="st">'female'</span></span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>parish_pred_female <span class="ot">&lt;-</span> danish_mod2 <span class="sc">%&gt;%</span> </span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">predict.bam</span>(parish_df,</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>              <span class="at">terms =</span> <span class="fu">c</span>(<span class="st">'(Intercept)'</span>,</span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>                        <span class="st">'gender.ord'</span>,</span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>                        <span class="st">'s(.index)'</span>,</span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>                        <span class="st">'s(.index):gender.ordmale'</span>,</span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>                        <span class="st">'s(vot.std)'</span>,</span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>                        <span class="st">'s(.index,parish)'</span>),</span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>              <span class="at">newdata.guaranteed =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>              <span class="at">discrete =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a>parish_df<span class="sc">$</span>pred <span class="ot">&lt;-</span> (parish_pred_male <span class="sc">+</span> parish_pred_female)<span class="sc">/</span><span class="dv">2</span></span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a>parish_df <span class="ot">&lt;-</span> parish_df <span class="sc">%&gt;%</span> </span>
+<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>gender.ord)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We’re now ready to run the FPCA on the by-speaker predictions in <code>parish_df</code>.</p>
+<div id="exr-fpca-6" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 14.5</strong></span> Using the previous example as a template, carry out FPCA on the by-speaker predictions. (Note that there’s no need to smooth the functions this time, since the GAMM has already done this for us. Extract the FVE for each of the first three principal components, and create a plot to visualize the effects of the eigenfunctions on the mean. How do the results compare to those from the original FPCA?</p>
+</div>
+</section>
+</section>
+<section id="nearsquare-merger-in-new-zealand-english" class="level2" data-number="14.2">
+<h2 data-number="14.2" class="anchored" data-anchor-id="nearsquare-merger-in-new-zealand-english"><span class="header-section-number">14.2</span> <span class="smallcaps">near</span>–<span class="smallcaps">square</span> merger in New Zealand English</h2>
+<p>Let’s take a look at the dataset:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>nze <span class="sc">%&gt;%</span> </span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glimpse</span>()</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Rows: 46,442</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Columns: 14</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="do">## $ tokenId   &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, …</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="do">## $ Diphthong &lt;fct&gt; I@, I@, I@, I@, I@, I@, I@, I@, I@, I@, I@, e@, e@, e@, e@, …</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="do">## $ time_ms   &lt;dbl&gt; 0.00000, 10.00000, 20.00000, 30.00000, 40.00000, 50.00000, 6…</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="do">## $ Region    &lt;fct&gt; Hamilton, Hamilton, Hamilton, Hamilton, Hamilton, Hamilton, …</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="do">## $ Age       &lt;fct&gt; MidAge, MidAge, MidAge, MidAge, MidAge, MidAge, MidAge, MidA…</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="do">## $ Sex       &lt;fct&gt; female, female, female, female, female, female, female, fema…</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="do">## $ Speaker   &lt;fct&gt; h007, h007, h007, h007, h007, h007, h007, h007, h007, h007, …</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="do">## $ Word      &lt;fct&gt; years, years, years, years, years, years, years, years, year…</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="do">## $ F1        &lt;dbl&gt; -0.80419952, -0.80092751, -0.79765550, -0.78238614, -0.74094…</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="do">## $ F2        &lt;dbl&gt; 0.9653225, 0.9622437, 0.9591649, 0.9043064, 0.8886326, 0.780…</span></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="do">## $ Phrase    &lt;fct&gt; nonfinal, nonfinal, nonfinal, nonfinal, nonfinal, nonfinal, …</span></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a><span class="do">## $ Age2      &lt;fct&gt; Younger, Younger, Younger, Younger, Younger, Younger, Younge…</span></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a><span class="do">## $ time      &lt;dbl&gt; 0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 0.0, …</span></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a><span class="do">## $ duration  &lt;dbl&gt; 100.0000, 100.0000, 100.0000, 100.0000, 100.0000, 100.0000, …</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The most important variables here are:</p>
+<ol type="1">
+<li><code>tokenId</code>: A unique identifier for each token,</li>
+<li><code>time</code>: The timepoint (in relative duration) that the measurement comes from,</li>
+<li><code>F1</code>, <code>F2</code>: The formant values,</li>
+<li><code>Diphthong</code>: The underlying vowel that the token comes from (<code>I@</code> = [ɪə], <code>e@</code> = [eə]),</li>
+<li><code>Age2</code>: The age group the spaker belongs to (old or young).</li>
+<li><code>Phrase</code>: Whether the token is phrase-final or not (relevant because sound changes are often more advanced phrase-finally than non-finally).</li>
+</ol>
+<p>Let’s look at a sample of 25 speakers and see how they vary in terms of the realization of the <span class="smallcaps">near</span>–<span class="smallcaps">square</span> contrast:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">26</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>speakers <span class="ot">&lt;-</span> <span class="fu">unique</span>(nze<span class="sc">$</span>Speaker) <span class="sc">%&gt;%</span> </span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sample</span>(<span class="dv">25</span>)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>nze_sub <span class="ot">&lt;-</span> nze <span class="sc">%&gt;%</span> </span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Speaker <span class="sc">%in%</span> speakers) <span class="sc">%&gt;%</span> </span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Diphthong =</span> Diphthong <span class="sc">%&gt;%</span> <span class="fu">as.factor</span>())</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>nze_sub_long <span class="ot">&lt;-</span> nze_sub <span class="sc">%&gt;%</span> </span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(F1, F2),</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">'formant'</span>,</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">'formant_freq'</span>)</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>nze_sub_long <span class="sc">%&gt;%</span> </span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> time, <span class="at">y =</span> formant_freq, <span class="at">colour =</span> Diphthong, <span class="at">group =</span> <span class="fu">interaction</span>(Diphthong, formant))) <span class="sc">+</span></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>() <span class="sc">+</span></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>Speaker, <span class="at">ncol =</span> <span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">strip.text =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">'bottom'</span>)</span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a><span class="do">## `geom_smooth()` using method = 'loess' and formula = 'y ~ x'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="FDA_edited_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We immediate see that there is variation in terms of whether a given speaker:</p>
+<ol type="1">
+<li>Has maintained the contrast or not—and if so, over what proportion of the time interval the contrast can be seen,</li>
+<li>Marks the contrast with just F1, just F2, or both.</li>
+</ol>
+<section id="multivariate-fpca" class="level3" data-number="14.2.1">
+<h3 data-number="14.2.1" class="anchored" data-anchor-id="multivariate-fpca"><span class="header-section-number">14.2.1</span> Multivariate FPCA</h3>
+<p>We thus need a dynamic metric that accounts for the patterns of covariation in F1 and F2. <em>Multidimensional</em> FPCA (MFPCA) does just that, simultaneously determining the functions which capture the most variance for each dimension. Although there’s a different set of PCs for each dimension, there is a single set of PC scores which affect both dimensions jointly.</p>
+<p>We’ll be using the package <code>MFPCA</code> and its <code>MFPCA()</code> function here. It works somewhat differently from <code>fdapace::FPCA()</code>, notably requiring the input functions to be in a different format. We’ll use the <code>long2irregFunData()</code> function from Michele Gubian’s package <code>landmarkregUtils</code>, as well as the function <code>funData::as.funData()</code>, to covert our long dataframe to the correct format. We need to create two separate funData objects, which we will then combine into a single multiFunData object.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the inputs</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>nze_f1 <span class="ot">&lt;-</span> <span class="fu">long2irregFunData</span>(nze,</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>                                <span class="at">id =</span> <span class="st">'tokenId'</span>,</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>                                <span class="at">time =</span> <span class="st">'time'</span>,</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>                                <span class="at">value =</span> <span class="st">'F1'</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.funData</span>()</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>nze_f2 <span class="ot">&lt;-</span> <span class="fu">long2irregFunData</span>(nze,</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>                                <span class="at">id =</span> <span class="st">'tokenId'</span>,</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>                                <span class="at">time =</span> <span class="st">'time'</span>,</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>                                <span class="at">value =</span> <span class="st">'F2'</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.funData</span>()</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>nze_inputs <span class="ot">&lt;-</span> <span class="fu">multiFunData</span>(<span class="fu">list</span>(nze_f1, nze_f2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The options for <code>MFPCA()</code> are also specified in a slightly different way. Instead of passing a desired FVE threshhold, we supply the desired number of PCs.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Run the MFPCA</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>nze_mfpca <span class="ot">&lt;-</span> <span class="fu">MFPCA</span>(nze_inputs,</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">M =</span> <span class="dv">3</span>,</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">uniExpansions =</span> <span class="fu">list</span>(<span class="fu">list</span>(<span class="at">type =</span> <span class="st">'uFPCA'</span>), <span class="fu">list</span>(<span class="at">type =</span> <span class="st">'uFPCA'</span>)))</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Get summary plots</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>nze_mfpca <span class="sc">%&gt;%</span> </span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(<span class="at">combine =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="FDA_edited_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="FDA_edited_files/figure-html/unnamed-chunk-18-2.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="FDA_edited_files/figure-html/unnamed-chunk-18-3.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<div>
+<p>Describe the effects of each of the principal components.</p>
+</div>
+<div id="exr-fpca-7" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 14.6</strong></span> Try and fit two univariate FPCAs on the <code>nze</code> data, one for F1 and one for F2. How do they differ from the compare to the MFPCA?</p>
+</div>
+</section>
+<section id="extracting-fpc-scores" class="level3" data-number="14.2.2">
+<h3 data-number="14.2.2" class="anchored" data-anchor-id="extracting-fpc-scores"><span class="header-section-number">14.2.2</span> Extracting FPC scores</h3>
+<p>Here’s a convience function for getting the FPC scores out of the model, very similar to the one for univariate FPCA:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a dataframe with one row per observation</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>nze_tokens <span class="ot">&lt;-</span> nze <span class="sc">%&gt;%</span> </span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(tokenId, Diphthong, Region, Age, Sex, Speaker, Word, Phrase, Age2, duration)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="co"># A convenience function similar to `extract_fpc_scores` above</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>extract_mfpc_scores <span class="ot">&lt;-</span> <span class="cf">function</span>(df, fpca_obj, <span class="at">fpcs =</span> <span class="dv">1</span><span class="sc">:</span>(fpca_obj<span class="sc">$</span>normFactors <span class="sc">%&gt;%</span> <span class="fu">length</span>())) {</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (fpc <span class="cf">in</span> fpcs) {</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> </span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="st">'fpc{fpc}'</span> <span class="sc">:</span><span class="er">=</span> fpca_obj<span class="sc">$</span>scores[,fpc]) <span class="co"># Creates a column `fpcx`, where x = fpc, for the scores</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(df)</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract scores</span></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>nze_tokens <span class="ot">&lt;-</span> nze_tokens <span class="sc">%&gt;%</span> </span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">extract_mfpc_scores</span>(nze_mfpca)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="exr-fpca-8" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 14.7</strong></span> Which FPCs contribute the most to the <span class="smallcaps">near</span>–<span class="smallcaps">square</span> distinction in NZE? Do we see evidence of a merger in progress?</p>
+</div>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-gubian_etal19a" class="csl-entry" role="listitem">
+Gubian, Michele, Jonathan Harrington, Mary Stevens, Florian Schiel, and Paul Warren. 2019. <span>“Tracking the New Zealand English NEAR/SQUARE Merger Using Functional Principal Components Analysis.”</span> In <em>Proceedings of Interspeech 2019</em>, 296–300. <a href="https://doi.org/10.21437/Interspeech.2019-2115">https://doi.org/10.21437/Interspeech.2019-2115</a>.
+</div>
+<div id="ref-mfpca2" class="csl-entry" role="listitem">
+Happ, Clara, and Sonja Greven. 2018. <span>“Multivariate Functional Principal Component Analysis for Data Observed on Different (Dimensional) Domains.”</span> <em>Journal of the American Statistical Association</em> 113: 649–59. <a href="https://doi.org/10.1080/01621459.2016.1273115">https://doi.org/10.1080/01621459.2016.1273115</a>.
+</div>
+<div id="ref-mfpca1" class="csl-entry" role="listitem">
+Happ-Kurz, Clara. 2022. <em>MFPCA: Multivariate Functional Principal Component Analysis for Data Observed on Different Dimensional Domains</em>. <a href="https://github.com/ClaraHapp/MFPCA">https://github.com/ClaraHapp/MFPCA</a>.
+</div>
+<div id="ref-lobanov71" class="csl-entry" role="listitem">
+Lobanov, Boris. 1971. <span>“Classification of Russian Vowels Spoken by Different Speakers.”</span> <em>Journal of the Acoustical Society of America</em> 49 (2B): 606–8. <a href="https://pubs.aip.org/asa/jasa/article-abstract/49/2B/606/747097/Classification-of-Russian-Vowels-Spoken-by">https://pubs.aip.org/asa/jasa/article-abstract/49/2B/606/747097/Classification-of-Russian-Vowels-Spoken-by</a>.
+</div>
+<div id="ref-puggaard-rode23" class="csl-entry" role="listitem">
+Puggaard-Rode, Rasmus. 2023. <span>“The /t/ Release in Jutland Danish. Decomposing the Spectrum with Functional PCA.”</span> In <em>Proceedings of the 20th International Congress of Phonetic Sciences</em>, 3262–66. Prague: Guarant International. <a href="https://rpuggaardrode.github.io/icphs2023/">https://rpuggaardrode.github.io/icphs2023/</a>.
+</div>
+<div id="ref-fda" class="csl-entry" role="listitem">
+Ramsay, James. 2024. <em>Fda: Functional Data Analysis</em>. <a href="https://CRAN.R-project.org/package=fda">https://CRAN.R-project.org/package=fda</a>.
+</div>
+<div id="ref-fdapace" class="csl-entry" role="listitem">
+Zhou, Yidong, Han Chen, Su I Iao, Poorbita Kundu, Hang Zhou, Satarupa Bhattacharjee, Cody Carroll, et al. 2024. <em><span class="nocase">fdapace: Functional Data Analysis and Empirical Dynamics</span></em>. <a href="https://CRAN.R-project.org/package=fdapace">https://CRAN.R-project.org/package=fdapace</a>.
+</div>
+</div>
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./bayesian_gamms.html" class="pagination-link" aria-label="Bayesian GAMs">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Bayesian GAMs</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./causal.html" class="pagination-link" aria-label="Causal Inference and Causal Discovery">
+        <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Causal Inference and Causal Discovery</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

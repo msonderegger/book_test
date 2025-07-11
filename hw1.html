@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>14&nbsp; Homework 1 – Lecture notes: Advanced Quantitative Methods for Linguistic Data</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./hw3.html" rel="next">
+<link href="./FDA_edited.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./hw1.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Homework 1</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Lecture notes: Advanced Quantitative Methods for Linguistic Data</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Bayesian basics 1</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Bayesian basics 2</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Bayesian Regression Models 1</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Bayesian Regression Models 2</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week9.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Bayesian Hierarchical Models 1</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Bayesian Hierarchical Models 2</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week11.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Bayesian Hierarchical Models 3</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week12.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Models for discrete data: counts, scales, and frequencies</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week13.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Multivariate models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week6.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Generalized Additive Models (GAMs)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week7.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Generalized additive mixed-effects models (GAMMs)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bayesian_gamms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Bayesian GAMs</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./FDA_edited.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Functional principal components analysis</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./hw1.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Homework 1</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./hw3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Homework 3</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./hw5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Homework 5</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#preliminaries" id="toc-preliminaries" class="nav-link active" data-scroll-target="#preliminaries"><span class="header-section-number">14.1</span> Preliminaries</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction"><span class="header-section-number">14.2</span> Introduction</a>
+  <ul class="collapse">
+  <li><a href="#example-quebec-french" id="toc-example-quebec-french" class="nav-link" data-scroll-target="#example-quebec-french"><span class="header-section-number">14.2.1</span> Example: Quebec French</a></li>
+  <li><a href="#domain-knowledge" id="toc-domain-knowledge" class="nav-link" data-scroll-target="#domain-knowledge"><span class="header-section-number">14.2.2</span> Domain knowledge</a></li>
+  <li><a href="#this-assignment" id="toc-this-assignment" class="nav-link" data-scroll-target="#this-assignment"><span class="header-section-number">14.2.3</span> This assignment</a></li>
+  <li><a href="#tips" id="toc-tips" class="nav-link" data-scroll-target="#tips"><span class="header-section-number">14.2.4</span> Tips</a></li>
+  </ul></li>
+  <li><a href="#question-1-preliminaries" id="toc-question-1-preliminaries" class="nav-link" data-scroll-target="#question-1-preliminaries"><span class="header-section-number">14.3</span> Question 1: Preliminaries</a></li>
+  <li><a href="#question-2-choosing-priors" id="toc-question-2-choosing-priors" class="nav-link" data-scroll-target="#question-2-choosing-priors"><span class="header-section-number">14.4</span> Question 2: choosing priors</a></li>
+  <li><a href="#question-3-fitting-a-first-model" id="toc-question-3-fitting-a-first-model" class="nav-link" data-scroll-target="#question-3-fitting-a-first-model"><span class="header-section-number">14.5</span> Question 3: fitting a first model</a></li>
+  <li><a href="#question-4-the-frequency-lexical_class-relationship" id="toc-question-4-the-frequency-lexical_class-relationship" class="nav-link" data-scroll-target="#question-4-the-frequency-lexical_class-relationship"><span class="header-section-number">14.6</span> Question 4: the <code>frequency</code>-<code>lexical_class</code> relationship</a></li>
+  <li><a href="#question-5-a-second-model" id="toc-question-5-a-second-model" class="nav-link" data-scroll-target="#question-5-a-second-model"><span class="header-section-number">14.7</span> Question 5: a second model</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="sec-hw1" class="quarto-section-identifier"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Homework 1</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="preliminaries" class="level2" data-number="14.1">
+<h2 data-number="14.1" class="anchored" data-anchor-id="preliminaries"><span class="header-section-number">14.1</span> Preliminaries</h2>
+<p>Libraries we’ll need:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Hmisc)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Load data:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># change path for your system</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>wordbank_data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="at">file =</span> <span class="st">"../../data/wordbank_data_hw1.csv"</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># In F2024: this data should be at</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># people.linguistics.mcgill.ca/~morgan/ling683-f2024/wordbank_data_hw1.csv</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This data comes from <a href="http://wordbank.stanford.edu/">Wordbank</a>, an open database of children’s vocabulary growth which aggregates data from thousands of parent-report questionnaires on lexical acquisition—the MacArthur Bates Communicative Development Inventory (CDI)—across many languages. <span class="citation" data-cites="frank2021variability">Frank et al. (<a href="references.html#ref-frank2021variability" role="doc-biblioref">2021</a>)</span> (<a href="https://langcog.github.io/wordbank-book">ebook</a>) describes this remarkable resource in more detail.</p>
+<p>For our purposes we are using data from <span class="citation" data-cites="braginsky2019consistency">Braginsky et al. (<a href="references.html#ref-braginsky2019consistency" role="doc-biblioref">2019</a>)</span> (<a href="https://direct.mit.edu/opmi/article/doi/10.1162/opmi_a_00026/5378/Consistency-and-Variability-in-Children-s-Word">paper</a>), which covers:</p>
+<ul>
+<li>Children learning one of 8 languages</li>
+<li>For 664 words (the “WS” list).<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></li>
+</ul>
+<p>We will just consider data aggregated across children, restricted to children aged 24 months, to be able to apply models we’ve learned about so far (i.e., no grouping structure).</p>
+<p>Relevant columns:</p>
+<ul>
+<li><code>language</code>: language X</li>
+<li><code>definition</code>: the word, in language X</li>
+<li><code>uni_lemma</code>: the word’s gloss in English</li>
+<li><code>num_true</code>: number of children aged 24 months who are reported to be able to produce this word.</li>
+<li><code>num_false</code>: same for “not able to produce”
+<ul>
+<li>Thus, there are <code>num_true</code> + <code>num_false</code> children for language X. This number is the same for every word within a given language.</li>
+</ul></li>
+<li><code>prop</code>: num_true/(num_true+num_false)</li>
+<li>Structural properties:
+<ul>
+<li><code>lexical_class</code>: broad syntactic category</li>
+<li><code>num_phons</code>: length of word, in phones</li>
+</ul></li>
+<li>Measures of <em>environmental input</em>
+<ul>
+<li><code>frequency</code>: Word’s frequency (in CHILDES)</li>
+<li><code>MLU</code>: mean length of utterance (in CHILDES)—proxy for syntactic complexity</li>
+</ul></li>
+<li>Meaning-based properties:
+<ul>
+<li><code>valence</code>, <code>concreteness</code>, <code>arousal</code></li>
+</ul></li>
+</ul>
+<p>If you’d like more detail, <a href="https://langcog.github.io/wordbank-book/items-prediction.html">Chap. 10</a> of <span class="citation" data-cites="frank2021variability">Frank et al. (<a href="references.html#ref-frank2021variability" role="doc-biblioref">2021</a>)</span> discusses most of the word properties. The French CDI data discussed below is explored and modeled using frequentist methods in Chapters 7 and 9 of<em>RMLD</em> <span class="citation" data-cites="rmld-book">(<a href="references.html#ref-rmld-book" role="doc-biblioref">Sonderegger 2023</a>)</span>.</p>
+</section>
+<section id="introduction" class="level2" data-number="14.2">
+<h2 data-number="14.2" class="anchored" data-anchor-id="introduction"><span class="header-section-number">14.2</span> Introduction</h2>
+<p>Our <strong>research questions</strong> in this homework are:</p>
+<ol type="1">
+<li>How does <strong>lexical class</strong> affect when words are acquired? - Of particular interest are <em>noun word bias</em> and <em>function word bias</em>, which are hypothesized to be consistent across languages (nouns/function words acquired earliest/latest, on average) - See Sec. 7.1.2 of <em>RMLD</em> for context, and see Ch.11 of <span class="citation" data-cites="frank2021variability">Frank et al. (<a href="references.html#ref-frank2021variability" role="doc-biblioref">2021</a>)</span> for more detail.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></li>
+<li>How does <strong>environmental input</strong> affect when words are acquired? - In particular: <code>frequency</code> and <code>MLU</code></li>
+</ol>
+<p><code>num_phons</code> must also be considered, as it is correlated with other predictors, but it is not otherwise of direct interest.</p>
+<section id="example-quebec-french" class="level3" data-number="14.2.1">
+<h3 data-number="14.2.1" class="anchored" data-anchor-id="example-quebec-french"><span class="header-section-number">14.2.1</span> Example: Quebec French</h3>
+<p>To motivate, I will use just data from Quebec French. In this homework we will use “number of kids reported to know the word at 24 months” as a proxy for “when words are acquired”.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>data_fr <span class="ot">&lt;-</span> <span class="fu">filter</span>(wordbank_data, language <span class="sc">==</span> <span class="st">"French (Quebec)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Preprocessing</strong>: get rid of ‘other’ lexical category, reorder <code>lexical_class</code> to the theoretically-expected order, and remove rows for which predictors of interest aren’t defined:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>data_fr <span class="ot">&lt;-</span> data_fr <span class="sc">%&gt;%</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(lexical_class <span class="sc">!=</span> <span class="st">"other"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">lexical_class =</span> <span class="fu">fct_relevel</span>(lexical_class, <span class="st">"function_words"</span>, <span class="st">"verbs"</span>, <span class="st">"adjectives"</span>, <span class="st">"nouns"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">droplevels</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(lexical_class) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(frequency) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(MLU) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(num_phons))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Some empirical plots:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fraction of kids who know each word (num_true / (num_true + num_false))</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>emp_plot_1 <span class="ot">&lt;-</span> data_fr <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> prop)) <span class="sc">+</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>() <span class="sc">+</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Proportion of children"</span>) <span class="sc">+</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"% children who know each word"</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co"># words range from 0% to near-100% known</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># plotted as num_true</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>emp_plot_2 <span class="ot">&lt;-</span> data_fr <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> num_true)) <span class="sc">+</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>() <span class="sc">+</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Number of children"</span>) <span class="sc">+</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggtitle</span>(<span class="st">"Number of children who know each word"</span>)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>emp_plot_1 <span class="sc">/</span> emp_plot_2</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="do">## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="do">## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="hw1_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Lexical class and frequency:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>lex_class_plot_1 <span class="ot">&lt;-</span> data_fr <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> lexical_class, <span class="at">y =</span> num_true)) <span class="sc">+</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="at">fun.data =</span> <span class="st">"mean_cl_boot"</span>) <span class="sc">+</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">alpha =</span> <span class="fl">0.2</span>, <span class="at">width =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Number of children"</span>, <span class="at">x =</span> <span class="st">"Lexical class"</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>lex_class_plot_2 <span class="ot">&lt;-</span> data_fr <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> frequency, <span class="at">y =</span> num_true)) <span class="sc">+</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>() <span class="sc">+</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> lexical_class)) <span class="sc">+</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Word frequency (log)"</span>, <span class="at">y =</span> <span class="st">"Number of children"</span>, <span class="at">color =</span> <span class="st">"Lexical class"</span>)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>lex_class_plot_1 <span class="sc">/</span> lex_class_plot_2</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="do">## `geom_smooth()` using method = 'loess' and formula = 'y ~ x'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="hw1_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>MLU and word length:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>mlu_plot <span class="ot">&lt;-</span> data_fr <span class="sc">%&gt;%</span> </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> MLU, <span class="at">y =</span> num_true)) <span class="sc">+</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>() <span class="sc">+</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Mean length of utterance (MLU)"</span>, <span class="at">y =</span> <span class="st">"N children"</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>num_phons_plot <span class="ot">&lt;-</span> data_fr <span class="sc">%&gt;%</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> num_phons, <span class="at">y =</span> num_true)) <span class="sc">+</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>() <span class="sc">+</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Word length (phones)"</span>, <span class="at">y =</span> <span class="st">"N children"</span>)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>mlu_plot <span class="sc">/</span> num_phons_plot</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="do">## `geom_smooth()` using method = 'loess' and formula = 'y ~ x'</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="do">## `geom_smooth()` using method = 'loess' and formula = 'y ~ x'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="hw1_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Note that these predictors are somewhat correlated:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>data_fr <span class="sc">%&gt;%</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(MLU, frequency, lexical_class, num_phons) <span class="sc">%&gt;%</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggpairs</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="hw1_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Especially important, given RQ1, is the relationship between <code>lexical_class</code> and <code>frequency</code> (function words have higher frequency), which presumably exists across languages.</p>
+<p>Your goal is to fit a reasonable model addressing RQs 1–2, step by step, for one of the 8 languages:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(wordbank_data<span class="sc">$</span>language)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "Croatian"           "Danish"             "English (American)"</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="do">## [4] "French (Quebec)"    "Italian"            "Norwegian"         </span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="do">## [7] "Russian"            "Spanish (Mexican)"  "Turkish"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="domain-knowledge" class="level3" data-number="14.2.2">
+<h3 data-number="14.2.2" class="anchored" data-anchor-id="domain-knowledge"><span class="header-section-number">14.2.2</span> Domain knowledge</h3>
+<p>To interpret your results, and to choose weakly informative priors, you’ll need to know a bit about lexical acquisition. You can assume that:</p>
+<ul>
+<li>There is a lot of variability in which words kids know, and how many kids know a given word, at age 24 months, even after accounting for all known predictors
+<ul>
+<li>Thus, the effect of any individual predictor <span class="math inline">\(x\)</span> may be large, but not giant (e.g.&nbsp;predicting 95% vs 5% of kids as <span class="math inline">\(x\)</span> is changed).</li>
+</ul></li>
+<li>In many (but not all) languages, on average:
+<ul>
+<li>Nouns are acquired earlier than predicates (verbs, adjectives)</li>
+<li>Function words are acquired later than predicates.</li>
+<li>More frequent words are acquired earlier.</li>
+</ul></li>
+</ul>
+<p>This tells us what directions are expected for <code>frequency</code> and <code>lexical_class</code>. For the other predictors, we might expect words with higher <code>MLU</code> (proxy for syntactic complexity), or longer words (<code>num_phons</code>) to be acquired later.</p>
+<p>These are all violable expectations. Our priors might capture something about expected direction, but should not rule out any effect (e.g.&nbsp;by saying <code>frequency</code> must have a positive effect).</p>
+</section>
+<section id="this-assignment" class="level3" data-number="14.2.3">
+<h3 data-number="14.2.3" class="anchored" data-anchor-id="this-assignment"><span class="header-section-number">14.2.3</span> This assignment</h3>
+<p><strong>Please choose one language per student</strong>, coordinating with each other (e.g.&nbsp;on Piazza) to make sure you all have different languages.</p>
+<p>You can model <span class="math inline">\(y\)</span> = <code>num_true</code> using any of the following models, none of which is quite right for this data (but are fine for this homework):</p>
+<ul>
+<li><em>Linear regression</em>
+<ul>
+<li>(But: <code>num_true</code> are counts)</li>
+</ul></li>
+<li><em>Poisson regression</em> or negative binomial regression
+<ul>
+<li>(But: <code>num_true</code> is bounded, by <code>num_true + num_false</code>)</li>
+</ul></li>
+<li><em>Binomial regression</em>, using <code>num_true</code>/<code>num_false</code> as successes/failures
+<ul>
+<li>This would be most appropriate, but we have not directly covered it in class.</li>
+<li>Interpretation of coefficients similar to logistic regression.</li>
+<li>Risks overdispersion, similarly to Poisson regression.</li>
+</ul></li>
+</ul>
+<p><strong>Choose one model type</strong>, by whatever criterion you wish, and assume this kind of model in answering the questions below. You can answer questions by just writing code chunks and text directly into the <code>.qmd</code> file. You should submit:</p>
+<ul>
+<li>Your final <code>.qmd</code> file</li>
+<li>A compiled version, as PDF or HTML.</li>
+</ul>
+<p>You are encouraged to work together (though this is not required), but you must write up your code and (prose) results independently, for your own language. See the syllabus for the Generative AI policy.</p>
+</section>
+<section id="tips" class="level3" data-number="14.2.4">
+<h3 data-number="14.2.4" class="anchored" data-anchor-id="tips"><span class="header-section-number">14.2.4</span> Tips</h3>
+<p>The main issues students have had with this homework / areas to focus on:</p>
+<ul>
+<li><strong>Correct application and interpretation of contrasts</strong> for <code>lexical_class</code>.
+<ul>
+<li>You’ll need to use a “centered” contrast coding scheme.<br>
+</li>
+<li>Don’t interpret factor <em>levels</em> (e.g.&nbsp;<code>lexical_class1</code> = nouns) instead of contrasts.</li>
+<li>Review Chapter 7 of <em>RMLD</em> if needed for contrast coding and related topics like post-hoc tests.</li>
+</ul></li>
+<li><strong>Include and properly justify prior parameters</strong>.
+<ul>
+<li>There are examples of such justification in the lecture notes and readings.</li>
+<li>A prior predictive checks is required.</li>
+</ul></li>
+<li><strong>Include and interpret posterior predictive checks</strong></li>
+</ul>
+</section>
+</section>
+<section id="question-1-preliminaries" class="level2" data-number="14.3">
+<h2 data-number="14.3" class="anchored" data-anchor-id="question-1-preliminaries"><span class="header-section-number">14.3</span> Question 1: Preliminaries</h2>
+<p>Restrict to data just for your language, and do preprocessing (the “Preprocessing” step done for French above).</p>
+<p>(a). Make 3-4 empirical plots exploring the effects of predictors of interest. Briefly discuss the patterns you see (a few sentences).</p>
+<ul>
+<li>These do not need to be the plots I made for French, which are not necessarily the best ones for your language. Your plots should be chosen to illustrate the main empirical patterns in you language. (Also, your plots should be better-looking and have proper axis labels, etc.)</li>
+<li>Make sure you use <code>geom_smooth()</code> for continuous variables, to detect possible nonlinear effects.</li>
+</ul>
+<p>(b). Standardize the predictors. This means minimally using a “centered” contrast coding scheme for <code>lexical_class</code>, and centering the other predictors.</p>
+</section>
+<section id="question-2-choosing-priors" class="level2" data-number="14.4">
+<h2 data-number="14.4" class="anchored" data-anchor-id="question-2-choosing-priors"><span class="header-section-number">14.4</span> Question 2: choosing priors</h2>
+<p>You will fit a first regression model, of <code>num_true</code> (using your chosen model class), as a function of these predictors (no interactions or nonlinear terms): <code>frequency</code>, <code>MLU</code>, <code>num_phons</code>, <code>lexical_class</code></p>
+<p>(a). Name the parameters of your model, giving the interpretation of each one. (Ex: for a linear regression, there would be one intercept, four <span class="math inline">\(\beta\)</span> coefficients and one <span class="math inline">\(\sigma\)</span> variance parameter.)</p>
+<p>(b). Choose a “weakly informative” prior for each term, giving brief motivation for each, and performing at least <strong>one</strong> prior predictive check (e.g.&nbsp;for the <code>lexical_class</code> or <code>frequency</code> effect)—you don’t need to do this for each parameter.</p>
+<p>Remember that:</p>
+<ul>
+<li>Your reasoning can include domain knowledge, the <em>range</em> of <span class="math inline">\(y\)</span>, and sanity checks.</li>
+<li>Your reasoning should not include actually looking at patterns in the empirical data (such as the direction of the <code>frequency</code> effect)!</li>
+</ul>
+<p>You should describe each prior in words or an equation, but not in <code>brms</code> model format (yet).</p>
+<p>NB: your prior for <code>lexical_class</code> does <strong>not</strong> need to capture any expectation about the order of levels (like that nouns <span class="math inline">\(&gt;\)</span> predicates). You are welcome to do this, but it’s not required (and is not trivial).</p>
+</section>
+<section id="question-3-fitting-a-first-model" class="level2" data-number="14.5">
+<h2 data-number="14.5" class="anchored" data-anchor-id="question-3-fitting-a-first-model"><span class="header-section-number">14.5</span> Question 3: fitting a first model</h2>
+<p>Specify and fit your model, using <code>brms</code>.</p>
+<p>Examine MCMC diagnostics to convince yourself the model fit properly, and change any necessary fitting parameter if it did not. You only need to include a brief summary of this in your writeup and it won’t be directly graded. (You could examine trace plots, Rhat values, posterior histograms, etc.)</p>
+<p>(a). Once you have a satisfactory fit, summarize the model’s results:</p>
+<ul>
+<li><strong>Visually</strong>: By making partial effect plots, illustrating the effect of each predictor as others are held constant.</li>
+<li><strong>Quantitatively</strong>: By discussing the estimates for <code>frequency</code>, <code>MLU</code>, and <code>num_phons</code>, and showing appropriate post-hoc comparisons (pairwise is fine) for the effect of <code>lexical_class</code>.
+<ul>
+<li>Your discussion should include: the 95% CI, and/or both “existence” (like <span class="math inline">\(p_{d}\)</span>) and “significance” metrics (like ROPE). In other words, you must meaningfully discuss both the existence and importance of effects. Your discussion should not include any hard cutoffs, like <span class="math inline">\(p_d &gt; 0.95\)</span>.</li>
+</ul></li>
+</ul>
+<p>The “quantitatively” part should be about a paragraph, or a table plus a shorter paragraph. NB: Part of the assignment is to find examples/guidance for how to report results of a Bayesian regression model.</p>
+<p>(b). Critique the model:</p>
+<ul>
+<li>Perform at least two posterior predictive checks (show the plots).
+<ul>
+<li>Does it suggest anything about how well the model fits, and what might need to be changed about it?</li>
+</ul></li>
+</ul>
+</section>
+<section id="question-4-the-frequency-lexical_class-relationship" class="level2" data-number="14.6">
+<h2 data-number="14.6" class="anchored" data-anchor-id="question-4-the-frequency-lexical_class-relationship"><span class="header-section-number">14.6</span> Question 4: the <code>frequency</code>-<code>lexical_class</code> relationship</h2>
+<p>Intuitively, there are two conflicting expectations:<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
+<ul>
+<li>Higher-frequency words should be known by more children</li>
+<li>Function words should be known by fewer children</li>
+</ul>
+<p>The conflict arises because function words will have higher frequency (on average) than words of other <code>lexical_class</code> values. The goal here is to determine whether, and how, your model has captured this aspect of the data.</p>
+<p>(a). What two (or more) quantities predicted by the model should be related, which would reflect this conflict? Explain your reasoning.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
+<p>Your answer might involve two <em>observations</em> (e.g.&nbsp;“<span class="math inline">\(y\)</span> for nouns, with other predictors held constant), or model <em>parameters</em> (e.g.&nbsp;”<span class="math inline">\(\beta_{frequency}\)</span>“) or functions of model parameters.</p>
+<p>(b). Call these two quantities <span class="math inline">\(x_1\)</span> and <span class="math inline">\(x_2\)</span>. Sample from a posterior distribution over each one (using e.g.&nbsp;1000 samples from the posterior). This should result in a data frame with 1000 rows, and (at least) two columns—one for <span class="math inline">\(x_1\)</span> and one for <span class="math inline">\(x_2\)</span>.</p>
+<p>(c). Make a plot, using these values, which addresses how/whether your model captures the conflict above. Explain.</p>
+</section>
+<section id="question-5-a-second-model" class="level2" data-number="14.7">
+<h2 data-number="14.7" class="anchored" data-anchor-id="question-5-a-second-model"><span class="header-section-number">14.7</span> Question 5: a second model</h2>
+<p>An empirical plot of <code>frequency</code> vs.&nbsp;the dependent variable, for your language, should suggest a possibly nonlinear effect. (As in the French example above.) You may have also found other evidence suggesting this (or not).</p>
+<p>(a). What range of degrees of nonlinear effect of <code>frequency</code>—whether fit with (orthogonal) polynomials or splines—seems possible here?<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></p>
+<p>(b). Fit 2 or more additional models capturing these possible nonlinear effects. (If you flagged any simple issue to be changed in 3(b), you could also make this change in these models.) Compare all models fitted—these additional models, as well as Model 1 above—using an appropriate quantitative metric, to choose a “best” model.</p>
+<p>The “Examine MCMC diagnostics….” paragraph above applies here as well.</p>
+<p>(c). Plot the partial effects of <code>frequency</code> and <code>lexical_class</code> for this new model. How have your conclusions about the effect of each predictor changed from above, if at all? Can you explain why?</p>
+<p>(d). Optional: repeat 4(a)–(c) for this new model.</p>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-braginsky2019consistency" class="csl-entry" role="listitem">
+Braginsky, Mika, Daniel Yurovsky, Virginia A Marchman, and Michael C Frank. 2019. <span>“Consistency and Variability in Children’s Word Learning Across Languages.”</span> <em>Open Mind</em> 3: 52–67.
+</div>
+<div id="ref-frank2021variability" class="csl-entry" role="listitem">
+Frank, Michael C, Mika Braginsky, Daniel Yurovsky, and Virginia A Marchman. 2021. <em>Variability and Consistency in Early Language Learning: The Wordbank Project</em>. <a href="https://langcog.github.io/wordbank-book/" class="uri">https://langcog.github.io/wordbank-book/</a>. MIT Press.
+</div>
+<div id="ref-rmld-book" class="csl-entry" role="listitem">
+Sonderegger, Morgan. 2023. <em>Regression Modeling for Linguistic Data</em>. MIT Press, <a href="https://osf.io/pnumg/" class="uri">https://osf.io/pnumg/</a>, preprint at <a href="https://github.com/msonderegger/rmld-v1.1/" class="uri">https://github.com/msonderegger/rmld-v1.1/</a>.
+</div>
+</div>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>We used raw data in <code>uni_joined.RData</code> <a href="https://github.com/mikabr/aoa-prediction/">here</a>)<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>For McGill students: we used this data in LING 620, so this should be review.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Contact me if these are not borne out in the empirical data for your language.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Hint: One quantity might reflect function words relative to other lexical classes.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>Note that you don’t need to try nonlinear effects of other predictors—though you’re welcome to do so, with justification.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./FDA_edited.html" class="pagination-link" aria-label="Functional principal components analysis">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Functional principal components analysis</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./hw3.html" class="pagination-link" aria-label="Homework 3">
+        <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Homework 3</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

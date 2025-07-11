@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>15&nbsp; Homework 3 – Lecture notes: Advanced Quantitative Methods for Linguistic Data</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./hw5.html" rel="next">
+<link href="./hw1.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./hw3.html"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Homework 3</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Lecture notes: Advanced Quantitative Methods for Linguistic Data</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Bayesian basics 1</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Bayesian basics 2</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Bayesian Regression Models 1</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Bayesian Regression Models 2</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week9.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Bayesian Hierarchical Models 1</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Bayesian Hierarchical Models 2</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week11.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Bayesian Hierarchical Models 3</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week12.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Models for discrete data: counts, scales, and frequencies</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week13.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Multivariate models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week6.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Generalized Additive Models (GAMs)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week7.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Generalized additive mixed-effects models (GAMMs)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bayesian_gamms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Bayesian GAMs</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./FDA_edited.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Functional principal components analysis</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./hw1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Homework 1</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./hw3.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Homework 3</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./hw5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Homework 5</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#preliminaries" id="toc-preliminaries" class="nav-link active" data-scroll-target="#preliminaries"><span class="header-section-number">15.1</span> Preliminaries</a></li>
+  <li><a href="#context" id="toc-context" class="nav-link" data-scroll-target="#context"><span class="header-section-number">15.2</span> Context</a>
+  <ul class="collapse">
+  <li><a href="#dataset" id="toc-dataset" class="nav-link" data-scroll-target="#dataset"><span class="header-section-number">15.2.1</span> Dataset</a></li>
+  <li><a href="#context-general" id="toc-context-general" class="nav-link" data-scroll-target="#context-general"><span class="header-section-number">15.2.2</span> Context: general</a></li>
+  <li><a href="#context-this-assignment" id="toc-context-this-assignment" class="nav-link" data-scroll-target="#context-this-assignment"><span class="header-section-number">15.2.3</span> Context: this assignment</a></li>
+  </ul></li>
+  <li><a href="#part-1-gam" id="toc-part-1-gam" class="nav-link" data-scroll-target="#part-1-gam"><span class="header-section-number">15.3</span> Part 1: GAM</a>
+  <ul class="collapse">
+  <li><a href="#model-structure-exploratory-analysis" id="toc-model-structure-exploratory-analysis" class="nav-link" data-scroll-target="#model-structure-exploratory-analysis"><span class="header-section-number">15.3.1</span> Model structure / Exploratory analysis</a></li>
+  <li><a href="#a-first-model" id="toc-a-first-model" class="nav-link" data-scroll-target="#a-first-model"><span class="header-section-number">15.3.2</span> A first model</a></li>
+  <li><a href="#interpretation" id="toc-interpretation" class="nav-link" data-scroll-target="#interpretation"><span class="header-section-number">15.3.3</span> Interpretation</a></li>
+  </ul></li>
+  <li><a href="#part-2-gamm" id="toc-part-2-gamm" class="nav-link" data-scroll-target="#part-2-gamm"><span class="header-section-number">15.4</span> Part 2: GAMM</a>
+  <ul class="collapse">
+  <li><a href="#exploratory-analysis" id="toc-exploratory-analysis" class="nav-link" data-scroll-target="#exploratory-analysis"><span class="header-section-number">15.4.1</span> Exploratory analysis</a></li>
+  <li><a href="#model" id="toc-model" class="nav-link" data-scroll-target="#model"><span class="header-section-number">15.4.2</span> Model</a></li>
+  <li><a href="#interpretation-1" id="toc-interpretation-1" class="nav-link" data-scroll-target="#interpretation-1"><span class="header-section-number">15.4.3</span> Interpretation</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="sec-hw3" class="quarto-section-identifier"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Homework 3</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="preliminaries" class="level2" data-number="15.1">
+<h2 data-number="15.1" class="anchored" data-anchor-id="preliminaries"><span class="header-section-number">15.1</span> Preliminaries</h2>
+<p>Load libraries we will need:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mgcv)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(itsadug)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggeffects)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="context" class="level2" data-number="15.2">
+<h2 data-number="15.2" class="anchored" data-anchor-id="context"><span class="header-section-number">15.2</span> Context</h2>
+<section id="dataset" class="level3" data-number="15.2.1">
+<h3 data-number="15.2.1" class="anchored" data-anchor-id="dataset"><span class="header-section-number">15.2.1</span> Dataset</h3>
+<p>This homework uses data from <span class="citation" data-cites="kirby2018onset">Kirby (<a href="references.html#ref-kirby2018onset" role="doc-biblioref">2018</a>)</span>: abstract <a href="https://www.sciencedirect.com/science/article/pii/S0095447017301882?casa_token=vp3HKZqXfSwAAAAA:ynm8q8G29T5ibC5wXiqGQlqGE7I3-6x03KUtFbnocfNMybRWTsMUvNTCpOZgzKokLyeOc0e4agA">here</a>. I processed the raw data from the <a href="https://datashare.ed.ac.uk/handle/10283/3160">supplementary materials</a> for the paper to produce the file <code>kirby_if0_spc.csv</code>, which contains spectral measures data reported in <span class="citation" data-cites="kirby2018onset">Kirby (<a href="references.html#ref-kirby2018onset" role="doc-biblioref">2018</a>)</span>.</p>
+<p>Load this data:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>spc <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"../../data/kirby_if0_spc.csv"</span>, <span class="at">stringsAsFactors =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="context-general" class="level3" data-number="15.2.2">
+<h3 data-number="15.2.2" class="anchored" data-anchor-id="context-general"><span class="header-section-number">15.2.2</span> Context: general</h3>
+<p>Here is context about this data, corresponding to different columns of the dataframe. <strong>You can skip to “Context: this assignment”</strong> if you wish, and just come back to this section if you need more detail about the data.</p>
+<ul>
+<li>Each <code>subject</code> read each item (<code>item</code>), for their native language, three times (<code>repetition</code>)</li>
+<li>Each item is a syllable CV
+<ul>
+<li>beginning in consonant <code>onset</code>, values <code>d</code> <code>l</code> <code>n</code> <code>t</code> <code>tʰ</code></li>
+<li>V = <code>vowel</code></li>
+<li><code>tone</code> = tone for the tone languages (<code>language</code> = Thai, Vietnamese); for the non-tone language Khmer, this is the same as <code>vowel</code></li>
+</ul></li>
+<li><code>context</code>: words read either in <em>isolation</em> or in a <em>carrier</em> sentence</li>
+<li><code>t</code>: time, in msec, relative to the onset of the vowel</li>
+<li><code>f0</code>: F0, in Hz</li>
+<li><code>st</code>: F0, transformed to <em>semitones</em>
+<ol type="1">
+<li>Speaker normalization: divide by speaker’s mean F0</li>
+<li>Transform to auditory scale: log-base-2-transform and multiply (that value) by 12.</li>
+</ol></li>
+</ul>
+<p>The general question of interest for this data is the relationship between <code>onset</code> and F0, across three languages.</p>
+<p>Of primary interest is differences between <code>onset</code> =</p>
+<ul>
+<li><em>tʰ</em>, <em>t</em>, <em>d</em>: expected to decrease in F0/st (e.g., <em>t</em> &gt; <em>d</em>), called <em>intrinsic F0 effects</em>.<br>
+</li>
+<li><em>n</em>: included as a sonorant, against which other F0 perturbations from the C (for obstruents) can be measured.</li>
+</ul>
+<p>It is of interest not just whether F0/st differs by <code>onset</code>, but how the trajectory differs as a function of <code>t</code> (time).</p>
+<p>Here are some plots of F0 over time (in semitones) as a function of <code>onset</code>, in a similar format to <span class="citation" data-cites="kirby2018onset">Kirby (<a href="references.html#ref-kirby2018onset" role="doc-biblioref">2018</a>)</span>, from just the Thai data:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="do">## filtering out timepoints which can't be part of the stop, for clarity</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">filter</span>(spc, language <span class="sc">==</span> <span class="st">"Thai"</span> <span class="sc">&amp;</span> onset <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"d"</span>, <span class="st">"t"</span>, <span class="st">"tʰ"</span>, <span class="st">"n"</span>) <span class="sc">&amp;</span> t <span class="sc">&gt;</span> (<span class="sc">-</span><span class="dv">50</span>)) <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> t, <span class="at">y =</span> st)) <span class="sc">+</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="fu">aes</span>(<span class="at">color =</span> onset)) <span class="sc">+</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(context <span class="sc">~</span> tone)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="hw3_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Pitch is greatly influenced by tone, as we’d expect. It looks like there are differences in F0 trajectory between different onsets, which may be modulated by tone and context.</p>
+</section>
+<section id="context-this-assignment" class="level3" data-number="15.2.3">
+<h3 data-number="15.2.3" class="anchored" data-anchor-id="context-this-assignment"><span class="header-section-number">15.2.3</span> Context: this assignment</h3>
+<p>The dependent variable is <code>st</code>, which is a speaker-normalized version of <code>f0</code> (in Hz), transformed to an auditory scale (semitones). To make this data more intuitive, let’s rename and define some variables::</p>
+<ul>
+<li><code>st</code> <span class="math inline">\(\to\)</span> <code>pitch</code></li>
+<li><code>trajectory</code>: a single pitch trajectory = a unique value of <code>item</code>:<code>context</code>:<code>repetition</code>, for a unique <code>subject</code></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>spc <span class="ot">&lt;-</span> spc <span class="sc">%&gt;%</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">pitch =</span> st,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">trajectory =</span> <span class="fu">interaction</span>(item, repetition, context, subject)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">droplevels</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>For example, here are all pitch trajectories for subject <em>TF1</em>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>spc <span class="sc">%&gt;%</span> <span class="fu">filter</span>(subject <span class="sc">==</span> <span class="st">'TF1'</span>) <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> t, <span class="at">y =</span> pitch)) <span class="sc">+</span> <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">group =</span> trajectory, <span class="at">color =</span> onset))</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Warning: Removed 2 rows containing missing values or values outside the scale range</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="do">## (`geom_line()`).</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="hw3_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>To keep things simple, we will consider just:</p>
+<ul>
+<li><code>onset</code> = <em>d</em> and <em>th</em></li>
+<li>Thai data</li>
+<li><code>t</code> &gt; 0 (meaning: pitch measured during the vowel)</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>thai_df <span class="ot">&lt;-</span> <span class="fu">filter</span>(spc, t <span class="sc">&gt;=</span> <span class="dv">0</span> <span class="sc">&amp;</span> onset <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"d"</span>, <span class="st">"tʰ"</span>) <span class="sc">&amp;</span> language <span class="sc">==</span> <span class="st">"Thai"</span>) <span class="sc">%&gt;%</span> <span class="fu">droplevels</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Some processing of factors:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>thai_df <span class="ot">&lt;-</span> thai_df <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="do">## tone: falling, mid, low</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">tone =</span> <span class="fu">fct_relevel</span>(tone, <span class="st">"mid"</span>, <span class="at">after =</span> <span class="dv">1</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Thai is a tone language, and it is of interest whether there is <em>any</em> difference in trajectories for each <code>onset</code>. It is possible that tone languages do not show intrinsic F0 effects, or that any effect is variable across contexts and speakers.</p>
+<p>Our <strong>research questions</strong> are:</p>
+<ul>
+<li><em>Primary</em>
+<ol type="1">
+<li>Do the <code>pitch</code> trajectories differ by <code>onset</code> (between <em>d</em> and <em>tʰ</em>)?</li>
+</ol>
+<ul>
+<li>This is largely a question about shape—how large is the <code>onset</code> effect at its maximum (<code>t</code> = 0), and how long does any difference persist into the vowel?</li>
+</ul></li>
+<li><em>Secondary</em>
+<ol start="2" type="1">
+<li><p>Is any <code>onset</code> effect robust? Namely, how much does it differ by <code>tone</code> and <code>context</code> (isolation vs.&nbsp;carrier phrase)?</p></li>
+<li><p>Does the <code>onset</code> effect differ between speakers?</p></li>
+</ol></li>
+</ul>
+<p>In this homework, you’ll carry out an analysis addressing these research questions.</p>
+</section>
+</section>
+<section id="part-1-gam" class="level2" data-number="15.3">
+<h2 data-number="15.3" class="anchored" data-anchor-id="part-1-gam"><span class="header-section-number">15.3</span> Part 1: GAM</h2>
+<p>You’ll first build and interpret a model without random effects.</p>
+<p>This is not a “good” model—for any data with repeated measures (here, by-subject), a valid model needs random effects. However, such a model is often considered as a first step towards a “real” GAMM model. This homework gives practice with this method of “building up” a model for repeated-measures data.</p>
+<section id="model-structure-exploratory-analysis" class="level3" data-number="15.3.1">
+<h3 data-number="15.3.1" class="anchored" data-anchor-id="model-structure-exploratory-analysis"><span class="header-section-number">15.3.1</span> Model structure / Exploratory analysis</h3>
+<p>To motivate our model structure, we consider (1) domain knowledge, (2) the experimental design, and (3) exploratory plots. We are primarily interested in time trajectories—smooths of <code>t</code>. Each predictor mentioned above—<code>tone</code>, <code>onset</code>, and <code>context</code>–could affect the height or shape of these trajectories. Any such effect could differ by speaker.</p>
+<p>We first abstract away from speaker variability to consider “overall” effects of each predictor, motivated by (1) and (2):</p>
+<ul>
+<li><code>tone</code>: expected to affect trajectory height and shape (this is the definition of tone).</li>
+<li><code>onset</code>: whether it affects trajectory height and shape are required for RQ1.</li>
+<li><code>context</code>: expected from previous work to affect trajectory height and shape (words in isolation have different pitch trajectories).</li>
+<li><code>context</code> and <code>tone</code> interactions with <code>onset</code>:this is relevant for RQ2.
+<ul>
+<li>From previous work: different <code>onset</code> trajectories may be more separated in isolation context, and in high tone words.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></li>
+<li>Addressing RQ2 requires at least accounting for <code>context</code>:<code>onset</code> and <code>tone</code>:<code>onset</code> interactions w.r.t trajectory height</li>
+<li>Unclear: trajectory <em>shape</em>.</li>
+</ul></li>
+</ul>
+<p>These observations alone motivate a basic model structure. Let’s also examine (3) empirical plots of the <code>onset</code> effect, by <code>tone</code> and <code>context</code>, as a sanity check:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>thai_df <span class="sc">%&gt;%</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> t, <span class="at">y =</span> pitch)) <span class="sc">+</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="fu">aes</span>(<span class="at">color =</span> onset)) <span class="sc">+</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> context <span class="sc">+</span> tone)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="hw3_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Trajectory height and shape are clearly affected by <code>context</code> and <code>tone</code>, while the overall effect of <code>onset</code> is unclear (good—this is RQ 1), as is possible modulation of <code>onset</code> by <code>context</code>/<code>tone</code> (RQ 2).</p>
+</section>
+<section id="a-first-model" class="level3" data-number="15.3.2">
+<h3 data-number="15.3.2" class="anchored" data-anchor-id="a-first-model"><span class="header-section-number">15.3.2</span> A first model</h3>
+<p><strong>Question 1</strong></p>
+<ol type="a">
+<li>What is the formula for a GAM model motivated by the discussion above? Your model should contain terms capturing all bullet points except the “Unclear” one.</li>
+</ol>
+<ul>
+<li>I recommend coding <code>onset</code>, <code>context</code>, and <code>tone</code> so the model contains “difference smoooths”.</li>
+<li>Note that you do <em>not</em> need to allow the smooths to vary by the interaction of <code>context</code>:<code>onset</code> or <code>tone</code>:<code>onset</code>. You do need to allow the <em>height</em> of the smooths to vary by these interactions.</li>
+</ul>
+<ol start="2" type="a">
+<li><p>Fit this model, without autocorrelation.</p></li>
+<li><p>Re-fit the model accounting for within-trajectory autocorrelation. Save the resulting model as <code>thai_m1</code>.</p></li>
+</ol>
+<p>Print a summary of this model:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(thai_m1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="interpretation" class="level3" data-number="15.3.3">
+<h3 data-number="15.3.3" class="anchored" data-anchor-id="interpretation"><span class="header-section-number">15.3.3</span> Interpretation</h3>
+<p>Because this model doesn’t include random effects, we shouldn’t perform actual model comparisons / examine its <span class="math inline">\(p\)</span>-values. Let’s instead interpret its results visually:</p>
+<p>Assuming your model contains a term called <code>onset_ord</code>—this code produces a plot of this model’s predicted trajectories for each <code>onset</code> value, marginalizing over <code>tone</code> and <code>context</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggemmeans</span>(thai_m2, <span class="at">terms =</span> <span class="fu">c</span>(<span class="st">"t"</span>, <span class="st">"onset_ord"</span>)) <span class="sc">%&gt;%</span> <span class="fu">plot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Question 2</strong></p>
+<ol type="a">
+<li><p>Make a single plot showing predicted trajectories by <code>onset</code>, for each (pair of) values of <code>tone</code> and <code>context</code> (like one of the facet plots above). It should also include SEs.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p></li>
+<li><p>Plot the difference curve, for the difference in predicted trajectories between <code>d</code> and <code>th</code>, for each pair of values of <code>tone</code> and <code>context</code>.</p></li>
+</ol>
+<ul>
+<li>Try to get these plots in 6 panels of a single figure, rather than 6 plots printed vertically one after the other.</li>
+</ul>
+<ol start="3" type="a">
+<li>What would you conclude about RQs 1-2, just based on these plots, plus the one immediately above (which used <code>ggemmeans()</code>)?</li>
+</ol>
+</section>
+</section>
+<section id="part-2-gamm" class="level2" data-number="15.4">
+<h2 data-number="15.4" class="anchored" data-anchor-id="part-2-gamm"><span class="header-section-number">15.4</span> Part 2: GAMM</h2>
+<p>Let’s now consider by-speaker variability. This will motivate the random effects to add to model <code>thai_m1</code> to make a GAMM.</p>
+<section id="exploratory-analysis" class="level3" data-number="15.4.1">
+<h3 data-number="15.4.1" class="anchored" data-anchor-id="exploratory-analysis"><span class="header-section-number">15.4.1</span> Exploratory analysis</h3>
+<p>In terms of our model: to address RQs 1 and 3, I claim that we need to minimally include random-effect terms capturing the following:</p>
+<ul>
+<li>Speaker variation in trajectory height</li>
+<li>Speaker variation in trajectory shape</li>
+<li>Speaker variation in differences in trajectory height and shape by <code>onset</code></li>
+</ul>
+<p>(Note that this may not mean three distinct random-effect terms.)</p>
+<p><strong>Question 3</strong></p>
+<ol type="a">
+<li><p>List the random-effect terms that need to be added to model <code>thai_m1</code> to capture these three types of speaker variation.</p></li>
+<li><p>Explain why each is necessary to address RQs 1 and 3.</p></li>
+</ol>
+<p>There are many other types of by-subject variation that could be accounted for in the model, but all are relevant for a secondary RQ (RQ 2) or for no RQ. It is often not computationally feasible for GAMMs to build a “maximal” model with all possible random effects (as for a GLMM). Instead, we make some plots to see if there are any other important sources of by-subject variation.</p>
+<p><strong>Question 4</strong></p>
+<ol type="a">
+<li>Make one or more plots visualizing by-subject variation in trajectories, as a function of <code>onset</code>, <code>context</code>, and <code>tone</code>.<br>
+</li>
+</ol>
+<ul>
+<li>To think about: should you examine one predictor at a time, or show them all varying on one plot? If the former, what do you do about the other predictors (e.g.&nbsp;<code>context</code>, <code>tone</code>) when plotting how the effect of another (e.g.&nbsp;<code>onset</code>) differs by subject</li>
+</ul>
+<p>The plot(s) should suggest at least inter-speaker differences in:</p>
+<ul>
+<li>Trajectory height and shape</li>
+<li>Differences in trajectory height and shape, by <code>onset</code></li>
+</ul>
+<p>We’ve already decided that we’re including terms in the model below to account for these.</p>
+<ol start="2" type="a">
+<li>Do your plot(s) suggest other large by-subject differences that we could account for? If so, which random-effect terms should be added to the model? If not, justify your answer. (That is, why doesn’t this matter for our research questions?)</li>
+</ol>
+<!-- important to control for for the research questions?  Can you think of others which may matter, which should be checked by plotting in a more thorough analysis? -->
+</section>
+<section id="model" class="level3" data-number="15.4.2">
+<h3 data-number="15.4.2" class="anchored" data-anchor-id="model"><span class="header-section-number">15.4.2</span> Model</h3>
+<p><strong>Question 5</strong></p>
+<ol type="a">
+<li>Fit GAMM model <code>thai_m2</code>, which is the same as <code>thai_m1</code> but with the random-effect terms added that were motivated in Questions 3–4.</li>
+</ol>
+<!-- In terms of our model: because our primary RQ involves the effect of `onset`,  we'll at least need to include random-effect terms allowing speakers to differ in this effect.  This is also crucial to address RQ3. -->
+<!-- As the effects of `context` and `tone` are *secondary* RQs, it's less important to account for by-speaker variability, but you're welcome to do so if your answer to the exercise above suggests it's a good idea. -->
+<ol start="2" type="a">
+<li>Print a summary of this model:</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(thai_m2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="interpretation-1" class="level3" data-number="15.4.3">
+<h3 data-number="15.4.3" class="anchored" data-anchor-id="interpretation-1"><span class="header-section-number">15.4.3</span> Interpretation</h3>
+<p>We can interpret the results of this GAMM visually (as in Question 2), and quantitatively.</p>
+<p><strong>Question 6</strong></p>
+<ol type="a">
+<li><p>Repeat Question 2, for model <code>thai_m2</code>. (I encourage you to compare the results to Question 2, but you don’t need to write this up. <code>thai_m2</code> is a superior model.)</p></li>
+<li><p>Carry out a model comparison, or consider relevant row(s) of the model table, that answers RQ 1. Briefly interpret the result (what does it mean, in words?). [1-2 sentences]</p></li>
+<li><p>Perform a hypothesis test, via model comparison, that addresses RQ3. Use this result, and your plot(s) from Question 4(a), to answer RQ3. [~2-3 sentences]</p></li>
+</ol>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-kirby2018onset" class="csl-entry" role="listitem">
+Kirby, James P. 2018. <span>“Onset Pitch Perturbations and the Cross-Linguistic Implementation of Voicing: Evidence from Tonal and Non-Tonal Languages.”</span> <em>Journal of Phonetics</em> 71: 326–54.
+</div>
+</div>
+</section>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>Note that Thai “high” tone is phoentically “high-falling”, corresponding to the <em>falling</em> level of <code>tone</code>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Hint: you’ll need something different from the <code>ggemmeans</code> command above.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./hw1.html" class="pagination-link" aria-label="Homework 1">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Homework 1</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./hw5.html" class="pagination-link" aria-label="Homework 5">
+        <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Homework 5</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
